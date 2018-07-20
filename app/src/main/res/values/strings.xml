@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CS496-week4</string>
+    <string name="permission_denied">You have denied permissions,\nso the app cannot start.\nPlease restart app and allow permissions.</string>
 </resources>
