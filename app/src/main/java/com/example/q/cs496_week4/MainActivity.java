@@ -5,9 +5,12 @@ import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.widget.TabHost;
+import com.facebook.AccessToken;
 
 public class MainActivity extends TabActivity {
 
@@ -19,9 +22,18 @@ public class MainActivity extends TabActivity {
             Manifest.permission.ACCESS_NETWORK_STATE
     };
 
+    AccessToken accessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //check login
+        accessToken = AccessToken.getCurrentAccessToken();
+        if(accessToken == null || accessToken.isExpired()) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
