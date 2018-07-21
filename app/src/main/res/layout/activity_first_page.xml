@@ -6,89 +6,44 @@
     android:orientation="vertical"
     tools:context=".FirstPage">
 
-    <android.support.v7.widget.RecyclerView
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipeToRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardview"
+
+        <android.support.v7.widget.ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp">
+            android:layout_height="match_parent">
 
-            <LinearLayout
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_margin="5dp">
 
-                <ImageView
-                    android:id="@+id/image"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView1"
                     android:layout_width="match_parent"
-                    android:layout_height="210dp" />
+                    android:layout_height="match_parent" />
+            </android.support.v7.widget.CardView>
 
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="test" />
-
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardview2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp">
-
-            <LinearLayout
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardview2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_margin="5dp">
 
-                <ImageView
-                    android:id="@+id/image2"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView2"
                     android:layout_width="match_parent"
-                    android:layout_height="210dp" />
+                    android:layout_height="match_parent">
+                </android.support.v7.widget.RecyclerView>
+            </android.support.v7.widget.CardView>
 
-                <TextView
-                    android:id="@+id/title2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="test" />
+        </android.support.v7.widget.ScrollView>
 
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardview3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/image3"
-                    android:layout_width="match_parent"
-                    android:layout_height="210dp" />
-
-                <TextView
-                    android:id="@+id/title3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="test" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-    </android.support.v7.widget.RecyclerView>
-
-
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

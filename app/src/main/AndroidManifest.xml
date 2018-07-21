@@ -49,8 +49,10 @@
             android:name=".NoticeBoardActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".FirstPage" />
+
         <activity android:name=".UserActivity.LoginActivity" />
         <activity android:name=".UserActivity.UserCreateActivity"></activity>
+        <activity android:name=".EditActivity"></activity>
     </application>
 
 </manifest>
