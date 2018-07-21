@@ -37,6 +37,10 @@ public class MainActivity extends TabActivity {
 
     AccessToken accessToken;
 
+    public AccessToken getAccessToken() {
+        return accessToken;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -80,26 +84,39 @@ public class MainActivity extends TabActivity {
                 }
             });
         }
-            // Here, thisActivity is the current activity
-            if (!hasPermissions(this, PERMISSIONS)) {
-                ActivityCompat.requestPermissions(this,
-                        PERMISSIONS,
-                        0);
-            } else {
-                doOncreate();
-            }
-
+        // Here, thisActivity is the current activity
+        if (!hasPermissions(this, PERMISSIONS)) {
+            ActivityCompat.requestPermissions(this,
+                    PERMISSIONS,
+                    0);
+        } else {
             doOncreate();
+        }
 
-            Button edit_but = (Button) findViewById(R.id.edit_but);
+        doOncreate();
 
-            edit_but.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i = new Intent(getApplicationContext(), EditActivity.class);
-                    startActivity(i);
-                }
-            });
+        Button edit_but = (Button) findViewById(R.id.edit_but);
+
+        edit_but.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), EditActivity.class);
+                startActivity(i);
+            }
+        });
+
+        Button search_but = (Button) findViewById(R.id.search_but);
+
+        search_but.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+
+                Intent i = new Intent(getApplicationContext(), EditActivity.class);
+                startActivity(i);
+            }
+        });
 
     }
 

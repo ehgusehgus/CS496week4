@@ -1,5 +1,6 @@
 package com.example.q.cs496_week4;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -18,5 +19,12 @@ public interface HttpInterface {
 
     @GET("/users")
     Call<JsonObject> getUser(@Header("facebook_id") String facebook_id);
+
+    @FormUrlEncoded
+    @POST("/contents/create")
+    Call<JsonObject> editPage(@Field("keyword") String keyword, @Field("ingredient") String ingredient, @Field("creater") String nickname, @Field("category") String category, @Field("recipes") String recipes);
+
+    @GET("/contents/")
+    Call<JsonObject> getPage(@Field("keyword") String keyword);
 
 }

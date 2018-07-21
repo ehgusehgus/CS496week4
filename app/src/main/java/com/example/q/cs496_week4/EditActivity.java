@@ -8,11 +8,24 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.facebook.AccessToken;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class EditActivity extends AppCompatActivity {
 
@@ -112,7 +125,39 @@ public class EditActivity extends AppCompatActivity {
                 String Keyword = mKeyWord.getText().toString();
                 String Ingredient = mIngredient.getText().toString();
                 String category = mCategory;
-                //reciepe get and get creator createdat updatedat
+                MyApplication myapp = (MyApplication) getApplication();
+                JsonArray jsonarray = new JsonArray();
+
+                for(int i=0; i<recipes.size(); i++){
+                    JsonObject inter = new JsonObject();
+                    try{
+                        inter.addProperty("index", (i+1)+"");
+                        inter.addProperty("descript", recipes.get(i));
+                        jsonarray.add(inter);
+                    }catch(JsonIOException e){
+                        e.printStackTrace();
+                    }
+                }
+
+                Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
+                        .baseUrl(HttpInterface.BaseURL)
+                        .build();
+                HttpInterface httpInterface = retrofit.create(HttpInterface.class);
+                Log.d("JSOSOSOSO", jsonarray+"");
+
+                AccessToken a = AccessToken.getCurrentAccessToken();
+
+                Call<JsonObject> editPage = httpInterface.editPage(Keyword, Ingredient , a.getUserId(), category, jsonarray.toString());
+                editPage.enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        finish();
+                        }
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        Toast.makeText(getApplication(), "FAILURE", Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
 
