@@ -4,13 +4,20 @@ import android.Manifest;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.content.pm.Signature;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.util.Base64;
+import android.util.Log;
 import android.widget.TabHost;
+import android.widget.Toast;
+
 import com.facebook.AccessToken;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends TabActivity {
 
@@ -26,6 +33,7 @@ public class MainActivity extends TabActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
 
         //check login
         accessToken = AccessToken.getCurrentAccessToken();
@@ -67,8 +75,6 @@ public class MainActivity extends TabActivity {
             }
         }
     }
-
-
 
 
     public void doOncreate() {
