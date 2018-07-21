@@ -129,16 +129,16 @@ public class MainActivity extends TabActivity {
         Intent intent;
 
         intent = new Intent(this, NoticeBoardActivity.class);
-        spec = mTab.newTabSpec("Contact").setIndicator("").setContent(intent);
+        spec = mTab.newTabSpec("Contact").setIndicator("", getResources().getDrawable(R.drawable.cloud)).setContent(intent);
         mTab.addTab(spec);
         intent = new Intent(this, NoticeBoardActivity.class);
-        spec = mTab.newTabSpec("Contact").setIndicator("").setContent(intent);
+        spec = mTab.newTabSpec("Contact").setIndicator("", getResources().getDrawable(R.drawable.debate)).setContent(intent);
         mTab.addTab(spec);
         intent = new Intent(this, NoticeBoardActivity.class);
-        spec = mTab.newTabSpec("Contact").setIndicator("").setContent(intent);
+        spec = mTab.newTabSpec("Contact").setIndicator("", getResources().getDrawable(R.drawable.category)).setContent(intent);
         mTab.addTab(spec);
         intent = new Intent(this, NoticeBoardActivity.class);
-        spec = mTab.newTabSpec("Contact").setIndicator("").setContent(intent);
+        spec = mTab.newTabSpec("Contact").setIndicator("", getResources().getDrawable(R.drawable.personal)).setContent(intent);
         mTab.addTab(spec);
 //
 //        intent = new Intent(this, Tab2.class);
