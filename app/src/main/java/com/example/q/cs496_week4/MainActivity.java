@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TabHost;
 import android.widget.Toast;
 
@@ -55,6 +57,17 @@ public class MainActivity extends TabActivity {
         }
 
         doOncreate();
+
+        Button edit_but = (Button) findViewById(R.id.edit_but);
+
+        edit_but.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), EditActivity.class);
+                startActivity(i);
+            }
+        });
+
     }
 
 
