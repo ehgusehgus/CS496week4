@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.q.cs496_week4.UserActivity.LoginActivity;
 import com.example.q.cs496_week4.UserActivity.UserCreateActivity;
 import com.facebook.AccessToken;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -53,6 +54,7 @@ public class MainActivity extends TabActivity {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();
+            return;
         }
 
         if(MyApplication.nickname.equals("")) {
@@ -64,7 +66,7 @@ public class MainActivity extends TabActivity {
             getUserCall.enqueue(new Callback<JsonObject>() {
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                    JsonObject object = response.body();
+                    JsonObject object = response.body().get("result").getAsJsonObject();
                     if (object != null) {
                         if(object.get("nickname") == null){
                             Intent intent = new Intent(getApplication(),UserCreateActivity.class);
