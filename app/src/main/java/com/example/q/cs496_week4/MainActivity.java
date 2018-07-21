@@ -4,20 +4,22 @@ import android.Manifest;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.util.Base64;
-import android.util.Log;
 import android.widget.TabHost;
-import android.widget.Toast;
 
+import com.example.q.cs496_week4.UserActivity.Helper;
+import com.example.q.cs496_week4.UserActivity.LoginActivity;
+import com.example.q.cs496_week4.UserActivity.UserCreateActivity;
 import com.facebook.AccessToken;
+import com.google.gson.JsonObject;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends TabActivity {
 
@@ -33,7 +35,7 @@ public class MainActivity extends TabActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        final Boolean[] task = {false};
 
         //check login
         accessToken = AccessToken.getCurrentAccessToken();
@@ -42,19 +44,51 @@ public class MainActivity extends TabActivity {
             startActivity(intent);
         }
 
+
+        if(MyApplication.nickname == "" ) {
+            Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
+                    .baseUrl(HttpInterface.BaseURL)
+                    .build();
+            HttpInterface httpInterface = retrofit.create(HttpInterface.class);
+            Call<JsonObject> getUserCall = httpInterface.getUser(accessToken.getUserId());
+            getUserCall.enqueue(new Callback<JsonObject>() {
+
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    JsonObject object = response.body();
+                    if (object != null) {
+                        String res = object.get("nickname").toString();
+                        MyApplication.setNickname(res);
+                        if (res == "") {
+                            Intent intent = new Intent(getApplication(), UserCreateActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+
+                }
+            });
+        }
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         // Here, thisActivity is the current activity
         if (!hasPermissions(this, PERMISSIONS)) {
-            ActivityCompat.requestPermissions(this,
-                    PERMISSIONS,
-                    0); }
+        ActivityCompat.requestPermissions(this,
+                PERMISSIONS,
+                0); }
         else {
             doOncreate();
         }
 
         doOncreate();
+
     }
 
 
