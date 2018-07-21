@@ -12,8 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TabHost;
+import android.widget.Toast;
 
-import com.example.q.cs496_week4.UserActivity.Helper;
 import com.example.q.cs496_week4.UserActivity.LoginActivity;
 import com.example.q.cs496_week4.UserActivity.UserCreateActivity;
 import com.facebook.AccessToken;
@@ -40,68 +40,66 @@ public class MainActivity extends TabActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Log.d("TSET",MyApplication.nickname);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
         //check login
         accessToken = AccessToken.getCurrentAccessToken();
         if(accessToken == null || accessToken.isExpired()) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
+            finish();
         }
 
-
-        if(MyApplication.nickname == "" ) {
+        if(MyApplication.nickname.equals("")) {
             Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
                     .baseUrl(HttpInterface.BaseURL)
                     .build();
             HttpInterface httpInterface = retrofit.create(HttpInterface.class);
             Call<JsonObject> getUserCall = httpInterface.getUser(accessToken.getUserId());
             getUserCall.enqueue(new Callback<JsonObject>() {
-
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                     JsonObject object = response.body();
                     if (object != null) {
-                        String res = object.get("nickname").toString();
-                        MyApplication.setNickname(res);
-                        if (res == "") {
-                            Intent intent = new Intent(getApplication(), UserCreateActivity.class);
+                        if(object.get("nickname") == null){
+                            Intent intent = new Intent(getApplication(),UserCreateActivity.class);
                             startActivity(intent);
-                            finish();
+                        } else {
+                            String res = object.get("nickname").toString();
+                            Toast.makeText(getApplication(), res, Toast.LENGTH_LONG).show();
+                            MyApplication.setNickname(object.get("nickname").toString());
                         }
                     }
                 }
 
                 @Override
                 public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Toast.makeText(getApplication(), "FAILURE", Toast.LENGTH_LONG).show();
 
                 }
             });
         }
-
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        // Here, thisActivity is the current activity
-        if (!hasPermissions(this, PERMISSIONS)) {
-        ActivityCompat.requestPermissions(this,
-                PERMISSIONS,
-                0); }
-        else {
-            doOncreate();
-        }
-
-        doOncreate();
-
-        Button edit_but = (Button) findViewById(R.id.edit_but);
-
-        edit_but.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), EditActivity.class);
-                startActivity(i);
+            // Here, thisActivity is the current activity
+            if (!hasPermissions(this, PERMISSIONS)) {
+                ActivityCompat.requestPermissions(this,
+                        PERMISSIONS,
+                        0);
+            } else {
+                doOncreate();
             }
-        });
+
+            doOncreate();
+
+            Button edit_but = (Button) findViewById(R.id.edit_but);
+
+            edit_but.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(getApplicationContext(), EditActivity.class);
+                    startActivity(i);
+                }
+            });
 
     }
 
