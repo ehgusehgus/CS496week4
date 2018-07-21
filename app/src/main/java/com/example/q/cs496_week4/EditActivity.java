@@ -1,20 +1,52 @@
 package com.example.q.cs496_week4;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class EditActivity extends AppCompatActivity {
 
+    Context mContext;
+
+    TextView mKeyWord;
     String mCategory;
+    TextView mIngredient;
+    TextView mRecipe;
+    ArrayList<String> recipes = new ArrayList<String>();
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mContext = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
+
+        mKeyWord = (TextView) findViewById(R.id.keyword);
+        mIngredient = (TextView) findViewById(R.id.ingrediant);
+        mRecipe = (TextView) findViewById(R.id.recipe_desc);
+
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.recipe_view);
+        mRecyclerView.setHasFixedSize(true);
+
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        setRecipeAdpater(this, this);
+
 
         final Button bt_category = (Button) findViewById(R.id.category);
         Button bt_recipeadd = (Button) findViewById(R.id.recipe_add);
@@ -33,7 +65,6 @@ public class EditActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 selectedIndex[0] = which;
-                                //선택 시 스트링 내의 선택사항의 포지션을 지정
                             }
                         })
 
@@ -65,8 +96,31 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
+        bt_recipeadd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //add recipe and reset adapter
+                String Recipedesc = mRecipe.getText().toString();
+                recipes.add(Recipedesc);
+                setRecipeAdpater(mContext, EditActivity.this);
+        }
+    });
 
+        bt_finish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String Keyword = mKeyWord.getText().toString();
+                String Ingredient = mIngredient.getText().toString();
+                String category = mCategory;
+                //reciepe get and get creator createdat updatedat
+            }
+        });
 
+    }
 
+    public void setRecipeAdpater(Context context, Activity activity) {
+        mAdapter = new RecipeAdapter(recipes);
+        mRecyclerView.setAdapter(mAdapter);
+        return;
     }
 }
