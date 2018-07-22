@@ -1,28 +1,23 @@
 package com.example.q.cs496_week4;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
 
     private ArrayList<String> arrayListOfRecipe;
+    private Context mContext;
 
-    public RecipeAdapter(ArrayList<String> arrayListOfRecipe){
+    public RecipeAdapter(ArrayList<String> arrayListOfRecipe, Context context){
         this.arrayListOfRecipe = arrayListOfRecipe;
+        this.mContext = context;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -30,6 +25,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         //public ImageView mImageView;
         public TextView mIndex;
         public TextView mContent;
+
 
         public ViewHolder(View v) {
             super(v);

@@ -27,5 +27,7 @@ public interface HttpInterface {
     @POST("/contents/create")
     Call<JsonObject> editPage(@Field("keyword") String keyword, @Field("ingredient") String ingredient, @Field("creater") String nickname, @Field("category") String category, @Field("recipes") String recipes);
 
+    @GET("/")
+    Call<JsonObject> getRandom();
 
 }
