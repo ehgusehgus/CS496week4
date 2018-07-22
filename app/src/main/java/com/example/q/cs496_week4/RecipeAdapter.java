@@ -56,7 +56,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         try {
              String content = arrayListOfRecipe.get(position);
              holder.mContent.setText(content);
-             holder.mIndex.setText(position+". ");
+             holder.mIndex.setText((position+1)+". ");
 
         } catch (Exception e) {
             Log.d("onviewholder", "jsonexception");

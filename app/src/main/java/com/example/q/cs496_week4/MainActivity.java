@@ -7,18 +7,20 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TabHost;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.q.cs496_week4.UserActivity.LoginActivity;
 import com.example.q.cs496_week4.UserActivity.UserCreateActivity;
 import com.facebook.AccessToken;
-import com.google.gson.JsonElement;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+
+import java.net.URLEncoder;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,6 +39,9 @@ public class MainActivity extends TabActivity {
     };
 
     AccessToken accessToken;
+    TextView mSearch;
+    Retrofit retrofit;
+    HttpInterface httpInterface;
 
     public AccessToken getAccessToken() {
         return accessToken;
@@ -46,8 +51,16 @@ public class MainActivity extends TabActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+
+
+        setContentView(R.layout.activity_main);
+        retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(HttpInterface.BaseURL)
+                .build();
+        httpInterface = retrofit.create(HttpInterface.class);
+
+        mSearch = (TextView) findViewById(R.id.textView);
         //check login
         accessToken = AccessToken.getCurrentAccessToken();
         if(accessToken == null || accessToken.isExpired()) {
@@ -58,10 +71,6 @@ public class MainActivity extends TabActivity {
         }
 
         if(MyApplication.nickname.equals("")) {
-            Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
-                    .baseUrl(HttpInterface.BaseURL)
-                    .build();
-            HttpInterface httpInterface = retrofit.create(HttpInterface.class);
             Call<JsonObject> getUserCall = httpInterface.getUser(accessToken.getUserId());
             getUserCall.enqueue(new Callback<JsonObject>() {
                 @Override
@@ -97,30 +106,62 @@ public class MainActivity extends TabActivity {
 
         doOncreate();
 
+
         Button edit_but = (Button) findViewById(R.id.edit_but);
 
         edit_but.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), EditActivity.class);
-                startActivity(i);
-            }
-        });
+        @Override
+        public void onClick(View view) {
+            Intent i = new Intent(getApplicationContext(), EditActivity.class);
+            startActivity(i);
+        }
+    });
 
-        Button search_but = (Button) findViewById(R.id.search_but);
+    final Button search_but = (Button) findViewById(R.id.search_but);
 
         search_but.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        @Override
+        public void onClick(View view) {
 
+            Call<JsonObject> getPageCall = httpInterface.getPage(URLEncoder.encode(mSearch.getText().toString()));
+            getPageCall.enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    Log.d("??????", response.body().toString());
+                    try {
+                        JsonObject object = response.body().get("content").getAsJsonObject();
+                        JsonArray recipes = response.body().get("recipes").getAsJsonArray();
+                        if (object != null) {
+                            String keyword = object.get("keyword").getAsString();
+                            String ingredient = object.get("ingrediant").getAsString();
+                            String category = object.get("category").getAsString();
+                            String creater = object.get("creater").getAsString();
+                            String updated_at = object.get("updated_at").getAsString();
+                            Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+                            i.putExtra("keyword", keyword);
+                            i.putExtra("ingredient", ingredient);
+                            i.putExtra("category", category);
+                            i.putExtra("creater", creater);
+                            i.putExtra("updated_at", updated_at);
+                            startActivity(i);
+                        }
+                    }catch(Exception e){
+                        Intent i = new Intent(getApplicationContext(), EmptySearchActivity.class);
+                        startActivity(i);
+                    }
+                }
 
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Toast.makeText(getApplication(), "FAILURE", Toast.LENGTH_LONG).show();
 
-                Intent i = new Intent(getApplicationContext(), EditActivity.class);
-                startActivity(i);
-            }
-        });
+                }
+            });
+        }
+    });
 
-    }
+}
+
 
 
     @Override
@@ -148,25 +189,18 @@ public class MainActivity extends TabActivity {
         Intent intent;
 
         intent = new Intent(this, NoticeBoardActivity.class);
-        spec = mTab.newTabSpec("Contact").setIndicator("", getResources().getDrawable(R.drawable.cloud)).setContent(intent);
+        spec = mTab.newTabSpec("a").setIndicator("", getResources().getDrawable(R.drawable.cloud)).setContent(intent);
         mTab.addTab(spec);
         intent = new Intent(this, NoticeBoardActivity.class);
-        spec = mTab.newTabSpec("Contact").setIndicator("", getResources().getDrawable(R.drawable.debate)).setContent(intent);
+        spec = mTab.newTabSpec("b").setIndicator("", getResources().getDrawable(R.drawable.debate)).setContent(intent);
         mTab.addTab(spec);
         intent = new Intent(this, NoticeBoardActivity.class);
-        spec = mTab.newTabSpec("Contact").setIndicator("", getResources().getDrawable(R.drawable.category)).setContent(intent);
+        spec = mTab.newTabSpec("c").setIndicator("", getResources().getDrawable(R.drawable.category)).setContent(intent);
         mTab.addTab(spec);
         intent = new Intent(this, NoticeBoardActivity.class);
-        spec = mTab.newTabSpec("Contact").setIndicator("", getResources().getDrawable(R.drawable.personal)).setContent(intent);
+        spec = mTab.newTabSpec("d").setIndicator("", getResources().getDrawable(R.drawable.personal)).setContent(intent);
         mTab.addTab(spec);
-//
-//        intent = new Intent(this, Tab2.class);
-//        spec = mTab.newTabSpec("Gallery").setIndicator("", getResources().getDrawable(R.drawable.gallery)).setContent(intent);
-//        mTab.addTab(spec);
-//
-//        intent = new Intent(this, DrawingActivity.class);
-//        spec = mTab.newTabSpec("tab3").setIndicator("", getResources().getDrawable(R.drawable.paint)).setContent(intent);
-//        mTab.addTab(spec);
+
 
         setTabColor(mTab);
         mTab.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
@@ -201,5 +235,7 @@ public class MainActivity extends TabActivity {
 //                .setBackgroundResource(R.drawable.round_tab_white); // selected
 
     }
+
+
 }
 

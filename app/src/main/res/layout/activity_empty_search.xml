@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@android:id/tabhost"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/sky">
-
+    android:orientation="vertical"
+    tools:context=".EmptySearchActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,7 +17,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/textView"
+                android:id="@+id/textView10"
                 android:layout_width="226dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -27,13 +26,13 @@
                 android:textSize="20sp" />
 
             <Button
-                android:id="@+id/search_but"
+                android:id="@+id/search_but3"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
             <Button
-                android:id="@+id/edit_but"
+                android:id="@+id/edit_but3"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -41,32 +40,12 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/textView3"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:padding="5dp">
-
-            <TabWidget
-                android:id="@android:id/tabs"
-                android:layout_width="fill_parent"
-                android:layout_height="35dp"
-                android:background="@color/sky"
-                android:weightSum="4">
-
-            </TabWidget>
-
-            <FrameLayout
-                android:id="@android:id/tabcontent"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-            </FrameLayout>
-
-        </LinearLayout>
-
+            android:text="검색결과 없음" />
     </LinearLayout>
 
-</TabHost>
+</LinearLayout>

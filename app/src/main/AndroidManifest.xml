@@ -48,11 +48,18 @@
         <activity
             android:name=".NoticeBoardActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".FirstPage" />
-
-        <activity android:name=".UserActivity.LoginActivity" />
-        <activity android:name=".UserActivity.UserCreateActivity"></activity>
-        <activity android:name=".EditActivity"></activity>
+        <activity android:name=".FirstPage"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".UserActivity.LoginActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".UserActivity.UserCreateActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".EditActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".SearchActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".EmptySearchActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>
 
 </manifest>

@@ -20,11 +20,12 @@ public interface HttpInterface {
     @GET("/users")
     Call<JsonObject> getUser(@Header("facebook_id") String facebook_id);
 
+    @GET("/contents")
+    Call<JsonObject> getPage(@Header("keyword") String keyword);
+
     @FormUrlEncoded
     @POST("/contents/create")
     Call<JsonObject> editPage(@Field("keyword") String keyword, @Field("ingredient") String ingredient, @Field("creater") String nickname, @Field("category") String category, @Field("recipes") String recipes);
 
-    @GET("/contents/")
-    Call<JsonObject> getPage(@Field("keyword") String keyword);
 
 }
