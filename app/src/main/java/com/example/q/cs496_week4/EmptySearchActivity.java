@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.net.URLEncoder;
@@ -59,18 +60,25 @@ public class EmptySearchActivity extends AppCompatActivity {
                 getPageCall.enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                        JsonObject object = response.body().get("result").getAsJsonObject();
-                        Log.d("JSJS", object.toString());
-                        if (object != null) {
-                            String keyword = object.get("keyword").getAsString();
-                            String ingredient = object.get("ingrediant").getAsString();
-                            String category = object.get("category").getAsString();
-                            Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-                            startActivity(i);
-                            finish();
-                        }
-                        else
-                        {
+                        try {
+                            JsonObject object = response.body().get("content").getAsJsonObject();
+                            JsonArray recipes = response.body().get("recipes").getAsJsonArray();
+                            if (object != null) {
+                                String keyword = object.get("keyword").getAsString();
+                                String ingredient = object.get("ingrediant").getAsString();
+                                String category = object.get("category").getAsString();
+                                String creater = object.get("creater").getAsString();
+                                String updated_at = object.get("updated_at").getAsString();
+                                Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+                                i.putExtra("keyword", keyword);
+                                i.putExtra("ingredient", ingredient);
+                                i.putExtra("category", category);
+                                i.putExtra("creater", creater);
+                                i.putExtra("updated_at", updated_at);
+                                startActivity(i);
+                                finish();
+                            }
+                        }catch(Exception e){
                             Intent i = new Intent(getApplicationContext(), EmptySearchActivity.class);
                             startActivity(i);
                             finish();

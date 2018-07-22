@@ -144,10 +144,12 @@ public class MainActivity extends TabActivity {
                             i.putExtra("creater", creater);
                             i.putExtra("updated_at", updated_at);
                             startActivity(i);
+
                         }
                     }catch(Exception e){
                         Intent i = new Intent(getApplicationContext(), EmptySearchActivity.class);
                         startActivity(i);
+
                     }
                 }
 
