@@ -14,6 +14,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.q.cs496_week4.FirstPageActivity.FirstPage;
 import com.example.q.cs496_week4.UserActivity.LoginActivity;
 import com.example.q.cs496_week4.UserActivity.UserCreateActivity;
 import com.facebook.AccessToken;
@@ -195,7 +196,7 @@ public class MainActivity extends TabActivity {
         TabHost.TabSpec spec;
         Intent intent;
 
-        intent = new Intent(this, NoticeBoardActivity.class);
+        intent = new Intent(this, FirstPage.class);
         spec = mTab.newTabSpec("a").setIndicator("", getResources().getDrawable(R.drawable.cloud)).setContent(intent);
         mTab.addTab(spec);
         intent = new Intent(this, NoticeBoardActivity.class);
