@@ -21,6 +21,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -124,6 +125,8 @@ public class MainActivity extends TabActivity {
         public void onClick(View view) {
 
             Call<JsonObject> getPageCall = httpInterface.getPage(URLEncoder.encode(mSearch.getText().toString()));
+            //Call<JsonObject> getRandom = httpInterface.getRandom();
+
             getPageCall.enqueue(new Callback<JsonObject>() {
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -137,6 +140,8 @@ public class MainActivity extends TabActivity {
                             String category = object.get("category").getAsString();
                             String creater = object.get("creater").getAsString();
                             String updated_at = object.get("updated_at").getAsString();
+                            ArrayList<String> got_recipe = new ArrayList<String>();
+
                             Intent i = new Intent(getApplicationContext(), SearchActivity.class);
                             i.putExtra("keyword", keyword);
                             i.putExtra("ingredient", ingredient);

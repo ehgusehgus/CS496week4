@@ -27,6 +27,11 @@ public class SearchActivity extends AppCompatActivity {
 
     AccessToken accessToken;
     TextView mSearch;
+    TextView mKeyWord;
+    TextView mCategory;
+    TextView mIngredient;
+    TextView mCreater;
+    TextView mUpdated;
     Retrofit retrofit;
     HttpInterface httpInterface;
 
@@ -34,6 +39,25 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        Intent i = getIntent();
+        Bundle extras = i.getExtras();
+        String keyword = extras.getString("keyword");
+        String ingredient = extras.getString("ingredient");
+        String category = extras.getString("category");
+        String creater = extras.getString("creater");
+        String updated = extras.getString("updated_at");
+
+        mKeyWord = (TextView) findViewById(R.id.textView4);
+        mKeyWord.setText(keyword);
+        mCategory= (TextView) findViewById(R.id.textView5);
+        mCategory.setText(category);
+        mIngredient = (TextView) findViewById(R.id.textView6);
+        mIngredient.setText(ingredient);
+        mCreater = (TextView) findViewById(R.id.textView8);
+        mCreater.setText(creater);
+        mUpdated = (TextView) findViewById(R.id.textView9);
+        mUpdated.setText(updated);
 
         retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(HttpInterface.BaseURL)

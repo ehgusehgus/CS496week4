@@ -9,8 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +34,7 @@ public class EditActivity extends AppCompatActivity {
     Context mContext;
 
     TextView mKeyWord;
-    String mCategory;
+    String mCategory="";
     TextView mIngredient;
     TextView mRecipe;
     ArrayList<String> recipes = new ArrayList<String>();
@@ -59,6 +61,62 @@ public class EditActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         setRecipeAdpater(this, this);
+
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(mContext, mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        // do whatever
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        // TODO Auto-generated method stub
+                        final int mposition = position;
+                        // get prompts.xml view
+                        LayoutInflater li = LayoutInflater.from(EditActivity.this);
+                        View promptsView = li.inflate(R.layout.prompts, null);
+
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                EditActivity.this);
+
+                        // set prompts.xml to alertdialog builder
+                        alertDialogBuilder.setView(promptsView);
+
+                        final EditText userInput = (EditText) promptsView
+                                .findViewById(R.id.editTextDialogUserInput);
+
+                        // set dialog message
+                        alertDialogBuilder
+                                .setCancelable(false)
+                                .setPositiveButton("OK",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(
+                                                    DialogInterface dialog,
+                                                    int id) {
+                                                // get user input and set it to
+                                                // result
+                                                // edit text
+
+                                                recipes.set(mposition, userInput.getText().toString());
+                                                setRecipeAdpater(EditActivity.this,EditActivity.this);
+                                            }
+                                        })
+                                .setNegativeButton("Cancel",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(
+                                                    DialogInterface dialog,
+                                                    int id) {
+                                                dialog.cancel();
+                                            }
+                                        });
+
+                        // create alert dialog
+                        AlertDialog alertDialog = alertDialogBuilder.create();
+
+                        // show it
+                        alertDialog.show();
+                    }
+                })
+        );
 
 
         final Button bt_category = (Button) findViewById(R.id.category);
@@ -123,8 +181,25 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String Keyword = mKeyWord.getText().toString();
+                if(Keyword.equals("")){
+                    Toast.makeText(getApplication(), "Write KeyWord!!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 String Ingredient = mIngredient.getText().toString();
+                if(Ingredient.equals("")){
+                    Toast.makeText(getApplication(), "Write Ingredient!!", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 String category = mCategory;
+                if(category.equals("")){
+                    Toast.makeText(getApplication(), "Choose Category!!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(recipes.size() == 0){
+                    Toast.makeText(getApplication(), "Write Recipe!!", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 MyApplication myapp = (MyApplication) getApplication();
                 JsonArray jsonarray = new JsonArray();
 
@@ -164,7 +239,7 @@ public class EditActivity extends AppCompatActivity {
     }
 
     public void setRecipeAdpater(Context context, Activity activity) {
-        mAdapter = new RecipeAdapter(recipes);
+        mAdapter = new RecipeAdapter(recipes, context);
         mRecyclerView.setAdapter(mAdapter);
         return;
     }

@@ -23,7 +23,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class EmptySearchActivity extends AppCompatActivity {
 
-
     AccessToken accessToken;
     TextView mSearch;
     Retrofit retrofit;
