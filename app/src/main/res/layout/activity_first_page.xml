@@ -1,49 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".FirstPage">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/swipeToRefresh"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-
-        <android.support.v7.widget.ScrollView
+        <TextView
+            android:id="@+id/textView4"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="41dp"
+            android:text="Random" />
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/cardview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp">
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="196dp">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerView1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </android.support.v7.widget.CardView>
+        </android.support.v7.widget.RecyclerView>
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/cardview2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp">
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:text="Latest" />
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerView2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                </android.support.v7.widget.RecyclerView>
-            </android.support.v7.widget.CardView>
-
-        </android.support.v7.widget.ScrollView>
-
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-</LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="194dp" />
+    </LinearLayout>
+</RelativeLayout>
