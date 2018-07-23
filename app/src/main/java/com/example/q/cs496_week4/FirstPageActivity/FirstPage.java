@@ -96,7 +96,6 @@ public class FirstPage extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Toast.makeText(getApplicationContext(),"TEST", Toast.LENGTH_LONG).show();
             runOnUiThread(new Runnable() {
                 public void run() {
                     RecyclerView my_recycler_view = findViewById(R.id.my_recycler_view);
