@@ -4,11 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -49,10 +49,21 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
-        mKeyWord = (TextView) findViewById(R.id.keyword);
-        mIngredient = (TextView) findViewById(R.id.ingrediant);
-        mRecipe = (TextView) findViewById(R.id.recipe_desc);
+        Intent i = getIntent();
+        Bundle extras = i.getExtras();
+        String keyword_got = extras.getString("keyword");
+        String ingredient_got = extras.getString("ingredient");
+        String category_got = extras.getString("category");
+        String creater_got = extras.getString("creater");
+        String updated_got = extras.getString("updated_at");
+        ArrayList<String> recipes_got = extras.getStringArrayList("recipes");
 
+        mKeyWord = (TextView) findViewById(R.id.keyword);
+        mKeyWord.setText(keyword_got);
+        mIngredient = (TextView) findViewById(R.id.ingrediant);
+        mIngredient.setText(ingredient_got);
+        mRecipe = (TextView) findViewById(R.id.recipe_desc);
+        recipes =recipes_got;
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recipe_view);
         mRecyclerView.setHasFixedSize(true);
@@ -75,7 +86,7 @@ public class EditActivity extends AppCompatActivity {
                         LayoutInflater li = LayoutInflater.from(EditActivity.this);
                         View promptsView = li.inflate(R.layout.prompts, null);
 
-                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                                 EditActivity.this);
 
                         // set prompts.xml to alertdialog builder
@@ -84,10 +95,20 @@ public class EditActivity extends AppCompatActivity {
                         final EditText userInput = (EditText) promptsView
                                 .findViewById(R.id.editTextDialogUserInput);
 
+//                        final Button insert_btn = (Button) promptsView.findViewById(R.id.insert);
+//
+//                        insert_btn.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                recipes.remove(mposition);
+//                                setRecipeAdpater(EditActivity.this,EditActivity.this);
+//                            }
+//                        });
+
                         // set dialog message
                         alertDialogBuilder
-                                .setCancelable(false)
-                                .setPositiveButton("OK",
+                                .setCancelable(true)
+                                .setPositiveButton("Edit",
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(
                                                     DialogInterface dialog,
@@ -95,19 +116,43 @@ public class EditActivity extends AppCompatActivity {
                                                 // get user input and set it to
                                                 // result
                                                 // edit text
-
+                                                if(userInput.getText().toString().equals("")){
+                                                    Toast.makeText(getApplication(), "Write Description!!", Toast.LENGTH_LONG).show();
+                                                    return;
+                                                }
                                                 recipes.set(mposition, userInput.getText().toString());
                                                 setRecipeAdpater(EditActivity.this,EditActivity.this);
                                             }
                                         })
-                                .setNegativeButton("Cancel",
+                                .setNegativeButton("DELETE",
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(
                                                     DialogInterface dialog,
                                                     int id) {
+                                                recipes.remove(mposition);
+                                                setRecipeAdpater(EditActivity.this,EditActivity.this);
                                                 dialog.cancel();
                                             }
                                         });
+
+                        alertDialogBuilder.setNeutralButton("INSERT",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(
+                                            DialogInterface dialog,
+                                            int id) {
+                                        // get user input and set it to
+                                        // result
+                                        // edit text
+                                        if(userInput.getText().toString().equals("")){
+                                            Toast.makeText(getApplication(), "Write Description!!", Toast.LENGTH_LONG).show();
+                                            return;
+                                        }
+                                        recipes.add(mposition+1,userInput.getText().toString());
+                                        setRecipeAdpater(EditActivity.this,EditActivity.this);
+                                    }
+                                });
+
+
 
                         // create alert dialog
                         AlertDialog alertDialog = alertDialogBuilder.create();
@@ -122,7 +167,9 @@ public class EditActivity extends AppCompatActivity {
         final Button bt_category = (Button) findViewById(R.id.category);
         Button bt_recipeadd = (Button) findViewById(R.id.recipe_add);
         Button bt_finish = (Button) findViewById(R.id.finish);
-
+        if(!category_got.equals("")){
+            bt_category.setText(category_got);
+        }
         bt_category.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,8 +219,13 @@ public class EditActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //add recipe and reset adapter
                 String Recipedesc = mRecipe.getText().toString();
+                if(Recipedesc.equals("")){
+                    Toast.makeText(getApplication(), "Write Description!!", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 recipes.add(Recipedesc);
                 setRecipeAdpater(mContext, EditActivity.this);
+                mRecipe.setText("");
         }
     });
 
@@ -218,7 +270,6 @@ public class EditActivity extends AppCompatActivity {
                         .baseUrl(HttpInterface.BaseURL)
                         .build();
                 HttpInterface httpInterface = retrofit.create(HttpInterface.class);
-                Log.d("JSOSOSOSO", jsonarray+"");
 
                 AccessToken a = AccessToken.getCurrentAccessToken();
 

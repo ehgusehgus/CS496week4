@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="add" />
+                android:text="EDIT" />
 
         </LinearLayout>
 
@@ -131,6 +131,7 @@
                 android:text="recipes" />
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerviewsearch"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>

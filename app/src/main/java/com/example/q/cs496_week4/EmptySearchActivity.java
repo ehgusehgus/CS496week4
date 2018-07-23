@@ -14,6 +14,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,6 +26,7 @@ public class EmptySearchActivity extends AppCompatActivity {
 
     AccessToken accessToken;
     TextView mSearch;
+    TextView mKeyword;
     Retrofit retrofit;
     HttpInterface httpInterface;
 
@@ -39,12 +41,25 @@ public class EmptySearchActivity extends AppCompatActivity {
         httpInterface = retrofit.create(HttpInterface.class);
 
         mSearch = (TextView) findViewById(R.id.textView10);
+        mKeyword =(TextView) findViewById(R.id.textView11);
+
+        Intent i = getIntent();
+        Bundle extras = i.getExtras();
+        final String keyword = extras.getString("keyword");
+        mKeyword.setText(keyword);
+
         Button edit_but = (Button) findViewById(R.id.edit_but3);
 
         edit_but.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(), EditActivity.class);
+                i.putExtra("keyword",keyword);
+                i.putExtra("ingredient","");
+                i.putExtra("category","");
+                i.putExtra("creater","");
+                i.putExtra("updated","");
+                i.putExtra("recipes",new ArrayList<String>());
                 startActivity(i);
             }
         });
@@ -68,12 +83,17 @@ public class EmptySearchActivity extends AppCompatActivity {
                                 String category = object.get("category").getAsString();
                                 String creater = object.get("creater").getAsString();
                                 String updated_at = object.get("updated_at").getAsString();
+                                ArrayList<String> got_recipe = new ArrayList<String>();
+                                for(int j=0;j<recipes.size();j++){
+                                    got_recipe.add(recipes.get(j).getAsJsonObject().get("descript").getAsString());
+                                }
                                 Intent i = new Intent(getApplicationContext(), SearchActivity.class);
                                 i.putExtra("keyword", keyword);
                                 i.putExtra("ingredient", ingredient);
                                 i.putExtra("category", category);
                                 i.putExtra("creater", creater);
                                 i.putExtra("updated_at", updated_at);
+                                i.putExtra("recipes", got_recipe);
                                 startActivity(i);
                                 finish();
                             }
