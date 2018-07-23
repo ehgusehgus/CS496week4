@@ -36,9 +36,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="add" />
+                android:text="edit" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
 
         <TextView
             android:id="@+id/textView3"
@@ -46,6 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="검색결과 없음" />
+
     </LinearLayout>
 
 </LinearLayout>

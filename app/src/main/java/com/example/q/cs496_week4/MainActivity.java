@@ -109,15 +109,15 @@ public class MainActivity extends TabActivity {
         doOncreate();
 
 
-        Button edit_but = (Button) findViewById(R.id.edit_but);
-
-        edit_but.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Intent i = new Intent(getApplicationContext(), EditActivity.class);
-            startActivity(i);
-        }
-    });
+//        Button edit_but = (Button) findViewById(R.id.edit_but);
+//
+//        edit_but.setOnClickListener(new View.OnClickListener() {
+//        @Override
+//        public void onClick(View view) {
+//            Intent i = new Intent(getApplicationContext(), EditActivity.class);
+//            startActivity(i);
+//        }
+//    });
 
     final Button search_but = (Button) findViewById(R.id.search_but);
 
@@ -126,7 +126,6 @@ public class MainActivity extends TabActivity {
         public void onClick(View view) {
 
             Call<JsonObject> getPageCall = httpInterface.getPage(URLEncoder.encode(mSearch.getText().toString()));
-            //Call<JsonObject> getRandom = httpInterface.getRandom();
 
             getPageCall.enqueue(new Callback<JsonObject>() {
                 @Override
@@ -142,6 +141,9 @@ public class MainActivity extends TabActivity {
                             String creater = object.get("creater").getAsString();
                             String updated_at = object.get("updated_at").getAsString();
                             ArrayList<String> got_recipe = new ArrayList<String>();
+                            for(int j=0;j<recipes.size();j++){
+                                got_recipe.add(recipes.get(j).getAsJsonObject().get("descript").getAsString());
+                            }
 
                             Intent i = new Intent(getApplicationContext(), SearchActivity.class);
                             i.putExtra("keyword", keyword);
@@ -149,11 +151,13 @@ public class MainActivity extends TabActivity {
                             i.putExtra("category", category);
                             i.putExtra("creater", creater);
                             i.putExtra("updated_at", updated_at);
+                            i.putExtra("recipes", got_recipe);
                             startActivity(i);
 
                         }
                     }catch(Exception e){
                         Intent i = new Intent(getApplicationContext(), EmptySearchActivity.class);
+                        i.putExtra("keyword", mSearch.getText().toString());
                         startActivity(i);
 
                     }

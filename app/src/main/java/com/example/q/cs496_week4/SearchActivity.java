@@ -1,8 +1,12 @@
 package com.example.q.cs496_week4;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +18,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,6 +40,13 @@ public class SearchActivity extends AppCompatActivity {
     Retrofit retrofit;
     HttpInterface httpInterface;
 
+    ArrayList<String> mRecipes = new ArrayList<String>();
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,11 +54,12 @@ public class SearchActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         Bundle extras = i.getExtras();
-        String keyword = extras.getString("keyword");
-        String ingredient = extras.getString("ingredient");
-        String category = extras.getString("category");
-        String creater = extras.getString("creater");
-        String updated = extras.getString("updated_at");
+        final String keyword = extras.getString("keyword");
+        final String ingredient = extras.getString("ingredient");
+        final String category = extras.getString("category");
+        final String creater = extras.getString("creater");
+        final String updated = extras.getString("updated_at");
+        final ArrayList<String> recipes = extras.getStringArrayList("recipes");
 
         mKeyWord = (TextView) findViewById(R.id.textView4);
         mKeyWord.setText(keyword);
@@ -58,6 +71,17 @@ public class SearchActivity extends AppCompatActivity {
         mCreater.setText(creater);
         mUpdated = (TextView) findViewById(R.id.textView9);
         mUpdated.setText(updated);
+        mRecipes =recipes;
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerviewsearch);
+        mRecyclerView.setHasFixedSize(true);
+
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        setRecipeAdpater(this, this);
+
+
 
         retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(HttpInterface.BaseURL)
@@ -71,6 +95,12 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(), EditActivity.class);
+                i.putExtra("keyword",keyword);
+                i.putExtra("ingredient",ingredient);
+                i.putExtra("category",category);
+                i.putExtra("creater",creater);
+                i.putExtra("updated",updated);
+                i.putExtra("recipes",recipes);
                 startActivity(i);
             }
         });
@@ -94,12 +124,17 @@ public class SearchActivity extends AppCompatActivity {
                                 String category = object.get("category").getAsString();
                                 String creater = object.get("creater").getAsString();
                                 String updated_at = object.get("updated_at").getAsString();
+                                ArrayList<String> got_recipe = new ArrayList<String>();
+                                for(int j=0;j<recipes.size();j++){
+                                    got_recipe.add(recipes.get(j).getAsJsonObject().get("descript").getAsString());
+                                }
                                 Intent i = new Intent(getApplicationContext(), SearchActivity.class);
                                 i.putExtra("keyword", keyword);
                                 i.putExtra("ingredient", ingredient);
                                 i.putExtra("category", category);
                                 i.putExtra("creater", creater);
                                 i.putExtra("updated_at", updated_at);
+                                i.putExtra("recipes", got_recipe);
                                 startActivity(i);
                                 finish();
                             }
@@ -117,6 +152,11 @@ public class SearchActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+    public void setRecipeAdpater(Context context, Activity activity) {
+        mAdapter = new RecipeAdapter(mRecipes, context);
+        mRecyclerView.setAdapter(mAdapter);
+        return;
     }
 }
 
