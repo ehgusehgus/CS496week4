@@ -1,7 +1,10 @@
 package com.example.q.cs496_week4;
 
+import com.example.q.cs496_week4.CategoryActivity.CategoryItem;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;

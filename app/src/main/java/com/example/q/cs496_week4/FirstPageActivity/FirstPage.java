@@ -1,21 +1,17 @@
 package com.example.q.cs496_week4.FirstPageActivity;
 
+import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.example.q.cs496_week4.HttpInterface;
 import com.example.q.cs496_week4.R;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -29,10 +25,12 @@ public class FirstPage extends AppCompatActivity {
     Retrofit retrofit;
     HttpInterface httpInterface;
     ArrayList<SectionDataModel> allSampleData;
+    Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext =this;
         setContentView(R.layout.activity_first_page);
 
         retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
@@ -111,7 +109,7 @@ public class FirstPage extends AppCompatActivity {
                 public void run() {
                     RecyclerView my_recycler_view = findViewById(R.id.my_recycler_view);
                     my_recycler_view.setHasFixedSize(true);
-                    RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(getApplicationContext(), allSampleData);
+                    RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(mContext, allSampleData);
                     my_recycler_view.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
                     my_recycler_view.setAdapter(adapter);
                 }
