@@ -3,6 +3,8 @@
     <string name="permission_denied">You have denied permissions,\nso the app cannot start.\nPlease restart app and allow permissions.</string>
     <string name="facebook_app_id">1033787086778742</string>
     <string name="fb_login_protocol_scheme">fb1033787086778742</string>
+    <string name="upload_image">UPLOAD IMAGE</string>
+    <string name="read_file">This app needs access to your file storage so that it can read photos.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

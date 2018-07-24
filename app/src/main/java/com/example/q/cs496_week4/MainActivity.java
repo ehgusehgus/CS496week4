@@ -38,7 +38,8 @@ public class MainActivity extends TabActivity {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.INTERNET,
-            Manifest.permission.ACCESS_NETWORK_STATE
+            Manifest.permission.ACCESS_NETWORK_STATE,
+            Manifest.permission.CAMERA,
     };
 
     AccessToken accessToken;
@@ -54,10 +55,9 @@ public class MainActivity extends TabActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
-
-
         setContentView(R.layout.activity_main);
+
+
         retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(HttpInterface.BaseURL)
                 .build();
