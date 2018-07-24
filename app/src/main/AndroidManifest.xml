@@ -49,7 +49,6 @@
         <activity
             android:name=".NoticeBoardActivity.NoticeBoardActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-
         <activity
             android:name=".CategoryActivity.CategoryActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
@@ -57,19 +56,25 @@
             android:name=".MyPageActivity.MyPageActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".MyPageActivity.Help" />
-
-        <activity android:name=".FirstPageActivity.FirstPage"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <activity android:name=".UserActivity.LoginActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <activity android:name=".UserActivity.UserCreateActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <activity android:name=".DetailEditActivity.EditActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <activity android:name=".DetailSearchActivity.SearchActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <activity android:name=".DetailSearchActivity.EmptySearchActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity
+            android:name=".FirstPageActivity.FirstPage"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".UserActivity.LoginActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".UserActivity.UserCreateActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".DetailEditActivity.EditActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".DetailSearchActivity.SearchActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".DetailSearchActivity.EmptySearchActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".NoticeBoardActivity.CompareActivity"></activity>
     </application>
 
 </manifest>

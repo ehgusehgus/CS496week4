@@ -25,6 +25,9 @@ public interface HttpInterface {
     @GET("/contents")
     Call<JsonObject> getPage(@Header("keyword") String keyword);
 
+    @GET("/notices")
+    Call<JsonObject> getEditPage(@Header("keyword") String keyword);
+
     @GET("/contents/category")
         //Call<JsonObject> getCategory(@Header("category") String category);
     Call<List<CategoryItem>> getCategory();
