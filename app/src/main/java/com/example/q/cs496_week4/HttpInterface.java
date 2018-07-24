@@ -23,6 +23,10 @@ public interface HttpInterface {
     @GET("/contents")
     Call<JsonObject> getPage(@Header("keyword") String keyword);
 
+    @GET("/contents")
+        //Call<JsonObject> getCategory(@Header("category") String category);
+    Call<List<CategoryItem>> getCategory();
+
     @FormUrlEncoded
     @POST("/contents/create")
     Call<JsonObject> editPage(@Field("keyword") String keyword, @Field("ingredient") String ingredient, @Field("creater") String nickname, @Field("category_con") String category, @Field("category_cooking") String category2,@Field("tags") String tags, @Field("recipes") String recipes, @Field("image") String image);

@@ -3,11 +3,15 @@ package com.example.q.cs496_week4.DetailSearchActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -66,19 +70,33 @@ public class SearchActivity extends AppCompatActivity {
         final String ingredient = extras.getString("ingredient");
         final String category = extras.getString("category");
         final String category_got2 = extras.getString("category2");
+        final String tag = extras.getString("tag");
+        final String bitmap = extras.getString("image");
         final String creater = extras.getString("creater");
         final String updated = extras.getString("updated_at");
         final ArrayList<String> recipes = extras.getStringArrayList("recipes");
+        final ArrayList<String> recipes_image_prev = extras.getStringArrayList("recipes_image");
+//        final ArrayList<Bitmap> recipes_image_post = new ArrayList<Bitmap>();
+
+        byte[] decodedString = Base64.decode(bitmap, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+//        for(int j=0; j<recipes_image_prev.size();j++){
+//            byte[] decodedString2 = Base64.decode(recipes_image_prev.get(j),Base64.DEFAULT);
+//            recipes_image_post.add(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
+//        }
+
 
         ArrayList<Model2> list= new ArrayList();
-        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"KEYWORD",keyword,recipes));
-        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"CATEGORY_COUNTRY",category,recipes));
-        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"CATEGORY_COOKING",category_got2,recipes));
-        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"INGREDIENT",ingredient,recipes));
-        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"TAG","",recipes));
-        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"RECIPE","",recipes));
+        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"KEYWORD",keyword,recipes,null));
+        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"CATEGORY_COUNTRY",category,recipes,null));
+        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"CATEGORY_COOKING",category_got2,recipes,null));
+        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"INGREDIENT",ingredient,recipes,null));
+        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"TAG",tag,recipes,null));
+        list.add(new Model2(Model2.SEARCH_IMAGE_TYPE,"REPRESENTATIVE IMAGE","",recipes, decodedByte));
+        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"RECIPE","",recipes,null));
         for(int j=0;j<recipes.size();j++){
-            list.add(new Model2(Model2.SEARCH_RECIPE_TYPE,(j+1)+"",recipes.get(j),recipes));
+            list.add(new Model2(Model2.SEARCH_RECIPE_TYPE,(j+1)+"",recipes.get(j),recipes,null));
         }
 
         MultiViewTypeAdapter2 adapter = new MultiViewTypeAdapter2(list,this);
@@ -112,12 +130,12 @@ public class SearchActivity extends AppCompatActivity {
 //        setRecipeAdpater(this, this);
 //
 //
-//        retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
-//                .baseUrl(HttpInterface.BaseURL)
-//                .build();
-//        httpInterface = retrofit.create(HttpInterface.class);
+        retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(HttpInterface.BaseURL)
+                .build();
+        httpInterface = retrofit.create(HttpInterface.class);
 //
-//        mSearch = (TextView) findViewById(R.id.textVie);
+        mSearch = (TextView) findViewById(R.id.textVie);
         Button edit_but = (Button) findViewById(R.id.edit_but2);
 
         edit_but.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +145,8 @@ public class SearchActivity extends AppCompatActivity {
                 i.putExtra("keyword",keyword);
                 i.putExtra("ingredient",ingredient);
                 i.putExtra("category",category);
+                i.putExtra("category2", category_got2);
+                i.putExtra("tag",tag);
                 i.putExtra("creater",creater);
                 i.putExtra("updated",updated);
                 i.putExtra("recipes",recipes);
@@ -141,31 +161,42 @@ public class SearchActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Call<JsonObject> getPageCall = httpInterface.getPage(URLEncoder.encode(mSearch.getText().toString()));
+
                 getPageCall.enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        Log.d("??????", response.body().toString());
                         try {
                             JsonObject object = response.body().get("content").getAsJsonObject();
                             JsonArray recipes = response.body().get("recipes").getAsJsonArray();
                             if (object != null) {
+
                                 String keyword = object.get("keyword").getAsString();
-                                String ingredient = object.get("ingrediant").getAsString();
-                                String category = object.get("category").getAsString();
+                                String ingredient = object.get("ingredient").getAsString();
+                                String category = object.get("category_con").getAsString();
+                                String category2 = object.get("category_cooking").getAsString();
+
+                                String encodedImage = object.get("image").getAsString();
+
                                 String creater = object.get("creater").getAsString();
                                 String updated_at = object.get("updated_at").getAsString();
                                 ArrayList<String> got_recipe = new ArrayList<String>();
                                 for(int j=0;j<recipes.size();j++){
                                     got_recipe.add(recipes.get(j).getAsJsonObject().get("descript").getAsString());
                                 }
+
                                 Intent i = new Intent(getApplicationContext(), SearchActivity.class);
                                 i.putExtra("keyword", keyword);
                                 i.putExtra("ingredient", ingredient);
                                 i.putExtra("category", category);
+                                i.putExtra("category2", category2);
                                 i.putExtra("creater", creater);
                                 i.putExtra("updated_at", updated_at);
+                                i.putExtra("image", encodedImage);
                                 i.putExtra("recipes", got_recipe);
                                 startActivity(i);
                                 finish();
+
                             }
                         }catch(Exception e){
                             Intent i = new Intent(getApplicationContext(), EmptySearchActivity.class);
@@ -174,6 +205,7 @@ public class SearchActivity extends AppCompatActivity {
                             finish();
                         }
                     }
+
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
                         Toast.makeText(getApplication(), "FAILURE", Toast.LENGTH_LONG).show();

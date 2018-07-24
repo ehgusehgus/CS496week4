@@ -2,6 +2,7 @@ package com.example.q.cs496_week4.DetailEditActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 public class EditActivity extends AppCompatActivity {
 
     Context mContext;
-
+    Boolean is_first = true;
     TextView mKeyWord;
     String mCategory = "";
     String mCategory2 = "";
@@ -43,21 +44,24 @@ public class EditActivity extends AppCompatActivity {
         String ingredient_got = extras.getString("ingredient");
         String category_got = extras.getString("category");
         String category_got2 = extras.getString("category2");
+        String tag_got = extras.getString("tag");
         String creater_got = extras.getString("creater");
         String updated_got = extras.getString("updated_at");
         ArrayList<String> recipes_got = extras.getStringArrayList("recipes");
 
+        if(ingredient_got.equals(""))
+            is_first = false;
 
         ArrayList<Model> list = new ArrayList();
-        list.add(new Model(Model.EDIT_KEYWORD_TYPE, "KEYWORD", keyword_got, null, null));
-        list.add(new Model(Model.EDIT_CATEGORY_TYPE, "CATEGORY_COUNTRY", category_got, null, null));
-        list.add(new Model(Model.EDIT_CATEGORY2_TYPE, "CATEGORY_COOKING", category_got2, null, null));
-        list.add(new Model(Model.EDIT_INGREDIENT_TYPE, "INGREDIENT", ingredient_got, null, null));
-        list.add(new Model(Model.EDIT_TAG_TYPE, "TAG", "", null, null));
-        list.add(new Model(Model.EDIT_IMAGE_TYPE, "REPRESENTATIVE IMAGE", "", null, null));
-        list.add(new Model(Model.EDIT_LISTVIEW_TYPE, "RECIPE", "", recipes_got, null));
+        list.add(new Model(Model.EDIT_KEYWORD_TYPE, "KEYWORD", keyword_got, null, null,null));
+        list.add(new Model(Model.EDIT_CATEGORY_TYPE, "CATEGORY_COUNTRY", category_got, null, null,null));
+        list.add(new Model(Model.EDIT_CATEGORY2_TYPE, "CATEGORY_COOKING", category_got2, null, null,null));
+        list.add(new Model(Model.EDIT_INGREDIENT_TYPE, "INGREDIENT", ingredient_got, null, null,null));
+        list.add(new Model(Model.EDIT_TAG_TYPE, "TAG", tag_got, null, null,null));
+        list.add(new Model(Model.EDIT_IMAGE_TYPE, "REPRESENTATIVE IMAGE", "", null, null,null));
+        list.add(new Model(Model.EDIT_LISTVIEW_TYPE, "RECIPE", "", recipes_got, null,null));
 
-        mAdapter = new MultiViewTypeAdapter(list, this);
+        mAdapter = new MultiViewTypeAdapter(list, this, is_first);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 

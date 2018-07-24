@@ -13,7 +13,7 @@ public class MyApplication extends Application {
         StrictMode.setVmPolicy(builder.build());
     }
 
-    public String getNickname() {
+    public static String getNickname() {
         return nickname;
     }
 
