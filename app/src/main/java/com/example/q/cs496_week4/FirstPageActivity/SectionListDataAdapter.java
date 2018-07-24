@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.q.cs496_week4.DetailSearchActivity.EmptySearchActivity;
 import com.example.q.cs496_week4.DetailSearchActivity.SearchActivity;
 import com.example.q.cs496_week4.HttpInterface;
@@ -59,10 +58,9 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
         Glide.with(mContext)
                 .load("http://52.231.67.203:3000/images/" + singleItem.getKeyword() + ".jpg")
-                .apply(new RequestOptions()
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.mipmap.ic_launcher))
+                .placeholder(R.mipmap.ic_launcher)
                 .into(singleItemRowHolder.itemImage);
 
     }
