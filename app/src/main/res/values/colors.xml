@@ -23,5 +23,8 @@
     <color name="username11">#d300e7</color>
     <color name="year">#999999</color>
     <color name="title">#222222</color>
+    <color name="button_pressed">#ff8a00</color>
+    <color name="button_focused">#ff8a00</color>
+    <color name="button_default">#1c76bb</color>
 
 </resources>
