@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.q.cs496_week4.DetailSearchActivity.EmptySearchActivity;
 import com.example.q.cs496_week4.DetailSearchActivity.SearchActivity;
 import com.example.q.cs496_week4.FirstPageActivity.FirstPage;
+import com.example.q.cs496_week4.NoticeBoardActivity.NoticeBoardActivity;
 import com.example.q.cs496_week4.UserActivity.LoginActivity;
 import com.example.q.cs496_week4.UserActivity.UserCreateActivity;
 import com.facebook.AccessToken;
