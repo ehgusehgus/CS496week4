@@ -48,7 +48,7 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
     private ListView mListView;
     private TextView mTextView;
     ArrayList<Bitmap> recipe_image = new ArrayList<Bitmap>();
-
+    Boolean is_first;
     TextTypeViewHolder mKeyWord;
 
     ButtonTypeViewHolder mCategory;
@@ -134,9 +134,10 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
     }
 
 
-    public MultiViewTypeAdapter(ArrayList<Model>data, Context context) {
+    public MultiViewTypeAdapter(ArrayList<Model>data, Context context, boolean is_first) {
         this.dataSet = data;
         this.mContext = context;
+        this.is_first = is_first;
         total_types = dataSet.size();
     }
 
@@ -423,18 +424,34 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
                         HttpInterface httpInterface = retrofit.create(HttpInterface.class);
 
                         AccessToken a = AccessToken.getCurrentAccessToken();
-
-                        Call<JsonObject> editPage = httpInterface.editPage(Keyword, Ingredient , a.getUserId(), category, category2 , tag,jsonarray.toString(), b);
-                        editPage.enqueue(new Callback<JsonObject>() {
-                            @Override
-                            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                                ((Activity) mContext).finish();
+                        if(is_first) {
+                            Call<JsonObject> addPage = httpInterface.editPage(Keyword, Ingredient, a.getUserId(), category, category2, tag, jsonarray.toString(), b);
+                            addPage.enqueue(new Callback<JsonObject>() {
+                                @Override
+                                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                                    ((Activity) mContext).finish();
                                 }
-                            @Override
-                            public void onFailure(Call<JsonObject> call, Throwable t) {
-                                Toast.makeText(mContext.getApplicationContext(), "FAILURE", Toast.LENGTH_LONG).show();
-                            }
-                        });
+
+                                @Override
+                                public void onFailure(Call<JsonObject> call, Throwable t) {
+                                    Toast.makeText(mContext.getApplicationContext(), "FAILURE", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                        else{
+                            Call<JsonObject> editPage = httpInterface.editPage(Keyword, Ingredient, a.getUserId(), category, category2, tag, jsonarray.toString(), b);
+                            editPage.enqueue(new Callback<JsonObject>() {
+                                @Override
+                                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                                    ((Activity) mContext).finish();
+                                }
+
+                                @Override
+                                public void onFailure(Call<JsonObject> call, Throwable t) {
+                                    Toast.makeText(mContext.getApplicationContext(), "FAILURE", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
                     }
                 });
 

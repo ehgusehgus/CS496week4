@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class EditActivity extends AppCompatActivity {
 
     Context mContext;
-
+    Boolean is_first = true;
     TextView mKeyWord;
     String mCategory = "";
     String mCategory2 = "";
@@ -49,6 +49,8 @@ public class EditActivity extends AppCompatActivity {
         String updated_got = extras.getString("updated_at");
         ArrayList<String> recipes_got = extras.getStringArrayList("recipes");
 
+        if(ingredient_got.equals(""))
+            is_first = false;
 
         ArrayList<Model> list = new ArrayList();
         list.add(new Model(Model.EDIT_KEYWORD_TYPE, "KEYWORD", keyword_got, null, null,null));
@@ -59,7 +61,7 @@ public class EditActivity extends AppCompatActivity {
         list.add(new Model(Model.EDIT_IMAGE_TYPE, "REPRESENTATIVE IMAGE", "", null, null,null));
         list.add(new Model(Model.EDIT_LISTVIEW_TYPE, "RECIPE", "", recipes_got, null,null));
 
-        mAdapter = new MultiViewTypeAdapter(list, this);
+        mAdapter = new MultiViewTypeAdapter(list, this, is_first);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
