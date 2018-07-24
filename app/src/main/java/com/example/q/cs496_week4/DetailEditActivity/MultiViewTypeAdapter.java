@@ -418,7 +418,7 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
 
                         AccessToken a = AccessToken.getCurrentAccessToken();
 
-                        Call<JsonObject> editPage = httpInterface.editPage(Keyword, Ingredient , a.getUserId(), category, category2 , "",jsonarray.toString(), b);
+                        Call<JsonObject> editPage = httpInterface.editPage(Keyword, Ingredient , a.getUserId(), category, category2 , tag,jsonarray.toString(), b);
                         editPage.enqueue(new Callback<JsonObject>() {
                             @Override
                             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
