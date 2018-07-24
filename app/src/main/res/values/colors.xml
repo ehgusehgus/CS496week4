@@ -21,5 +21,7 @@
     <color name="username9">#3824aa</color>
     <color name="username10">#a700ff</color>
     <color name="username11">#d300e7</color>
+    <color name="year">#999999</color>
+    <color name="title">#222222</color>
 
 </resources>

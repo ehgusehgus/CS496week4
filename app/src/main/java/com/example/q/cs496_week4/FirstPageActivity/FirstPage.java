@@ -15,6 +15,7 @@ import com.example.q.cs496_week4.R;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -57,16 +58,20 @@ public class FirstPage extends AppCompatActivity {
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                     JsonArray randomArray = response.body().getAsJsonObject().get("random").getAsJsonArray();
                     JsonArray latestArray = response.body().getAsJsonObject().get("latest").getAsJsonArray();
+                    JsonArray mostInterestArray = response.body().getAsJsonObject().get("mostInterest").getAsJsonArray();
                     if(randomArray != null && latestArray != null) {
 
                         SectionDataModel random = new SectionDataModel();
                         SectionDataModel latest = new SectionDataModel();
+                        SectionDataModel mostInterest = new SectionDataModel();
 
                         random.setHeaderTitle("랜덤이란다..");
                         latest.setHeaderTitle("최근 수정 문서");
+                        mostInterest.setHeaderTitle("가장 많은 관심을 가지는 문서");
 
                         ArrayList<CardItemModel> randomItem = new ArrayList<>();
                         ArrayList<CardItemModel> latestItem = new ArrayList<>();
+                        ArrayList<CardItemModel> mostInterestItem = new ArrayList<>();
 
                         for(int i=0;i<randomArray.size();i++) {
                             JsonObject object = randomArray.get(i).getAsJsonObject();
@@ -76,12 +81,18 @@ public class FirstPage extends AppCompatActivity {
                             JsonObject object = latestArray.get(i).getAsJsonObject();
                             latestItem.add(new CardItemModel(object.get("keyword").getAsString(), object.get("nickname").getAsString()));
                         }
+                        for(int i=0;i<mostInterestArray.size();i++){
+                            JsonObject object = mostInterestArray.get(i).getAsJsonObject();
+                            mostInterestItem.add(new CardItemModel(object.get("keyword").getAsString(), object.get("nickname").getAsString()));
+                        }
 
                         random.setAllItemsInSection(randomItem);
                         latest.setAllItemsInSection(latestItem);
+                        mostInterest.setAllItemsInSection(mostInterestItem);
 
                         allSampleData.add(random);
                         allSampleData.add(latest);
+                        allSampleData.add(mostInterest);
                     }
                 }
 
@@ -96,7 +107,6 @@ public class FirstPage extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Toast.makeText(getApplicationContext(),"TEST", Toast.LENGTH_LONG).show();
             runOnUiThread(new Runnable() {
                 public void run() {
                     RecyclerView my_recycler_view = findViewById(R.id.my_recycler_view);
