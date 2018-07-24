@@ -17,9 +17,11 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.q.cs496_week4.CategoryActivity.CategoryActivity;
 import com.example.q.cs496_week4.DetailSearchActivity.EmptySearchActivity;
 import com.example.q.cs496_week4.DetailSearchActivity.SearchActivity;
 import com.example.q.cs496_week4.FirstPageActivity.FirstPage;
+import com.example.q.cs496_week4.MyPageActivity.MyPageActivity;
 import com.example.q.cs496_week4.NoticeBoardActivity.NoticeBoardActivity;
 import com.example.q.cs496_week4.UserActivity.LoginActivity;
 import com.example.q.cs496_week4.UserActivity.UserCreateActivity;
@@ -231,10 +233,10 @@ public class MainActivity extends TabActivity {
         intent = new Intent(this, NoticeBoardActivity.class);
         spec = mTab.newTabSpec("b").setIndicator("", getResources().getDrawable(R.drawable.debate)).setContent(intent);
         mTab.addTab(spec);
-        intent = new Intent(this, NoticeBoardActivity.class);
+        intent = new Intent(this, CategoryActivity.class);
         spec = mTab.newTabSpec("c").setIndicator("", getResources().getDrawable(R.drawable.category)).setContent(intent);
         mTab.addTab(spec);
-        intent = new Intent(this, NoticeBoardActivity.class);
+        intent = new Intent(this, MyPageActivity.class);
         spec = mTab.newTabSpec("d").setIndicator("", getResources().getDrawable(R.drawable.personal)).setContent(intent);
         mTab.addTab(spec);
 
