@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.q.cs496_week4.HttpInterface;
 import com.example.q.cs496_week4.R;
 import com.facebook.AccessToken;
@@ -68,7 +69,6 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
 
         public TextTypeViewHolder(View itemView) {
             super(itemView);
-
             this.txtType = (TextView) itemView.findViewById(R.id.type);
             this.txtType2 = (EditText) itemView.findViewById(R.id.type2);
             this.cardView = (CardView) itemView.findViewById(R.id.card_view);
@@ -216,10 +216,12 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
                 case Model.EDIT_KEYWORD_TYPE:
                     ((TextTypeViewHolder) holder).txtType.setText(object.text);
                     ((TextTypeViewHolder) holder).txtType2.setText(object.text2);
-
                     break;
                 case Model.EDIT_CATEGORY_TYPE:
                     ((ButtonTypeViewHolder) holder).txtType.setText(object.text);
+                    if(!object.text2.equals(""))
+                        ((ButtonTypeViewHolder)holder).btn.setText(object.text2);
+
                     ((ButtonTypeViewHolder) holder).btn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -266,6 +268,8 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
                     break;
                 case Model.EDIT_CATEGORY2_TYPE:
                     ((ButtonTypeViewHolder) holder).txtType.setText(object.text);
+                    if(!object.text2.equals(""))
+                        ((ButtonTypeViewHolder)holder).btn.setText(object.text2);
                     ((ButtonTypeViewHolder) holder).btn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -376,12 +380,12 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
                             return;
                         }
                         String category = mCategory.btn.getText().toString();
-                        if(category.equals("")){
+                        if(category.equals("Select")){
                             Toast.makeText(mContext.getApplicationContext(), "Choose Category_Country!!", Toast.LENGTH_LONG).show();
                             return;
                         }
                         String category2 = mCategory2.btn.getText().toString();
-                        if(category2.equals("")){
+                        if(category2.equals("Select")){
                             Toast.makeText(mContext.getApplicationContext(), "Choose Category_Cooking!!", Toast.LENGTH_LONG).show();
                             return;
                         }
@@ -400,15 +404,17 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
                         bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
                         byte [] b2=baos.toByteArray();
                         String b = Base64.encodeToString(b2, Base64.DEFAULT);
-
+                        Log.d("???", b);
                         JsonArray jsonarray = new JsonArray();
 
                         for(int i=0; i<recipes.size(); i++){
                             JsonObject inter = new JsonObject();
                             try{
-                                recipe_image.get(i).compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
-                                byte [] b3=baos.toByteArray();
+                                ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
+                                recipe_image.get(i).compress(Bitmap.CompressFormat.JPEG, 100, baos2); //bm is the bitmap object
+                                byte [] b3=baos2.toByteArray();
                                 String b4 = Base64.encodeToString(b3, Base64.DEFAULT);
+                                Log.d("???", b4);
                                 inter.addProperty("index", (i+1)+"");
                                 inter.addProperty("descript", recipes.get(i));
                                 inter.addProperty("image",b4);
@@ -425,7 +431,7 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
 
                         AccessToken a = AccessToken.getCurrentAccessToken();
                         if(is_first) {
-                            Call<JsonObject> addPage = httpInterface.editPage(Keyword, Ingredient, a.getUserId(), category, category2, tag, jsonarray.toString(), b);
+                            Call<JsonObject> addPage = httpInterface.addPage(Keyword, Ingredient, a.getUserId(), category, category2, tag, jsonarray.toString(), b);
                             addPage.enqueue(new Callback<JsonObject>() {
                                 @Override
                                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -463,8 +469,16 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
                     ((RecipeTypeViewHolder) holder).txtType2.setText(object.text2);
                     final int position = Integer.parseInt(object.text)-1;
 
-                    if(object.bitmap != null)
+                    if(object.bitmap != null) {
                         ((RecipeTypeViewHolder) holder).image.setImageBitmap(object.bitmap);
+                    }
+                    else{
+                        Glide.with(mContext)
+                                .load(HttpInterface.BaseURL+"images/"+mKeyWord.txtType2.getText().toString()+(position) +".jpg")
+                                .placeholder(R.drawable.empty)
+                                .error(R.drawable.empty)        //Error상황에서 보여진다.
+                                .into(((RecipeTypeViewHolder) holder).image);
+                    }
                     ((RecipeTypeViewHolder) holder).image.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -557,8 +571,16 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
                     break;
                 case Model.EDIT_IMAGE_TYPE:
                     ((ImageTypeViewHolder) holder).txtType.setText(object.text);
-                    if(object.bitmap != null)
+                    if(object.bitmap != null) {
                         ((ImageTypeViewHolder) holder).image.setImageBitmap(object.bitmap);
+                    }
+                    else{
+                        Glide.with(mContext)
+                                .load(HttpInterface.BaseURL+"images/"+mKeyWord.txtType2.getText().toString()+".jpg")
+                                .placeholder(R.drawable.empty)
+                                .error(R.drawable.empty)        //Error상황에서 보여진다.
+                                .into(((ImageTypeViewHolder) holder).image);
+                    }
                     ((ImageTypeViewHolder) holder).image.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -580,15 +602,15 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
 //            dataSet.remove(dataSet.size()-1);
         ArrayList<Model> list= new ArrayList();
 
-        list.add(new Model(Model.EDIT_KEYWORD_TYPE,"KEYWORD",mKeyWord.txtType2.getText().toString(),insert, null,null));
-        list.add(new Model(Model.EDIT_CATEGORY_TYPE,"CATEGORY_COUNTRY",mCategory.btn.getText().toString(),insert, null,null));
-        list.add(new Model(Model.EDIT_CATEGORY2_TYPE,"CATEGORY_COOKING",mCategory2.btn.getText().toString(),insert, null,null));
-        list.add(new Model(Model.EDIT_INGREDIENT_TYPE,"INGREDIENT",mIngredient.txtType2.getText().toString(),insert, null,null));
-        list.add(new Model(Model.EDIT_TAG_TYPE,"TAG",mTag.txtType2.getText().toString(),insert, null,null));
-        list.add(new Model(Model.EDIT_IMAGE_TYPE, "REPRESENTATIVE IMAGE", "", insert, ((BitmapDrawable)mRepImage.image.getDrawable()).getBitmap(),null));
-        list.add(new Model(Model.EDIT_LISTVIEW_TYPE,"RECIPE","",insert, null,null));
+        list.add(new Model(Model.EDIT_KEYWORD_TYPE,"KEYWORD",mKeyWord.txtType2.getText().toString(),insert, null));
+        list.add(new Model(Model.EDIT_CATEGORY_TYPE,"CATEGORY_COUNTRY",mCategory.btn.getText().toString(),insert, null));
+        list.add(new Model(Model.EDIT_CATEGORY2_TYPE,"CATEGORY_COOKING",mCategory2.btn.getText().toString(),insert, null));
+        list.add(new Model(Model.EDIT_INGREDIENT_TYPE,"INGREDIENT",mIngredient.txtType2.getText().toString(),insert, null));
+        list.add(new Model(Model.EDIT_TAG_TYPE,"TAG",mTag.txtType2.getText().toString(),insert, null));
+        list.add(new Model(Model.EDIT_IMAGE_TYPE, "REPRESENTATIVE IMAGE", "", insert, ((BitmapDrawable)mRepImage.image.getDrawable()).getBitmap()));
+        list.add(new Model(Model.EDIT_LISTVIEW_TYPE,"RECIPE","",insert, null));
         for(int i=0;i<insert.size();i++)
-            list.add(new Model(Model.EDIT_RECIPE_TYPE,(i+1)+"",recipes.get(i),insert, recipe_image.get(i),null));
+            list.add(new Model(Model.EDIT_RECIPE_TYPE,(i+1)+"",recipes.get(i),insert, recipe_image.get(i)));
         dataSet = list;
         notifyDataSetChanged();
         return;
@@ -600,15 +622,15 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
                 Bitmap bitmap = ImagePicker.getImageFromResult(mContext, resultCode, data);
                 ArrayList<Model> list= new ArrayList();
 
-                list.add(new Model(Model.EDIT_KEYWORD_TYPE,"KEYWORD",mKeyWord.txtType2.getText().toString(),recipes, null,null));
-                list.add(new Model(Model.EDIT_CATEGORY_TYPE,"CATEGORY_COUNTRY",mCategory.btn.getText().toString(),recipes, null,null));
-                list.add(new Model(Model.EDIT_CATEGORY2_TYPE,"CATEGORY_COOKING",mCategory2.btn.getText().toString(),recipes, null,null));
-                list.add(new Model(Model.EDIT_INGREDIENT_TYPE,"INGREDIENT",mIngredient.txtType2.getText().toString(),recipes, null,null));
-                list.add(new Model(Model.EDIT_TAG_TYPE,"TAG",mTag.txtType2.getText().toString(),recipes, null,null));
-                list.add(new Model(Model.EDIT_IMAGE_TYPE, "REPRESENTATIVE IMAGE", "", recipes, bitmap,null));
-                list.add(new Model(Model.EDIT_LISTVIEW_TYPE,"RECIPE","",recipes, null,null));
+                list.add(new Model(Model.EDIT_KEYWORD_TYPE,"KEYWORD",mKeyWord.txtType2.getText().toString(),recipes, null));
+                list.add(new Model(Model.EDIT_CATEGORY_TYPE,"CATEGORY_COUNTRY",mCategory.btn.getText().toString(),recipes, null));
+                list.add(new Model(Model.EDIT_CATEGORY2_TYPE,"CATEGORY_COOKING",mCategory2.btn.getText().toString(),recipes, null));
+                list.add(new Model(Model.EDIT_INGREDIENT_TYPE,"INGREDIENT",mIngredient.txtType2.getText().toString(),recipes, null));
+                list.add(new Model(Model.EDIT_TAG_TYPE,"TAG",mTag.txtType2.getText().toString(),recipes, null));
+                list.add(new Model(Model.EDIT_IMAGE_TYPE, "REPRESENTATIVE IMAGE", "", recipes, bitmap));
+                list.add(new Model(Model.EDIT_LISTVIEW_TYPE,"RECIPE","",recipes, null));
                 for(int i=0;i<recipes.size();i++)
-                    list.add(new Model(Model.EDIT_RECIPE_TYPE,(i+1)+"",recipes.get(i),recipes, null,null));
+                    list.add(new Model(Model.EDIT_RECIPE_TYPE,(i+1)+"",recipes.get(i),recipes, null));
                 dataSet = list;
                 notifyDataSetChanged();
                 break;
@@ -616,24 +638,23 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
                 break;
         }
         if(requestCode>=600){
-            int position = requestCode -600;
+            int position = requestCode - 600;
 
             Bitmap bitmap2 = ImagePicker.getImageFromResult(mContext, resultCode, data);
             ArrayList<Model> list2= new ArrayList();
             recipe_image.set(position, bitmap2);
-            list2.add(new Model(Model.EDIT_KEYWORD_TYPE,"KEYWORD",mKeyWord.txtType2.getText().toString(),recipes, null,null));
-            list2.add(new Model(Model.EDIT_CATEGORY_TYPE,"CATEGORY_COUNTRY",mCategory.btn.getText().toString(),recipes, null,null));
-            list2.add(new Model(Model.EDIT_CATEGORY2_TYPE,"CATEGORY_COOKING",mCategory2.btn.getText().toString(),recipes, null,null));
-            list2.add(new Model(Model.EDIT_INGREDIENT_TYPE,"INGREDIENT",mIngredient.txtType2.getText().toString(),recipes, null,null));
-            list2.add(new Model(Model.EDIT_TAG_TYPE,"TAG",mTag.txtType2.getText().toString(),recipes, null,null));
-            list2.add(new Model(Model.EDIT_IMAGE_TYPE, "REPRESENTATIVE IMAGE", "", recipes, ((BitmapDrawable)mRepImage.image.getDrawable()).getBitmap(),null));
-            list2.add(new Model(Model.EDIT_LISTVIEW_TYPE,"RECIPE","",recipes, null,null));
+            list2.add(new Model(Model.EDIT_KEYWORD_TYPE,"KEYWORD",mKeyWord.txtType2.getText().toString(),recipes, null));
+            list2.add(new Model(Model.EDIT_CATEGORY_TYPE,"CATEGORY_COUNTRY",mCategory.btn.getText().toString(),recipes, null));
+            list2.add(new Model(Model.EDIT_CATEGORY2_TYPE,"CATEGORY_COOKING",mCategory2.btn.getText().toString(),recipes, null));
+            list2.add(new Model(Model.EDIT_INGREDIENT_TYPE,"INGREDIENT",mIngredient.txtType2.getText().toString(),recipes, null));
+            list2.add(new Model(Model.EDIT_TAG_TYPE,"TAG",mTag.txtType2.getText().toString(),recipes, null));
+            list2.add(new Model(Model.EDIT_IMAGE_TYPE, "REPRESENTATIVE IMAGE", "", recipes, ((BitmapDrawable)mRepImage.image.getDrawable()).getBitmap()));
+            list2.add(new Model(Model.EDIT_LISTVIEW_TYPE,"RECIPE","",recipes, null));
             for(int i=0;i<recipes.size();i++) {
-                list2.add(new Model(Model.EDIT_RECIPE_TYPE, (i + 1) + "", recipes.get(i), recipes, recipe_image.get(i),null));
+                list2.add(new Model(Model.EDIT_RECIPE_TYPE, (i + 1) + "", recipes.get(i), recipes, recipe_image.get(i)));
             }
             dataSet = list2;
             notifyDataSetChanged();
         }
-
     }
 }

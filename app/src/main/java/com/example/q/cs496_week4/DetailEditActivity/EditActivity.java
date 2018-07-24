@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.q.cs496_week4.DetailSearchActivity.Model2;
 import com.example.q.cs496_week4.R;
 
 import java.util.ArrayList;
@@ -50,16 +51,19 @@ public class EditActivity extends AppCompatActivity {
         ArrayList<String> recipes_got = extras.getStringArrayList("recipes");
 
         if(ingredient_got.equals(""))
-            is_first = false;
+            is_first = true;
 
         ArrayList<Model> list = new ArrayList();
-        list.add(new Model(Model.EDIT_KEYWORD_TYPE, "KEYWORD", keyword_got, null, null,null));
-        list.add(new Model(Model.EDIT_CATEGORY_TYPE, "CATEGORY_COUNTRY", category_got, null, null,null));
-        list.add(new Model(Model.EDIT_CATEGORY2_TYPE, "CATEGORY_COOKING", category_got2, null, null,null));
-        list.add(new Model(Model.EDIT_INGREDIENT_TYPE, "INGREDIENT", ingredient_got, null, null,null));
-        list.add(new Model(Model.EDIT_TAG_TYPE, "TAG", tag_got, null, null,null));
-        list.add(new Model(Model.EDIT_IMAGE_TYPE, "REPRESENTATIVE IMAGE", "", null, null,null));
-        list.add(new Model(Model.EDIT_LISTVIEW_TYPE, "RECIPE", "", recipes_got, null,null));
+        list.add(new Model(Model.EDIT_KEYWORD_TYPE, "KEYWORD", keyword_got, null, null));
+        list.add(new Model(Model.EDIT_CATEGORY_TYPE, "CATEGORY_COUNTRY", category_got, null, null));
+        list.add(new Model(Model.EDIT_CATEGORY2_TYPE, "CATEGORY_COOKING", category_got2, null, null));
+        list.add(new Model(Model.EDIT_INGREDIENT_TYPE, "INGREDIENT", ingredient_got, null, null));
+        list.add(new Model(Model.EDIT_TAG_TYPE, "TAG", tag_got, null, null));
+        list.add(new Model(Model.EDIT_IMAGE_TYPE, "REPRESENTATIVE IMAGE", "", null, null));
+        list.add(new Model(Model.EDIT_LISTVIEW_TYPE, "RECIPE", "", recipes_got, null));
+        for(int j=0;j<recipes_got.size();j++){
+            list.add(new Model(Model.EDIT_RECIPE_TYPE,(j+1)+"",recipes_got.get(j),recipes_got,null));
+        }
 
         mAdapter = new MultiViewTypeAdapter(list, this, is_first);
 

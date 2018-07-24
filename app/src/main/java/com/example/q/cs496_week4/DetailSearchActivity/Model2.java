@@ -13,9 +13,9 @@ public class Model2 {
         public String text;
         public String text2;
         public ArrayList<String> strings;
-        public Bitmap bitmap;
+        public String bitmap;
 
-        public Model2(int type, String text, String text2, ArrayList<String> strings, Bitmap bitmap)
+        public Model2(int type, String text, String text2, ArrayList<String> strings, String bitmap)
         {
             this.type=type;
             this.text=text;

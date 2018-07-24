@@ -71,16 +71,14 @@ public class SearchActivity extends AppCompatActivity {
         final String category = extras.getString("category");
         final String category_got2 = extras.getString("category2");
         final String tag = extras.getString("tag");
-        final String bitmap = extras.getString("image");
         final String creater = extras.getString("creater");
         final String updated = extras.getString("updated_at");
         final ArrayList<String> recipes = extras.getStringArrayList("recipes");
-        final ArrayList<String> recipes_image_prev = extras.getStringArrayList("recipes_image");
+//        final ArrayList<String> recipes_image_prev = extras.getStringArrayList("recipes_image");
 //        final ArrayList<Bitmap> recipes_image_post = new ArrayList<Bitmap>();
 
-        byte[] decodedString = Base64.decode(bitmap, Base64.DEFAULT);
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-
+//        byte[] decodedString = Base64.decode(bitmap, Base64.DEFAULT);
+//        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 //        for(int j=0; j<recipes_image_prev.size();j++){
 //            byte[] decodedString2 = Base64.decode(recipes_image_prev.get(j),Base64.DEFAULT);
 //            recipes_image_post.add(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
@@ -93,10 +91,10 @@ public class SearchActivity extends AppCompatActivity {
         list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"CATEGORY_COOKING",category_got2,recipes,null));
         list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"INGREDIENT",ingredient,recipes,null));
         list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"TAG",tag,recipes,null));
-        list.add(new Model2(Model2.SEARCH_IMAGE_TYPE,"REPRESENTATIVE IMAGE","",recipes, decodedByte));
+        list.add(new Model2(Model2.SEARCH_IMAGE_TYPE,"REPRESENTATIVE IMAGE",keyword,recipes, null));
         list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"RECIPE","",recipes,null));
         for(int j=0;j<recipes.size();j++){
-            list.add(new Model2(Model2.SEARCH_RECIPE_TYPE,(j+1)+"",recipes.get(j),recipes,null));
+            list.add(new Model2(Model2.SEARCH_RECIPE_TYPE,(j+1)+"",recipes.get(j),recipes,keyword));
         }
 
         MultiViewTypeAdapter2 adapter = new MultiViewTypeAdapter2(list,this);
@@ -165,7 +163,6 @@ public class SearchActivity extends AppCompatActivity {
                 getPageCall.enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                        Log.d("??????", response.body().toString());
                         try {
                             JsonObject object = response.body().get("content").getAsJsonObject();
                             JsonArray recipes = response.body().get("recipes").getAsJsonArray();
@@ -175,10 +172,8 @@ public class SearchActivity extends AppCompatActivity {
                                 String ingredient = object.get("ingredient").getAsString();
                                 String category = object.get("category_con").getAsString();
                                 String category2 = object.get("category_cooking").getAsString();
-
-                                String encodedImage = object.get("image").getAsString();
-
                                 String creater = object.get("creater").getAsString();
+                                String tag = object.get("tag").getAsString();
                                 String updated_at = object.get("updated_at").getAsString();
                                 ArrayList<String> got_recipe = new ArrayList<String>();
                                 for(int j=0;j<recipes.size();j++){
@@ -190,13 +185,12 @@ public class SearchActivity extends AppCompatActivity {
                                 i.putExtra("ingredient", ingredient);
                                 i.putExtra("category", category);
                                 i.putExtra("category2", category2);
+                                i.putExtra("tag", tag);
                                 i.putExtra("creater", creater);
                                 i.putExtra("updated_at", updated_at);
-                                i.putExtra("image", encodedImage);
                                 i.putExtra("recipes", got_recipe);
                                 startActivity(i);
                                 finish();
-
                             }
                         }catch(Exception e){
                             Intent i = new Intent(getApplicationContext(), EmptySearchActivity.class);
