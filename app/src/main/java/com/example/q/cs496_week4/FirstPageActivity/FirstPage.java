@@ -83,7 +83,7 @@ public class FirstPage extends AppCompatActivity {
                         }
                         for(int i=0;i<mostInterestArray.size();i++){
                             JsonObject object = mostInterestArray.get(i).getAsJsonObject();
-                            mostInterestItem.add(new CardItemModel(object.get("keyword").getAsString(), object.get("nickname").getAsString()));
+                            mostInterestItem.add(new CardItemModel(object.get("keyword").getAsString(),""));
                         }
 
                         random.setAllItemsInSection(randomItem);

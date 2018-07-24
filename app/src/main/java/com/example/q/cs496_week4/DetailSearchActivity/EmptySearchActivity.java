@@ -3,6 +3,7 @@ package com.example.q.cs496_week4.DetailSearchActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -60,6 +61,7 @@ public class EmptySearchActivity extends AppCompatActivity {
                 i.putExtra("ingredient","");
                 i.putExtra("category","");
                 i.putExtra("category2","");
+                i.putExtra("tag","");
                 i.putExtra("creater","");
                 i.putExtra("updated","");
                 i.putExtra("recipes",new ArrayList<String>());
@@ -74,39 +76,52 @@ public class EmptySearchActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Call<JsonObject> getPageCall = httpInterface.getPage(URLEncoder.encode(mSearch.getText().toString()));
+
                 getPageCall.enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        Log.d("??????", response.body().toString());
                         try {
                             JsonObject object = response.body().get("content").getAsJsonObject();
                             JsonArray recipes = response.body().get("recipes").getAsJsonArray();
                             if (object != null) {
+
                                 String keyword = object.get("keyword").getAsString();
-                                String ingredient = object.get("ingrediant").getAsString();
-                                String category = object.get("category").getAsString();
+                                String ingredient = object.get("ingredient").getAsString();
+                                String category = object.get("category_con").getAsString();
+                                String category2 = object.get("category_cooking").getAsString();
+
+                                String encodedImage = object.get("image").getAsString();
+
                                 String creater = object.get("creater").getAsString();
                                 String updated_at = object.get("updated_at").getAsString();
                                 ArrayList<String> got_recipe = new ArrayList<String>();
                                 for(int j=0;j<recipes.size();j++){
                                     got_recipe.add(recipes.get(j).getAsJsonObject().get("descript").getAsString());
                                 }
+
                                 Intent i = new Intent(getApplicationContext(), SearchActivity.class);
                                 i.putExtra("keyword", keyword);
                                 i.putExtra("ingredient", ingredient);
                                 i.putExtra("category", category);
+                                i.putExtra("category2", category2);
                                 i.putExtra("creater", creater);
                                 i.putExtra("updated_at", updated_at);
+                                i.putExtra("image", encodedImage);
                                 i.putExtra("recipes", got_recipe);
                                 startActivity(i);
                                 finish();
+
                             }
                         }catch(Exception e){
                             Intent i = new Intent(getApplicationContext(), EmptySearchActivity.class);
                             i.putExtra("keyword", mSearch.getText().toString());
                             startActivity(i);
                             finish();
+
                         }
                     }
+
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
                         Toast.makeText(getApplication(), "FAILURE", Toast.LENGTH_LONG).show();

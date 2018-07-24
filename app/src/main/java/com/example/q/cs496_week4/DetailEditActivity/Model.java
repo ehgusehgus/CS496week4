@@ -19,13 +19,15 @@ public class Model {
     public String text2;
     public ArrayList<String> strings;
     public Bitmap bitmap;
+    public ArrayList<Bitmap> bitmaps;
 
-    public Model(int type, String text, String text2, ArrayList<String> strings,Bitmap bitmap)
+    public Model(int type, String text, String text2, ArrayList<String> strings, Bitmap bitmap, ArrayList<Bitmap> bitmaps)
     {
         this.type=type;
         this.text=text;
         this.text2=text2;
         this.strings = strings;
         this.bitmap = bitmap;
+        this.bitmaps = bitmaps;
     }
 }

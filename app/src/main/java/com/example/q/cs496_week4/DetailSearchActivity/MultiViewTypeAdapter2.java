@@ -78,6 +78,19 @@ public class MultiViewTypeAdapter2 extends RecyclerView.Adapter {
         }
     }
 
+    public static class ImageTypeViewHolder extends RecyclerView.ViewHolder {
+
+        TextView txtType;
+        ImageView image;
+
+        public ImageTypeViewHolder(View itemView) {
+            super(itemView);
+            this.txtType = (TextView) itemView.findViewById(R.id.type);
+            this.image = (ImageView) itemView.findViewById(R.id.imageView2);
+        }
+    }
+
+
     public MultiViewTypeAdapter2(ArrayList<Model2>data, Context context) {
         this.dataSet = data;
         this.mContext = context;
@@ -89,12 +102,15 @@ public class MultiViewTypeAdapter2 extends RecyclerView.Adapter {
 
         View view;
         switch (viewType) {
-            case Model.EDIT_KEYWORD_TYPE:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.text_type, parent, false);
+            case Model2.SEARCH_KEYWORD_TYPE:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_text, parent, false);
                 return new TextTypeViewHolder(view);
-            case Model.EDIT_RECIPE_TYPE:
+            case Model2.SEARCH_RECIPE_TYPE:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.reciepe_item, parent, false);
                 return new RecipeTypeViewHolder(view);
+            case Model2.SEARCH_IMAGE_TYPE:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.image_type, parent, false);
+                return new ImageTypeViewHolder(view);
         }
         return null;
     }
@@ -104,9 +120,11 @@ public class MultiViewTypeAdapter2 extends RecyclerView.Adapter {
 
         switch (dataSet.get(position).type) {
             case 0:
-                return Model.EDIT_KEYWORD_TYPE;
+                return Model2.SEARCH_KEYWORD_TYPE;
             case 1:
-                return Model.EDIT_RECIPE_TYPE;
+                return Model2.SEARCH_RECIPE_TYPE;
+            case 2:
+                return Model2.SEARCH_IMAGE_TYPE;
             default:
                 return -1;
         }
@@ -118,14 +136,20 @@ public class MultiViewTypeAdapter2 extends RecyclerView.Adapter {
         Model2 object = dataSet.get(listPosition);
         if (object != null) {
             switch (object.type) {
-                case Model.EDIT_KEYWORD_TYPE:
+                case Model2.SEARCH_KEYWORD_TYPE:
                     ((TextTypeViewHolder) holder).txtType.setText(object.text);
                     ((TextTypeViewHolder) holder).txtType2.setText(object.text2);
                     break;
 
-                case Model.EDIT_RECIPE_TYPE:
+                case Model2.SEARCH_RECIPE_TYPE:
                     ((RecipeTypeViewHolder) holder).txtType.setText(object.text);
                     ((RecipeTypeViewHolder) holder).txtType2.setText(object.text2);
+                    ((RecipeTypeViewHolder) holder).image.setImageBitmap(object.bitmap);
+                    break;
+
+                case Model2.SEARCH_IMAGE_TYPE:
+                    ((ImageTypeViewHolder) holder).txtType.setText(object.text);
+                    ((ImageTypeViewHolder) holder).image.setImageBitmap(object.bitmap);
                     break;
             }
         }

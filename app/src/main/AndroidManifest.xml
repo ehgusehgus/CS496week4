@@ -47,7 +47,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NoticeBoardActivity"
+            android:name=".NoticeBoardActivity.NoticeBoardActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".FirstPageActivity.FirstPage"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>

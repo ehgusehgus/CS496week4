@@ -5,8 +5,11 @@ import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -139,9 +142,14 @@ public class MainActivity extends TabActivity {
                         JsonObject object = response.body().get("content").getAsJsonObject();
                         JsonArray recipes = response.body().get("recipes").getAsJsonArray();
                         if (object != null) {
+
                             String keyword = object.get("keyword").getAsString();
-                            String ingredient = object.get("ingrediant").getAsString();
-                            String category = object.get("category").getAsString();
+                            String ingredient = object.get("ingredient").getAsString();
+                            String category = object.get("category_con").getAsString();
+                            String category2 = object.get("category_cooking").getAsString();
+
+                            String encodedImage = object.get("image").getAsString();
+
                             String creater = object.get("creater").getAsString();
                             String updated_at = object.get("updated_at").getAsString();
                             ArrayList<String> got_recipe = new ArrayList<String>();
@@ -153,9 +161,22 @@ public class MainActivity extends TabActivity {
                             i.putExtra("keyword", keyword);
                             i.putExtra("ingredient", ingredient);
                             i.putExtra("category", category);
+                            i.putExtra("category2", category2);
                             i.putExtra("creater", creater);
                             i.putExtra("updated_at", updated_at);
+                            i.putExtra("image", encodedImage);
                             i.putExtra("recipes", got_recipe);
+                            ArrayList<String> got_recipe_image = new ArrayList<String>();
+
+                            for(int j=0;j<recipes.size();j++){
+                                if(recipes.get(j).getAsJsonObject().get("image") != null) {
+                                    got_recipe_image.add(recipes.get(j).getAsJsonObject().get("image").getAsString());
+                                    Log.d("dddd", "ddddd");
+                                }
+                            }
+                            i.putExtra("recipes_image", got_recipe_image);
+                            //Log.d("dddd","ddddd");
+
                             startActivity(i);
 
                         }
