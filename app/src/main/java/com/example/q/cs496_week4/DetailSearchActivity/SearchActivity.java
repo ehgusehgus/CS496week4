@@ -1,18 +1,24 @@
-package com.example.q.cs496_week4;
+package com.example.q.cs496_week4.DetailSearchActivity;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.q.cs496_week4.DetailEditActivity.EditActivity;
+import com.example.q.cs496_week4.DetailEditActivity.Model;
+import com.example.q.cs496_week4.DetailEditActivity.MultiViewTypeAdapter;
+
+import com.example.q.cs496_week4.HttpInterface;
+import com.example.q.cs496_week4.R;
 import com.facebook.AccessToken;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -25,6 +31,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -50,45 +57,67 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        setContentView(R.layout.search_layout);
 
+        accessToken = AccessToken.getCurrentAccessToken();
         Intent i = getIntent();
         Bundle extras = i.getExtras();
         final String keyword = extras.getString("keyword");
         final String ingredient = extras.getString("ingredient");
         final String category = extras.getString("category");
+        final String category_got2 = extras.getString("category2");
         final String creater = extras.getString("creater");
         final String updated = extras.getString("updated_at");
         final ArrayList<String> recipes = extras.getStringArrayList("recipes");
 
-        mKeyWord = (TextView) findViewById(R.id.textView4);
-        mKeyWord.setText(keyword);
-        mCategory= (TextView) findViewById(R.id.textView5);
-        mCategory.setText(category);
-        mIngredient = (TextView) findViewById(R.id.textView6);
-        mIngredient.setText(ingredient);
-        mCreater = (TextView) findViewById(R.id.textView8);
-        mCreater.setText(creater);
-        mUpdated = (TextView) findViewById(R.id.textView9);
-        mUpdated.setText(updated);
-        mRecipes =recipes;
+        ArrayList<Model2> list= new ArrayList();
+        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"KEYWORD",keyword,recipes));
+        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"CATEGORY_COUNTRY",category,recipes));
+        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"CATEGORY_COOKING",category_got2,recipes));
+        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"INGREDIENT",ingredient,recipes));
+        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"TAG","",recipes));
+        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"RECIPE","",recipes));
+        for(int j=0;j<recipes.size();j++){
+            list.add(new Model2(Model2.SEARCH_RECIPE_TYPE,(j+1)+"",recipes.get(j),recipes));
+        }
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerviewsearch);
-        mRecyclerView.setHasFixedSize(true);
+        MultiViewTypeAdapter2 adapter = new MultiViewTypeAdapter2(list,this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview2);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setAdapter(adapter);
 
-        setRecipeAdpater(this, this);
-
-
-
-        retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(HttpInterface.BaseURL)
-                .build();
-        httpInterface = retrofit.create(HttpInterface.class);
-
-        mSearch = (TextView) findViewById(R.id.textVie);
+//
+//
+//        mKeyWord = (TextView) findViewById(R.id.textView4);
+//        mKeyWord.setText(keyword);
+//        mCategory= (TextView) findViewById(R.id.textView5);
+//        mCategory.setText(category);
+//        mIngredient = (TextView) findViewById(R.id.textView6);
+//        mIngredient.setText(ingredient);
+//        mCreater = (TextView) findViewById(R.id.textView8);
+//        mCreater.setText(creater);
+//        mUpdated = (TextView) findViewById(R.id.textView9);
+//        mUpdated.setText(updated);
+//        mRecipes =recipes;
+//
+//        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerviewsearch);
+//        mRecyclerView.setHasFixedSize(true);
+//
+//        mLayoutManager = new LinearLayoutManager(this);
+//        mRecyclerView.setLayoutManager(mLayoutManager);
+//
+//        setRecipeAdpater(this, this);
+//
+//
+//        retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
+//                .baseUrl(HttpInterface.BaseURL)
+//                .build();
+//        httpInterface = retrofit.create(HttpInterface.class);
+//
+//        mSearch = (TextView) findViewById(R.id.textVie);
         Button edit_but = (Button) findViewById(R.id.edit_but2);
 
         edit_but.setOnClickListener(new View.OnClickListener() {
@@ -140,6 +169,7 @@ public class SearchActivity extends AppCompatActivity {
                             }
                         }catch(Exception e){
                             Intent i = new Intent(getApplicationContext(), EmptySearchActivity.class);
+                            i.putExtra("keyword", mSearch.getText().toString());
                             startActivity(i);
                             finish();
                         }
@@ -152,11 +182,55 @@ public class SearchActivity extends AppCompatActivity {
                 });
             }
         });
-    }
-    public void setRecipeAdpater(Context context, Activity activity) {
-        mAdapter = new RecipeAdapter(mRecipes, context);
-        mRecyclerView.setAdapter(mAdapter);
-        return;
+
+        final Button interest_but = (Button) findViewById(R.id.interest);
+
+        interest_but.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(interest_but.getText().toString().equals("☆")) {
+                    interest_but.setText("★");
+                    Call<JsonObject> onInterest = httpInterface.onInterest(accessToken.getUserId(), keyword);
+                    onInterest.enqueue(new Callback<JsonObject>() {
+                        @Override
+                        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                            try {
+
+                            }catch(Exception e){
+
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<JsonObject> call, Throwable t) {
+                            Toast.makeText(getApplication(), "FAILURE", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
+                }
+                else {
+                    interest_but.setText("☆");
+                    Call<JsonObject> offInterest = httpInterface.offInterest(accessToken.getUserId(), keyword);
+                    offInterest.enqueue(new Callback<JsonObject>() {
+                        @Override
+                        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                            try {
+
+                            }catch(Exception e){
+
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<JsonObject> call, Throwable t) {
+                            Toast.makeText(getApplication(), "FAILURE", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
+                }
+
+
+            }
+        });
+
     }
 }
 

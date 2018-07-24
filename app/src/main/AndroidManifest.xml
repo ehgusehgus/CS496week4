@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
@@ -54,11 +55,11 @@
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity android:name=".UserActivity.UserCreateActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <activity android:name=".EditActivity"
+        <activity android:name=".DetailEditActivity.EditActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <activity android:name=".SearchActivity"
+        <activity android:name=".DetailSearchActivity.SearchActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <activity android:name=".EmptySearchActivity"
+        <activity android:name=".DetailSearchActivity.EmptySearchActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>
 

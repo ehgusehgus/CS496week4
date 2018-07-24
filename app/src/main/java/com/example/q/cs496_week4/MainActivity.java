@@ -14,6 +14,8 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.q.cs496_week4.DetailSearchActivity.EmptySearchActivity;
+import com.example.q.cs496_week4.DetailSearchActivity.SearchActivity;
 import com.example.q.cs496_week4.FirstPageActivity.FirstPage;
 import com.example.q.cs496_week4.UserActivity.LoginActivity;
 import com.example.q.cs496_week4.UserActivity.UserCreateActivity;
@@ -37,6 +39,7 @@ public class MainActivity extends TabActivity {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.INTERNET,
+            Manifest.permission.CAMERA,
             Manifest.permission.ACCESS_NETWORK_STATE
     };
 

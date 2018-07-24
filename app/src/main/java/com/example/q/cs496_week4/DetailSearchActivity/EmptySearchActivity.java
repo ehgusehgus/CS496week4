@@ -1,14 +1,16 @@
-package com.example.q.cs496_week4;
+package com.example.q.cs496_week4.DetailSearchActivity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.q.cs496_week4.DetailEditActivity.EditActivity;
+import com.example.q.cs496_week4.HttpInterface;
+import com.example.q.cs496_week4.R;
 import com.facebook.AccessToken;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -57,6 +59,7 @@ public class EmptySearchActivity extends AppCompatActivity {
                 i.putExtra("keyword",keyword);
                 i.putExtra("ingredient","");
                 i.putExtra("category","");
+                i.putExtra("category2","");
                 i.putExtra("creater","");
                 i.putExtra("updated","");
                 i.putExtra("recipes",new ArrayList<String>());
@@ -99,6 +102,7 @@ public class EmptySearchActivity extends AppCompatActivity {
                             }
                         }catch(Exception e){
                             Intent i = new Intent(getApplicationContext(), EmptySearchActivity.class);
+                            i.putExtra("keyword", mSearch.getText().toString());
                             startActivity(i);
                             finish();
                         }

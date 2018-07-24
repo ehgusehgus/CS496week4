@@ -25,9 +25,17 @@ public interface HttpInterface {
 
     @FormUrlEncoded
     @POST("/contents/create")
-    Call<JsonObject> editPage(@Field("keyword") String keyword, @Field("ingredient") String ingredient, @Field("creater") String nickname, @Field("category") String category, @Field("recipes") String recipes);
+    Call<JsonObject> editPage(@Field("keyword") String keyword, @Field("ingredient") String ingredient, @Field("creater") String nickname, @Field("category_con") String category, @Field("category_cooking") String category2,@Field("tags") String tags, @Field("recipes") String recipes, @Field("image") String image);
 
     @GET("/")
     Call<JsonObject> getRandomAndLatestContent();
+
+    @FormUrlEncoded
+    @POST("/interest/on")
+    Call<JsonObject> onInterest(@Field("facebook_id") String facebook_id, @Field("keyword") String keyword);
+
+    @FormUrlEncoded
+    @POST("/interest/off")
+    Call<JsonObject> offInterest(@Field("facebook_id") String facebook_id, @Field("keyword") String keyword);
 
 }
