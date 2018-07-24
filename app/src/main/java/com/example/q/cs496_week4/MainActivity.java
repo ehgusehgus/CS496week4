@@ -139,7 +139,6 @@ public class MainActivity extends TabActivity {
             getPageCall.enqueue(new Callback<JsonObject>() {
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                    Log.d("??????", response.body().toString());
                     try {
                         JsonObject object = response.body().get("content").getAsJsonObject();
                         JsonArray recipes = response.body().get("recipes").getAsJsonArray();
@@ -149,9 +148,7 @@ public class MainActivity extends TabActivity {
                             String ingredient = object.get("ingredient").getAsString();
                             String category = object.get("category_con").getAsString();
                             String category2 = object.get("category_cooking").getAsString();
-
-                            String encodedImage = object.get("image").getAsString();
-
+                            String tag = object.get("tag").getAsString();
                             String creater = object.get("creater").getAsString();
                             String updated_at = object.get("updated_at").getAsString();
                             ArrayList<String> got_recipe = new ArrayList<String>();
@@ -164,19 +161,19 @@ public class MainActivity extends TabActivity {
                             i.putExtra("ingredient", ingredient);
                             i.putExtra("category", category);
                             i.putExtra("category2", category2);
+                            i.putExtra("tag", tag);
                             i.putExtra("creater", creater);
                             i.putExtra("updated_at", updated_at);
-                            i.putExtra("image", encodedImage);
                             i.putExtra("recipes", got_recipe);
-                            ArrayList<String> got_recipe_image = new ArrayList<String>();
-
-                            for(int j=0;j<recipes.size();j++){
-                                if(recipes.get(j).getAsJsonObject().get("image") != null) {
-                                    got_recipe_image.add(recipes.get(j).getAsJsonObject().get("image").getAsString());
-                                    Log.d("dddd", "ddddd");
-                                }
-                            }
-                            i.putExtra("recipes_image", got_recipe_image);
+//                            ArrayList<String> got_recipe_image = new ArrayList<String>();
+//
+//                            for(int j=0;j<recipes.size();j++){
+//                                if(recipes.get(j).getAsJsonObject().get("image") != null) {
+//                                    got_recipe_image.add(recipes.get(j).getAsJsonObject().get("image").getAsString());
+//                                    Log.d("dddd", "ddddd");
+//                                }
+//                            }
+//                            i.putExtra("recipes_image", got_recipe_image);
                             //Log.d("dddd","ddddd");
 
                             startActivity(i);

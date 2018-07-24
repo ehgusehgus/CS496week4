@@ -17,7 +17,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.q.cs496_week4.DetailEditActivity.Model;
+import com.example.q.cs496_week4.DetailEditActivity.MultiViewTypeAdapter;
 import com.example.q.cs496_week4.HttpInterface;
 import com.example.q.cs496_week4.R;
 import com.facebook.AccessToken;
@@ -25,6 +27,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -41,6 +44,7 @@ public class MultiViewTypeAdapter2 extends RecyclerView.Adapter {
     private ArrayList<Model2>dataSet;
     Context mContext;
     int total_types;
+    ImageTypeViewHolder mImage;
 
     private ListView mListView;
     private TextView mTextView;
@@ -110,7 +114,8 @@ public class MultiViewTypeAdapter2 extends RecyclerView.Adapter {
                 return new RecipeTypeViewHolder(view);
             case Model2.SEARCH_IMAGE_TYPE:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.image_type, parent, false);
-                return new ImageTypeViewHolder(view);
+                mImage = new ImageTypeViewHolder(view);
+                return mImage;
         }
         return null;
     }
@@ -144,12 +149,21 @@ public class MultiViewTypeAdapter2 extends RecyclerView.Adapter {
                 case Model2.SEARCH_RECIPE_TYPE:
                     ((RecipeTypeViewHolder) holder).txtType.setText(object.text);
                     ((RecipeTypeViewHolder) holder).txtType2.setText(object.text2);
-                    ((RecipeTypeViewHolder) holder).image.setImageBitmap(object.bitmap);
+                    Glide.with(mContext)
+                            .load(HttpInterface.BaseURL+"images/"+object.bitmap+"_"+(Integer.parseInt(object.text)) +".jpg")
+                            .placeholder(R.drawable.empty)
+                            .error(R.drawable.empty)        //Error상황에서 보여진다.
+                            .into(((RecipeTypeViewHolder) holder).image);
                     break;
 
                 case Model2.SEARCH_IMAGE_TYPE:
                     ((ImageTypeViewHolder) holder).txtType.setText(object.text);
-                    ((ImageTypeViewHolder) holder).image.setImageBitmap(object.bitmap);
+                    Glide.with(this.mContext)
+                            .load(HttpInterface.BaseURL+"images/"+object.text2.toString() +".jpg")
+                            .placeholder(R.drawable.empty)
+                            .error(R.drawable.empty)        //Error상황에서 보여진다.
+                            .into(((ImageTypeViewHolder) holder).image);
+
                     break;
             }
         }

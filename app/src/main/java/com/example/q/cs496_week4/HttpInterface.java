@@ -1,7 +1,9 @@
 package com.example.q.cs496_week4;
 
-import com.google.gson.JsonArray;
+import com.example.q.cs496_week4.CategoryActivity.CategoryItem;
 import com.google.gson.JsonObject;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -23,13 +25,17 @@ public interface HttpInterface {
     @GET("/contents")
     Call<JsonObject> getPage(@Header("keyword") String keyword);
 
-    @GET("/contents")
+    @GET("/contents/category")
         //Call<JsonObject> getCategory(@Header("category") String category);
     Call<List<CategoryItem>> getCategory();
 
     @FormUrlEncoded
-    @POST("/contents/create")
+    @POST("/contents/edit")
     Call<JsonObject> editPage(@Field("keyword") String keyword, @Field("ingredient") String ingredient, @Field("creater") String nickname, @Field("category_con") String category, @Field("category_cooking") String category2,@Field("tags") String tags, @Field("recipes") String recipes, @Field("image") String image);
+
+    @FormUrlEncoded
+    @POST("/contents/create")
+    Call<JsonObject> addPage(@Field("keyword") String keyword, @Field("ingredient") String ingredient, @Field("creater") String nickname, @Field("category_con") String category, @Field("category_cooking") String category2,@Field("tags") String tags, @Field("recipes") String recipes, @Field("image") String image);
 
     @GET("/")
     Call<JsonObject> getRandomAndLatestContent();

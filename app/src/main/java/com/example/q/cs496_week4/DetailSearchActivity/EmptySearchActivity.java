@@ -90,9 +90,7 @@ public class EmptySearchActivity extends AppCompatActivity {
                                 String ingredient = object.get("ingredient").getAsString();
                                 String category = object.get("category_con").getAsString();
                                 String category2 = object.get("category_cooking").getAsString();
-
-                                String encodedImage = object.get("image").getAsString();
-
+                                String tag = object.get("tag").getAsString();
                                 String creater = object.get("creater").getAsString();
                                 String updated_at = object.get("updated_at").getAsString();
                                 ArrayList<String> got_recipe = new ArrayList<String>();
@@ -105,9 +103,9 @@ public class EmptySearchActivity extends AppCompatActivity {
                                 i.putExtra("ingredient", ingredient);
                                 i.putExtra("category", category);
                                 i.putExtra("category2", category2);
+                                i.putExtra("tag", tag);
                                 i.putExtra("creater", creater);
                                 i.putExtra("updated_at", updated_at);
-                                i.putExtra("image", encodedImage);
                                 i.putExtra("recipes", got_recipe);
                                 startActivity(i);
                                 finish();
