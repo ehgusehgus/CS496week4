@@ -77,8 +77,10 @@
         <activity
             android:name=".NoticeBoardActivity.CompareActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".DetailSearchActivity.SearchTagActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+        <activity
+            android:name=".DetailSearchActivity.SearchTagActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".SplashActivity.Splash6"></activity>
     </application>
 
 </manifest>
