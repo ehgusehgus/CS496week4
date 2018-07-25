@@ -69,13 +69,17 @@ public class EditActivity extends AppCompatActivity {
             is_first = true;
 
         ArrayList<Model> list = new ArrayList();
-        list.add(new Model(Model.EDIT_KEYWORD_TYPE, "KEYWORD", keyword_got, null, null));
-        list.add(new Model(Model.EDIT_CATEGORY_TYPE, "CATEGORY_COUNTRY", category_got, null, null));
-        list.add(new Model(Model.EDIT_CATEGORY2_TYPE, "CATEGORY_COOKING", category_got2, null, null));
-        list.add(new Model(Model.EDIT_INGREDIENT_TYPE, "INGREDIENT", ingredient_got, null, null));
-        list.add(new Model(Model.EDIT_TAG_TYPE, "TAG", tag_got, null, null));
-        list.add(new Model(Model.EDIT_IMAGE_TYPE, "REPRESENTATIVE IMAGE", "", null, null));
-        list.add(new Model(Model.EDIT_LISTVIEW_TYPE, "RECIPE", "", recipes_got, null));
+        if(keyword_got.equals(""))
+            list.add(new Model(Model.EDIT_KEYWORD_TYPE, "요리이름", keyword_got, null, null));
+        else
+            list.add(new Model(Model.EDIT_KEYWORD_TYPE2, "요리이름", keyword_got, null, null));
+
+        list.add(new Model(Model.EDIT_CATEGORY_TYPE, "나라별요리", category_got, null, null));
+        list.add(new Model(Model.EDIT_CATEGORY2_TYPE, "조리방법", category_got2, null, null));
+        list.add(new Model(Model.EDIT_INGREDIENT_TYPE, "재료", ingredient_got, null, null));
+        list.add(new Model(Model.EDIT_TAG_TYPE, "달러태그", tag_got, null, null));
+        list.add(new Model(Model.EDIT_IMAGE_TYPE, "대표사진", "", null, null));
+        list.add(new Model(Model.EDIT_LISTVIEW_TYPE, "레시피", "", recipes_got, null));
         for(int j=0;j<recipes_got.size();j++){
             list.add(new Model(Model.EDIT_RECIPE_TYPE,(j+1)+"",recipes_got.get(j),recipes_got,null));
         }

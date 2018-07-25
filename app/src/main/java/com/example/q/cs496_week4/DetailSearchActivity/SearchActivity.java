@@ -14,6 +14,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -92,13 +93,13 @@ public class SearchActivity extends AppCompatActivity {
             tags = tags +tag.get(tag.size()-1);
 
         ArrayList<Model2> list= new ArrayList();
-        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"KEYWORD",keyword,recipes,null));
-        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"CATEGORY_COUNTRY",category,recipes,null));
-        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"CATEGORY_COOKING",category_got2,recipes,null));
-        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"INGREDIENT",ingredient,recipes,null));
-        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"TAG",tags,recipes,null));
-        list.add(new Model2(Model2.SEARCH_IMAGE_TYPE,"REPRESENTATIVE IMAGE",keyword,recipes, null));
-        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"RECIPE","",recipes,null));
+        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"요리이름",keyword,recipes,null));
+        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"나라별요리",category,recipes,null));
+        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"조리방법",category_got2,recipes,null));
+        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"재료",ingredient,recipes,null));
+        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"달러태그",tags,recipes,null));
+        list.add(new Model2(Model2.SEARCH_IMAGE_TYPE,"대표사진",keyword,recipes, null));
+        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"레시피","",recipes,null));
         for(int j=0;j<recipes.size();j++){
             list.add(new Model2(Model2.SEARCH_RECIPE_TYPE,(j+1)+"",recipes.get(j),recipes,keyword));
         }
@@ -140,7 +141,7 @@ public class SearchActivity extends AppCompatActivity {
         httpInterface = retrofit.create(HttpInterface.class);
 //
         mSearch = (TextView) findViewById(R.id.textVie);
-        Button edit_but = (Button) findViewById(R.id.edit_but2);
+        ImageButton edit_but = (ImageButton) findViewById(R.id.edit_but2);
 
         String[] words = tags.split(",");
         String tags_input= "";
@@ -169,7 +170,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-        final Button search_but = (Button) findViewById(R.id.search_but2);
+        final ImageButton search_but = (ImageButton) findViewById(R.id.search_but2);
 
         search_but.setOnClickListener(new View.OnClickListener() {
             @Override
