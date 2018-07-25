@@ -87,7 +87,7 @@ public class SearchActivity extends AppCompatActivity {
         for(int k=0; k<tag.size()-1;k++){
             tags= tags + tag.get(k).toString()+",";
         }
-        if(tag.size()>1)
+        if(tag.size()>=1)
             tags = tags +tag.get(tag.size()-1);
 
         ArrayList<Model2> list= new ArrayList();
@@ -146,7 +146,7 @@ public class SearchActivity extends AppCompatActivity {
         for(int k=0; k<words.length-1;k++){
             tags_input =tags_input+"$"+words[k]+" ";
         }
-        if(words.length>1)
+        if(words.length>=1)
             tags_input = tags_input+"$"+words[words.length-1];
 
         Log.d("words", words.toString());

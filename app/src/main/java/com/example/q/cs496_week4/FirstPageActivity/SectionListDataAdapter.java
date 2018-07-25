@@ -124,13 +124,10 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                                     i.putExtra("category", category);
                                     i.putExtra("category2", category2);
                                     i.putExtra("tags", tags_got);
-
                                     i.putExtra("creater", creater);
                                     i.putExtra("updated_at", updated_at);
                                     i.putExtra("recipes", got_recipe);
-
                                     //Log.d("dddd","ddddd");
-
                                     ((Activity) mContext).startActivity(i);
 
                                 }
