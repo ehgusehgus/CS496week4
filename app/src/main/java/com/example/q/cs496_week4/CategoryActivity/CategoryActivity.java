@@ -81,12 +81,20 @@ public class CategoryActivity extends AppCompatActivity {
 
                         categoryMap.add(categoryItem1);
                         //CategoryItem categoryItem1 = new CategoryItem(item.get("keyword").getAsString(), countryfullname[finalJ].toString());
-                        Log.d("adf", categoryMap.get(i).toString());
+                        for(int k=0; k< categoryMap.size(); k++){
+                            Log.d("adf", categoryMap.get(k).toString());
+
+                        }
                         //categoryMap.add(categoryItem1);
                         //new CategoryItem(item.get("keyword").getAsString(), countryfullname[finalJ].toString())
                     }
 
-                    Log.d("qqq", categoryMap.toString());
+                    Log.d("qqq1", String.valueOf(categoryMap.size()));
+
+                    for(int k=0; k< categoryMap.size(); k++){
+                        Log.d("qqq2", categoryMap.get(k).toString());
+                    }
+
                     for(CategoryItem categoryItem : categoryMap) {
                         expandablePlaceHolderView.addView(new ChildView(this, categoryItem));
                     }
