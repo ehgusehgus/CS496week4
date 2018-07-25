@@ -16,14 +16,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".MainActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+
+        <activity android:name=".SplashActivity.Splash1"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".SplashActivity.Splash2"
+            android:theme="@style/SplashTheme2">
+        </activity>
+        <activity android:name=".SplashActivity.Splash3"
+            android:theme="@style/SplashTheme3">
+        </activity>
+        <activity android:name=".SplashActivity.Splash4"
+            android:theme="@style/SplashTheme4">
+        </activity>
+        <activity android:name=".SplashActivity.Splash5"
+            android:theme="@style/SplashTheme5">
+        </activity>
+        <activity android:name=".SplashActivity.Splash6"/>
+
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
         </activity>
         <!-- facebook -->
         <meta-data
@@ -84,8 +102,10 @@
         <activity
             android:name=".NoticeBoardActivity.CompareActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".DetailSearchActivity.SearchTagActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+        <activity
+            android:name=".DetailSearchActivity.SearchTagActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+
     </application>
 
 </manifest>

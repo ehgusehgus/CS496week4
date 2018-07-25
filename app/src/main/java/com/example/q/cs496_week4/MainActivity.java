@@ -14,7 +14,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.q.cs496_week4.CookingCategoryActivity.CategoryActivity1;
+import com.example.q.cs496_week4.CountryCategoryActivity.CategoryActivity;
 import com.example.q.cs496_week4.CountryCategoryActivity.CategoryActivity;
 import com.example.q.cs496_week4.CountryCategoryActivity.CategoryTabs;
 import com.example.q.cs496_week4.DetailSearchActivity.EmptySearchActivity;
