@@ -4,22 +4,19 @@ import com.google.gson.annotations.SerializedName;
 
 public class CategoryItem {
 
+
+
     @SerializedName("keyword")
     private static String keyword;
 
-    @SerializedName("creater")
-    private static String creater;
 
-    @SerializedName("category")
+    @SerializedName("category_con")
     private static String category;
 
     //사진도 추가
 
-
-
-    public CategoryItem(String keyword) {
+    public CategoryItem(String keyword,String category) {
         this.keyword = keyword;
-        this.creater = creater;
         this.category = category;
 
     }
@@ -39,19 +36,12 @@ public class CategoryItem {
         this.keyword = keyword;
     }
 
-    public static String getCreater() {
-        return creater;
-    }
 
-    public void setCreater(String creater) {
-        this.creater = creater;
-    }
 
     @Override
     public String toString() {
         return "CategoryItem{" +
                 "keyword='" +keyword+"\'" +
-                ", creater='" + creater +'\'' +
                 ", category='" + category + '\'' +
                 '}';
     }
