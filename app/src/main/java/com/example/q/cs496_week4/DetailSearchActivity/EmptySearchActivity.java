@@ -59,7 +59,7 @@ public class EmptySearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(), EditActivity.class);
-                i.putExtra("keyword",keyword);
+                i.putExtra("keyword","");
                 i.putExtra("ingredient","");
                 i.putExtra("category","");
                 i.putExtra("category2","");

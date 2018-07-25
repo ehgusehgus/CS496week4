@@ -418,10 +418,11 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
                             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
                             StrictMode.setThreadPolicy(policy);
-                            URL url = new URL(HttpInterface.BaseURL+"images/"+mKeyWord.txtType2.getText().toString()+(position)+".jpg");
+                            URL url = new URL(HttpInterface.BaseURL+"images/"+mKeyWord.txtType2.getText().toString()+"_"+(position+1)+".jpg");
+                            Log.d("dddd???", HttpInterface.BaseURL+"images/"+mKeyWord.txtType2.getText().toString()+"_"+(position+1)+".jpg");
                             Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
                             recipe_image.set(position, image);
-                            ((ImageTypeViewHolder) holder).image.setImageBitmap(image);
+                            ((RecipeTypeViewHolder) holder).image.setImageBitmap(image);
                         } catch(IOException e) {
                             System.out.println(e);
                         }
