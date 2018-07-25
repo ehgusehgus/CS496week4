@@ -50,6 +50,7 @@ public class SearchActivity extends AppCompatActivity {
     TextView mUpdated;
     Retrofit retrofit;
     HttpInterface httpInterface;
+    ArrayList<String> mKeywords = new ArrayList<>();
 
     ArrayList<String> mRecipes = new ArrayList<String>();
 
@@ -174,52 +175,31 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Call<JsonObject> getPageCall = httpInterface.getPage(URLEncoder.encode(mSearch.getText().toString()));
+                Call<JsonObject> getPageCall = httpInterface.getSearchTag(URLEncoder.encode(mSearch.getText().toString()));
 
                 getPageCall.enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         try {
-                            JsonObject object = response.body().get("content").getAsJsonObject();
-                            JsonArray recipes = response.body().get("recipes").getAsJsonArray();
-                            JsonArray tags = response.body().get("tags").getAsJsonArray();
-                            if (object != null) {
-
-                                String keyword = object.get("keyword").getAsString();
-                                String ingredient = object.get("ingredient").getAsString();
-                                String category = object.get("category_con").getAsString();
-                                String category2 = object.get("category_cooking").getAsString();
-                                String creater = object.get("creater").getAsString();
-                                String tag = object.get("tag").getAsString();
-                                String updated_at = object.get("updated_at").getAsString();
-                                ArrayList<String> got_recipe = new ArrayList<String>();
-                                for(int j=0;j<recipes.size();j++){
-                                    got_recipe.add(recipes.get(j).getAsJsonObject().get("descript").getAsString());
+                            JsonObject object = response.body().get("result").getAsJsonObject();
+                            JsonArray tags = object.get("result").getAsJsonArray();
+                            if (tags.size() == 0) {
+                                Intent i = new Intent(getApplicationContext(), EmptySearchActivity.class);
+                                i.putExtra("keyword", mSearch.getText().toString());
+                                startActivity(i);
+                                finish();
+                            } else {
+                                for (int j = 0; j < tags.size(); j++) {
+                                    mKeywords.add(tags.get(j).getAsJsonObject().get("keyword").getAsString());
                                 }
-                                ArrayList<String> tags_got = new ArrayList<String>();
-                                for(int j=0;j<tags.size();j++){
-                                    tags_got.add(tags.get(j).getAsJsonObject().get("tag").getAsString());
-                                }
-                                Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-                                i.putExtra("keyword", keyword);
-                                i.putExtra("ingredient", ingredient);
-                                i.putExtra("category", category);
-                                i.putExtra("category2", category2);
-                                i.putExtra("tags", tags_got);
-                                i.putExtra("creater", creater);
-                                i.putExtra("updated_at", updated_at);
-                                i.putExtra("recipes", got_recipe);
+                                Intent i = new Intent(getApplicationContext(), SearchTagActivity.class);
+                                i.putExtra("keyword", mKeywords);
                                 startActivity(i);
                                 finish();
                             }
-                        }catch(Exception e){
-                            Intent i = new Intent(getApplicationContext(), EmptySearchActivity.class);
-                            i.putExtra("keyword", mSearch.getText().toString());
-                            startActivity(i);
-                            finish();
+                        } catch (Exception e) {
                         }
                     }
-
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
                         Toast.makeText(getApplication(), "FAILURE", Toast.LENGTH_LONG).show();
@@ -231,7 +211,7 @@ public class SearchActivity extends AppCompatActivity {
 
         final Button interest_but = (Button) findViewById(R.id.interest);
 
-        Call<JsonObject> isInterest = httpInterface.isInterest(accessToken.getUserId(), keyword);
+        Call<JsonObject> isInterest = httpInterface.isInterest(accessToken.getUserId(), URLEncoder.encode(keyword));
         isInterest.enqueue(new Callback<JsonObject>() {
                                @Override
                                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -258,9 +238,7 @@ public class SearchActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                             try {
-
                             }catch(Exception e){
-
                             }
                         }
                         @Override
