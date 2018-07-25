@@ -231,6 +231,23 @@ public class SearchActivity extends AppCompatActivity {
 
         final Button interest_but = (Button) findViewById(R.id.interest);
 
+        Call<JsonObject> isInterest = httpInterface.isInterest(accessToken.getUserId(), keyword);
+        isInterest.enqueue(new Callback<JsonObject>() {
+                               @Override
+                               public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                                   try {
+                                       if(response.body().get("result").getAsBoolean())
+                                           interest_but.setText("★");
+                                   } catch (Exception e) {
+                                   }
+                               }
+                               @Override
+                               public void onFailure(Call<JsonObject> call, Throwable t) {
+                                   Toast.makeText(getApplication(), "FAILURE", Toast.LENGTH_LONG).show();
+                               }
+                           });
+
+
         interest_but.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

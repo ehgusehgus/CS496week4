@@ -5,11 +5,8 @@ import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,8 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.q.cs496_week4.CategoryActivity.CategoryActivity;
-import com.example.q.cs496_week4.DetailSearchActivity.EmptySearchActivity;
-import com.example.q.cs496_week4.DetailSearchActivity.SearchActivity;
+import com.example.q.cs496_week4.DetailSearchActivity.SearchTagActivity;
 import com.example.q.cs496_week4.FirstPageActivity.FirstPage;
 import com.example.q.cs496_week4.MyPageActivity.MyPageActivity;
 import com.example.q.cs496_week4.NoticeBoardActivity.NoticeBoardActivity;
@@ -53,7 +49,7 @@ public class MainActivity extends TabActivity {
     TextView mSearch;
     Retrofit retrofit;
     HttpInterface httpInterface;
-
+    ArrayList<String> mKeywords = new ArrayList<>();
     public AccessToken getAccessToken() {
         return accessToken;
     }
@@ -134,59 +130,24 @@ public class MainActivity extends TabActivity {
         @Override
         public void onClick(View view) {
 
-            Call<JsonObject> getPageCall = httpInterface.getPage(URLEncoder.encode(mSearch.getText().toString()));
-
-            getPageCall.enqueue(new Callback<JsonObject>() {
+            Call<JsonObject> getSearchTag = httpInterface.getSearchTag(URLEncoder.encode(mSearch.getText().toString()));
+            getSearchTag.enqueue(new Callback<JsonObject>() {
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                     try {
-                        JsonObject object = response.body().get("content").getAsJsonObject();
-                        JsonArray recipes = response.body().get("recipes").getAsJsonArray();
-                        JsonArray tags = response.body().get("tags").getAsJsonArray();
-                        if (object != null) {
-                            Log.d("<<<<", tags.toString());
-                            String keyword = object.get("keyword").getAsString();
-                            String ingredient = object.get("ingredient").getAsString();
-                            String category = object.get("category_con").getAsString();
-                            String category2 = object.get("category_cooking").getAsString();
-                            String creater = object.get("creater").getAsString();
-                            String updated_at = object.get("updated_at").getAsString();
-                            ArrayList<String> got_recipe = new ArrayList<String>();
-                            for(int j=0;j<recipes.size();j++){
-                                got_recipe.add(recipes.get(j).getAsJsonObject().get("descript").getAsString());
-                            }
-                            ArrayList<String> tags_got = new ArrayList<String>();
-                            for(int j=0;j<tags.size();j++){
-                                tags_got.add(tags.get(j).getAsJsonObject().get("tag").getAsString());
-                            }
-                            Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-                            i.putExtra("keyword", keyword);
-                            i.putExtra("ingredient", ingredient);
-                            i.putExtra("category", category);
-                            i.putExtra("category2", category2);
-                            i.putExtra("tags", tags_got);
-                            i.putExtra("creater", creater);
-                            i.putExtra("updated_at", updated_at);
-                            i.putExtra("recipes", got_recipe);
-//                            ArrayList<String> got_recipe_image = new ArrayList<String>();
-//
-//                            for(int j=0;j<recipes.size();j++){
-//                                if(recipes.get(j).getAsJsonObject().get("image") != null) {
-//                                    got_recipe_image.add(recipes.get(j).getAsJsonObject().get("image").getAsString());
-//                                    Log.d("dddd", "ddddd");
-//                                }
-//                            }
-//                            i.putExtra("recipes_image", got_recipe_image);
-                            //Log.d("dddd","ddddd");
-
-                            startActivity(i);
-
+                        Log.d("???????", response.body().toString());
+                        JsonObject object = response.body().get("result").getAsJsonObject();
+                        JsonArray tags = object.get("result").getAsJsonArray();
+                        for(int j=0;j<tags.size();j++){
+                            Log.d("bubu","bubu2");
+                            mKeywords.add(tags.get(j).getAsJsonObject().get("keyword").getAsString());
                         }
-                    }catch(Exception e){
-                        Intent i = new Intent(getApplicationContext(), EmptySearchActivity.class);
-                        i.putExtra("keyword", mSearch.getText().toString());
-                        startActivity(i);
 
+                        Intent i = new Intent(getApplicationContext(), SearchTagActivity.class);
+                        i.putExtra("keyword", mKeywords);
+                        startActivity(i);
+                    } catch (Exception e) {
+                        Log.d("bubu","bubu");
                     }
                 }
 
@@ -196,6 +157,69 @@ public class MainActivity extends TabActivity {
 
                 }
             });
+
+//            Call<JsonObject> getPageCall = httpInterface.getPage(URLEncoder.encode(mSearch.getText().toString()));
+//
+//            getPageCall.enqueue(new Callback<JsonObject>() {
+//                @Override
+//                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+//                    try {
+//                        JsonObject object = response.body().get("content").getAsJsonObject();
+//                        JsonArray recipes = response.body().get("recipes").getAsJsonArray();
+//                        JsonArray tags = response.body().get("tags").getAsJsonArray();
+//                        if (object != null) {
+//                            Log.d("<<<<", tags.toString());
+//                            String keyword = object.get("keyword").getAsString();
+//                            String ingredient = object.get("ingredient").getAsString();
+//                            String category = object.get("category_con").getAsString();
+//                            String category2 = object.get("category_cooking").getAsString();
+//                            String creater = object.get("creater").getAsString();
+//                            String updated_at = object.get("updated_at").getAsString();
+//                            ArrayList<String> got_recipe = new ArrayList<String>();
+//                            for(int j=0;j<recipes.size();j++){
+//                                got_recipe.add(recipes.get(j).getAsJsonObject().get("descript").getAsString());
+//                            }
+//                            ArrayList<String> tags_got = new ArrayList<String>();
+//                            for(int j=0;j<tags.size();j++){
+//                                tags_got.add(tags.get(j).getAsJsonObject().get("tag").getAsString());
+//                            }
+//                            Intent i = new Intent(getApplicationContext(), SearchActivity.class);
+//                            i.putExtra("keyword", keyword);
+//                            i.putExtra("ingredient", ingredient);
+//                            i.putExtra("category", category);
+//                            i.putExtra("category2", category2);
+//                            i.putExtra("tags", tags_got);
+//                            i.putExtra("creater", creater);
+//                            i.putExtra("updated_at", updated_at);
+//                            i.putExtra("recipes", got_recipe);
+////                            ArrayList<String> got_recipe_image = new ArrayList<String>();
+////
+////                            for(int j=0;j<recipes.size();j++){
+////                                if(recipes.get(j).getAsJsonObject().get("image") != null) {
+////                                    got_recipe_image.add(recipes.get(j).getAsJsonObject().get("image").getAsString());
+////                                    Log.d("dddd", "ddddd");
+////                                }
+////                            }
+////                            i.putExtra("recipes_image", got_recipe_image);
+//                            //Log.d("dddd","ddddd");
+//
+//                            startActivity(i);
+//
+//                        }
+//                    }catch(Exception e){
+//                        Intent i = new Intent(getApplicationContext(), EmptySearchActivity.class);
+//                        i.putExtra("keyword", mSearch.getText().toString());
+//                        startActivity(i);
+//
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<JsonObject> call, Throwable t) {
+//                    Toast.makeText(getApplication(), "FAILURE", Toast.LENGTH_LONG).show();
+//
+//                }
+//            });
         }
     });
 
