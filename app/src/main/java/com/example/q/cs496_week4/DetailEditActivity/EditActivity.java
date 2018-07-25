@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.example.q.cs496_week4.DetailSearchActivity.Model2;
 import com.example.q.cs496_week4.R;
@@ -38,6 +39,7 @@ public class EditActivity extends AppCompatActivity {
         mContext = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_layout);
+
 
         Intent i = getIntent();
         Bundle extras = i.getExtras();
