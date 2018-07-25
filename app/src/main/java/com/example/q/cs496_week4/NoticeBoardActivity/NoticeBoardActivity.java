@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.q.cs496_week4.DetailSearchActivity.SearchActivity;
+import com.example.q.cs496_week4.FirstPageActivity.FirstPage;
 import com.example.q.cs496_week4.HttpInterface;
 import com.example.q.cs496_week4.MyApplication;
 import com.example.q.cs496_week4.R;
@@ -75,7 +76,7 @@ public class NoticeBoardActivity extends AppCompatActivity {
                 .baseUrl(HttpInterface.BaseURL)
                 .build();
         HttpInterface httpInterface = retrofit.create(HttpInterface.class);
-
+        noticeList = new ArrayList<>();
         Call<JsonObject> getNoticeListCall = httpInterface.getNoticeList();
         getNoticeListCall.enqueue(new Callback<JsonObject>() {
             @Override
@@ -90,10 +91,9 @@ public class NoticeBoardActivity extends AppCompatActivity {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    Long interval = (cal.getTimeInMillis() + 180000 - Calendar.getInstance().getTimeInMillis());
+                    Long interval = ((cal.getTimeInMillis() + 180000) - Calendar.getInstance().getTimeInMillis() + 32400000);
                     long h = interval / 3600000;
-                    interval %= 3600000;
-                    long m = interval / 60000 + 1;
+                    long m = (interval / 60000) + 1;
                     String dt = "";
                     if(h != 0){
                         dt += h + "시간 ";
@@ -103,7 +103,14 @@ public class NoticeBoardActivity extends AppCompatActivity {
                     Notice notice = new Notice(object.get("keyword").toString().replace("\"",""), dt, "");
                     noticeList.add(notice);
                 }
+
                 mAdapter.notifyDataSetChanged();
+                mAdapter = new NoticeAdapter(noticeList);
+                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                recyclerView.setLayoutManager(mLayoutManager);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.addItemDecoration(new MyDividerItemDecoration(getApplication(), LinearLayoutManager.VERTICAL, 16));
+                recyclerView.setAdapter(mAdapter);
             }
 
             @Override
@@ -113,4 +120,9 @@ public class NoticeBoardActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        prepareNoticeData();
+    }
 }
