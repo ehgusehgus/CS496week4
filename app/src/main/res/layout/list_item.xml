@@ -23,7 +23,7 @@
             android:layout_gravity="center_vertical"
             android:layout_toLeftOf="@+id/btnMore"
             android:text="Sample title"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:textSize="18sp" />
 
         <Button
