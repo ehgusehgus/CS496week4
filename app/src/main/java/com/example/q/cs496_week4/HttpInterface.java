@@ -51,6 +51,10 @@ public interface HttpInterface {
     @POST("/interest/off")
     Call<JsonObject> offInterest(@Field("facebook_id") String facebook_id, @Field("keyword") String keyword);
 
+    @GET("/contents/isInterest")
+    Call<JsonObject> isInterest(@Header("facebook_id") String facebook_id, @Header("keyword")String keyword);
+
+
     @GET("/notices")
     Call<JsonObject> getNoticeList();
 
@@ -63,4 +67,7 @@ public interface HttpInterface {
 
     @GET("/notices/check")
     Call<JsonObject> getVoted(@Header("keyword") String keyword, @Header("facebook_id") String facebook_id);
+
+    @GET("/search")
+    Call<JsonObject> getSearchTag(@Header("keyword") String tag);
 }
