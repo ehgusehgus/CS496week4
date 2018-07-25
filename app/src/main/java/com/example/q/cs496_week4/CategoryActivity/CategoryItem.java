@@ -4,45 +4,32 @@ import com.google.gson.annotations.SerializedName;
 
 public class CategoryItem {
 
+    public String mKeyword;
 
-
-    @SerializedName("keyword")
-    private static String keyword;
-
-
-    @SerializedName("category_con")
-    private static String category;
+    public String mCategory;
 
     //사진도 추가
 
     public CategoryItem(String keyword,String category) {
-        this.keyword = keyword;
-        this.category = category;
+        this.mKeyword = keyword;
+        this.mCategory = category;
 
     }
 
-    public static String getCategory() {
-        return category;
+    public String getCategory() {
+        return mCategory;
     }
 
-    public static void setCategory(String category) {
-        CategoryItem.category = category;
+    public void setCategory(String category) {
+        mCategory = category;
     }
-    public static String getKeyword() {
-        return keyword;
+    public String getKeyword() {
+        return mKeyword;
     }
 
     public void setKeyword(String keyword) {
-        this.keyword = keyword;
+        mKeyword = keyword;
     }
 
 
-
-    @Override
-    public String toString() {
-        return "CategoryItem{" +
-                "keyword='" +keyword+"\'" +
-                ", category='" + category + '\'' +
-                '}';
-    }
 }

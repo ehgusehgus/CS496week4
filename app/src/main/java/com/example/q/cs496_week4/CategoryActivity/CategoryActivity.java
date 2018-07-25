@@ -68,6 +68,7 @@ public class CategoryActivity extends AppCompatActivity {
                     Log.d("ppp",object.toString());
 
                     expandablePlaceHolderView.addView(new HeaderView(this , countryfullname[finalJ].toString() ));
+
                     //CategoryItem[] categoryItem = new CategoryItem[object.size()];
                     ArrayList<CategoryItem> categoryMap = new ArrayList<>();
 
