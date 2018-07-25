@@ -48,4 +48,7 @@ public interface HttpInterface {
     @POST("/interest/off")
     Call<JsonObject> offInterest(@Field("facebook_id") String facebook_id, @Field("keyword") String keyword);
 
+    @GET("/notice")
+    Call<JsonObject> getNoticeList();
+
 }

@@ -7,13 +7,25 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.q.cs496_week4.HttpInterface;
+import com.example.q.cs496_week4.MyApplication;
 import com.example.q.cs496_week4.R;
+import com.example.q.cs496_week4.UserActivity.UserCreateActivity;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NoticeBoardActivity extends AppCompatActivity {
 
@@ -51,6 +63,27 @@ public class NoticeBoardActivity extends AppCompatActivity {
 
     }
     private void prepareNoticeData() {
+        Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(HttpInterface.BaseURL)
+                .build();
+        HttpInterface httpInterface = retrofit.create(HttpInterface.class);
+
+        Call<JsonObject> getNoticeListCall = httpInterface.getNoticeList();
+        getNoticeListCall.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                JsonArray array = response.body().get("result").getAsJsonArray();
+                for(int i=0;i<array.size();i++){
+                    JsonObject object = array.get(i).getAsJsonObject();
+                    Log.d("NOTICE", object.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(getApplication(), "FAILURE", Toast.LENGTH_LONG).show();
+            }
+        });
         Notice notice = new Notice("Mad Max: Fury Road", "Action & Adventure", "2015");
         noticeList.add(notice);
 
