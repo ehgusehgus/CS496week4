@@ -195,7 +195,7 @@ public class CompareActivity extends AppCompatActivity {
         });
 
         Button disagree_but = (Button) findViewById(R.id.disagree);
-        agree_but.setOnClickListener(new View.OnClickListener() {
+        disagree_but.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Call<JsonObject> Vote = httpInterface.Vote(keyword, accessToken.getUserId(), "0");
