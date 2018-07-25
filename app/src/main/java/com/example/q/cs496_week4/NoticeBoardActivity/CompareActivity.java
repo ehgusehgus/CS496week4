@@ -49,7 +49,7 @@ public class CompareActivity extends AppCompatActivity {
 
 
         final ArrayList<Model3> list= new ArrayList();
-        list.add(new Model3(Model3.TEXT_TYPE,"KEYWORD",keyword,"",null));
+        list.add(new Model3(Model3.TEXT_TYPE,"요리이름",keyword,"",null));
 
 //        list.add(new Model2(Model2.SEARCH_IMAGE_TYPE,"REPRESENTATIVE IMAGE",keyword,recipes, null));
 //        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"RECIPE","",recipes,null));
@@ -67,23 +67,23 @@ public class CompareActivity extends AppCompatActivity {
                     JsonObject object = response.body().get("category_con").getAsJsonObject();
                     Boolean check = object.get("check").getAsBoolean();
                     if(check)
-                        list.add(new Model3(Model3.DIFF_TEXT_TYPE,"CATEGORY_COUNTRY",object.get("before").getAsString(),object.get("after").getAsString(),null));
+                        list.add(new Model3(Model3.DIFF_TEXT_TYPE,"나라별요리",object.get("before").getAsString(),object.get("after").getAsString(),null));
                     else
-                        list.add(new Model3(Model3.TEXT_TYPE,"CATEGORY_COUNTRY",object.get("before").getAsString(),"",null));
+                        list.add(new Model3(Model3.TEXT_TYPE,"나라별요리",object.get("before").getAsString(),"",null));
 
                     JsonObject object2 = response.body().get("category_cooking").getAsJsonObject();
                     Boolean check2 = object2.get("check").getAsBoolean();
                     if(check2)
-                        list.add(new Model3(Model3.DIFF_TEXT_TYPE,"CATEGORY_COOKING",object2.get("before").getAsString(),object2.get("after").getAsString(),null));
+                        list.add(new Model3(Model3.DIFF_TEXT_TYPE,"조리방법",object2.get("before").getAsString(),object2.get("after").getAsString(),null));
                     else
-                        list.add(new Model3(Model3.TEXT_TYPE,"CATEGORY_COOKING",object2.get("before").getAsString(),"",null));
+                        list.add(new Model3(Model3.TEXT_TYPE,"조리방법",object2.get("before").getAsString(),"",null));
 
                     JsonObject object3 = response.body().get("ingredient").getAsJsonObject();
                     Boolean check3 = object3.get("check").getAsBoolean();
                     if(check3)
-                        list.add(new Model3(Model3.DIFF_TEXT_TYPE,"INGREDIENT",object3.get("before").getAsString(),object3.get("after").getAsString(),null));
+                        list.add(new Model3(Model3.DIFF_TEXT_TYPE,"재료",object3.get("before").getAsString(),object3.get("after").getAsString(),null));
                     else
-                        list.add(new Model3(Model3.TEXT_TYPE,"INGREDIENT",object3.get("before").getAsString(),"",null));
+                        list.add(new Model3(Model3.TEXT_TYPE,"재료",object3.get("before").getAsString(),"",null));
 
                     JsonObject object4 = response.body().get("tags").getAsJsonObject();
                     Boolean check4 = object4.get("check").getAsBoolean();
@@ -104,9 +104,9 @@ public class CompareActivity extends AppCompatActivity {
                     }
 
                     if(check4)
-                        list.add(new Model3(Model3.DIFF_TEXT_TYPE,"TAG",prev_tag,post_tag,null));
+                        list.add(new Model3(Model3.DIFF_TEXT_TYPE,"달러태그",prev_tag,post_tag,null));
                     else
-                        list.add(new Model3(Model3.TEXT_TYPE,"TAG",prev_tag,"",null));
+                        list.add(new Model3(Model3.TEXT_TYPE,"달러태그",prev_tag,"",null));
 
                     JsonObject object5 = response.body().get("recipes").getAsJsonObject();
                     Boolean check5 = object5.get("check").getAsBoolean();
@@ -122,9 +122,9 @@ public class CompareActivity extends AppCompatActivity {
                     }
 
                     if(check5)
-                        list.add(new Model3(Model3.DIFF_TEXT_TYPE,"RECIPE",prev,post,null));
+                        list.add(new Model3(Model3.DIFF_TEXT_TYPE,"레시피",prev,post,null));
                     else
-                        list.add(new Model3(Model3.TEXT_TYPE,"RECIPE",prev,"",null));
+                        list.add(new Model3(Model3.TEXT_TYPE,"레시피",prev,"",null));
 
 
                     MultiViewTypeAdapter3 adapter = new MultiViewTypeAdapter3(list,mContext);
