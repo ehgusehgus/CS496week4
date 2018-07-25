@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.StrictMode;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +32,8 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -406,23 +410,34 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
                             Toast.makeText(mContext.getApplicationContext(), "Write Recipe!!", Toast.LENGTH_LONG).show();
                             return;
                         }
+//
+//                        Bitmap basic = BitmapFactory.decodeResource(mContext.getResources(),R.drawable.empty);;
 
-                        Bitmap bm =((BitmapDrawable)mRepImage.image.getDrawable()).getBitmap();
-                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
-                        byte [] b2=baos.toByteArray();
-                        String b = Base64.encodeToString(b2, Base64.DEFAULT);
-                        Log.d("???", b);
+                        String b;
+                        if(mRepImage.image == null)
+                            b="";
+                        else{
+                            Bitmap bm =((BitmapDrawable)mRepImage.image.getDrawable()).getBitmap();
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+                            byte [] b2=baos.toByteArray();
+                            b = Base64.encodeToString(b2, Base64.DEFAULT);
+                            Log.d("???", b);
+                        }
                         JsonArray jsonarray = new JsonArray();
 
                         for(int i=0; i<recipes.size(); i++){
                             JsonObject inter = new JsonObject();
                             try{
-                                ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
-                                recipe_image.get(i).compress(Bitmap.CompressFormat.JPEG, 100, baos2); //bm is the bitmap object
-                                byte [] b3=baos2.toByteArray();
-                                String b4 = Base64.encodeToString(b3, Base64.DEFAULT);
-                                Log.d("???", b4);
+                                String b4;
+                                if(recipe_image.get(i)== null)
+                                    b4="";
+                                else{
+                                    ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
+                                    recipe_image.get(i).compress(Bitmap.CompressFormat.JPEG, 100, baos2); //bm is the bitmap object
+                                    byte [] b3=baos2.toByteArray();
+                                    b4 = Base64.encodeToString(b3, Base64.DEFAULT);
+                                }
                                 inter.addProperty("index", (i+1)+"");
                                 inter.addProperty("descript", recipes.get(i));
                                 inter.addProperty("image",b4);
@@ -482,15 +497,27 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
                         ((RecipeTypeViewHolder) holder).image.setImageBitmap(object.bitmap);
                     }
                     else{
-                        Glide.with(mContext)
-                                .load(HttpInterface.BaseURL+"images/"+mKeyWord.txtType2.getText().toString()+(position) +".jpg")
-                                .asBitmap()
-                                .placeholder(R.drawable.empty)
-                                .error(R.drawable.empty)        //Error상황에서 보여진다.
-                                .into(((RecipeTypeViewHolder) holder).image);
+                        try {
+                            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
-                        Bitmap bm =((BitmapDrawable)((RecipeTypeViewHolder) holder).image.getDrawable()).getBitmap();
-                        recipe_image.set(position, bm);
+                            StrictMode.setThreadPolicy(policy);
+                            URL url = new URL(HttpInterface.BaseURL+"images/"+mKeyWord.txtType2.getText().toString()+(position)+".jpg");
+                            Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                            recipe_image.set(position, image);
+                            ((ImageTypeViewHolder) holder).image.setImageBitmap(image);
+                        } catch(IOException e) {
+                            System.out.println(e);
+                        }
+
+//                        Glide.with(mContext)
+//                                .load(HttpInterface.BaseURL+"images/"+mKeyWord.txtType2.getText().toString()+(position) +".jpg")
+//                                .asBitmap()
+//                                .placeholder(R.drawable.empty)
+//                                .error(R.drawable.empty)        //Error상황에서 보여진다.
+//                                .into(((RecipeTypeViewHolder) holder).image);
+//
+//                        Bitmap bm =((BitmapDrawable)((RecipeTypeViewHolder) holder).image.getDrawable()).getBitmap();
+//                        recipe_image.set(position, bm);
                     }
 
 
@@ -590,12 +617,23 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
                         ((ImageTypeViewHolder) holder).image.setImageBitmap(object.bitmap);
                     }
                     else{
-                        Glide.with(mContext)
-                                .load(HttpInterface.BaseURL+"images/"+mKeyWord.txtType2.getText().toString()+".jpg")
-                                .asBitmap()
-                                .placeholder(R.drawable.empty)
-                                .error(R.drawable.empty)        //Error상황에서 보여진다.
-                                .into(((ImageTypeViewHolder) holder).image);
+                        try {
+                            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+                            StrictMode.setThreadPolicy(policy);
+                            URL url = new URL(HttpInterface.BaseURL+"images/"+mKeyWord.txtType2.getText().toString()+".jpg");
+                            Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                            ((ImageTypeViewHolder) holder).image.setImageBitmap(image);
+                        } catch(IOException e) {
+                            System.out.println(e);
+                        }
+//                        Glide.with(mContext)
+//                                .load(HttpInterface.BaseURL+"images/"+mKeyWord.txtType2.getText().toString()+".jpg")
+//                                .asBitmap()
+//                                .placeholder(R.drawable.empty)
+//                                .error(R.drawable.empty)        //Error상황에서 보여진다.
+//                                .into(((ImageTypeViewHolder) holder).image);
+
                     }
                     ((ImageTypeViewHolder) holder).image.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -637,6 +675,7 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
             case 234:
                 Bitmap bitmap = ImagePicker.getImageFromResult(mContext, resultCode, data);
                 ArrayList<Model> list= new ArrayList();
+                Log.d("????????????",bitmap.toString());
 
                 list.add(new Model(Model.EDIT_KEYWORD_TYPE,"KEYWORD",mKeyWord.txtType2.getText().toString(),recipes, null));
                 list.add(new Model(Model.EDIT_CATEGORY_TYPE,"CATEGORY_COUNTRY",mCategory.btn.getText().toString(),recipes, null));
