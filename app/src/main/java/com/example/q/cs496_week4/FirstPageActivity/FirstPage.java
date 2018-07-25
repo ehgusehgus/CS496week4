@@ -60,6 +60,7 @@ public class FirstPage extends AppCompatActivity {
                     JsonArray mostInterestArray = response.body().getAsJsonObject().get("mostInterest").getAsJsonArray();
                     if(randomArray != null && latestArray != null) {
 
+                        allSampleData = new ArrayList<>();
                         SectionDataModel random = new SectionDataModel();
                         SectionDataModel latest = new SectionDataModel();
                         SectionDataModel mostInterest = new SectionDataModel();
@@ -121,7 +122,6 @@ public class FirstPage extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        allSampleData = new ArrayList<>();
         new GetAsyncTast().execute();
     }
 
