@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.TabHost;
 
 import com.example.q.cs496_week4.CookingCategoryActivity.CategoryActivity1;
+import com.example.q.cs496_week4.R;
 
 public class CategoryTabs extends TabActivity{
 
@@ -13,7 +14,9 @@ public class CategoryTabs extends TabActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_categorytab);
+
+
 
         TabHost mTabHost = getTabHost();
 
