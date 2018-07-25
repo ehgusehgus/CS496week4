@@ -67,7 +67,7 @@
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".DetailEditActivity.EditActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
         <activity
             android:name=".DetailSearchActivity.SearchActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />

@@ -9,8 +9,9 @@
     </style>
 
     <style name="NoTitle01" parent="Theme.AppCompat.NoActionBar">
-        <item name="windowActionBar">false</item>
+        <item name="windowActionBar">true</item>
         <item name="windowNoTitle">true</item>
     </style>
+
 
 </resources>

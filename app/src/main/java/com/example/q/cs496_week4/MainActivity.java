@@ -49,7 +49,7 @@ public class MainActivity extends TabActivity {
     TextView mSearch;
     Retrofit retrofit;
     HttpInterface httpInterface;
-    ArrayList<String> mKeywords = new ArrayList<>();
+    ArrayList<String> mKeywords;
     public AccessToken getAccessToken() {
         return accessToken;
     }
@@ -129,6 +129,7 @@ public class MainActivity extends TabActivity {
         search_but.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            mKeywords = new ArrayList<>();
 
             Call<JsonObject> getSearchTag = httpInterface.getSearchTag(URLEncoder.encode(mSearch.getText().toString()));
             getSearchTag.enqueue(new Callback<JsonObject>() {

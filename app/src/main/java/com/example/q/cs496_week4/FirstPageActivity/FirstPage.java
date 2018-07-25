@@ -49,6 +49,7 @@ public class FirstPage extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
+
             Call<JsonObject> getMainContentsCall = httpInterface.getRandomAndLatestContent();
 
             getMainContentsCall.enqueue(new Callback<JsonObject>() {
@@ -120,6 +121,7 @@ public class FirstPage extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
+        allSampleData = new ArrayList<>();
         new GetAsyncTast().execute();
     }
 

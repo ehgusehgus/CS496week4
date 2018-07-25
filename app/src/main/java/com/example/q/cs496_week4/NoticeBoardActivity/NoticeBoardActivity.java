@@ -19,8 +19,12 @@ import com.example.q.cs496_week4.UserActivity.UserCreateActivity;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -79,9 +83,24 @@ public class NoticeBoardActivity extends AppCompatActivity {
                 JsonArray array = response.body().get("result").getAsJsonArray();
                 for(int i=0;i<array.size();i++){
                     JsonObject object = array.get(i).getAsJsonObject();
-                    Log.d("NOTICE", object.toString());
-                    //TODO: date 형식 변경후 출력
-                    Notice notice = new Notice(object.get("keyword").toString().replace("\"",""), "", "");
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
+                    Calendar cal = Calendar.getInstance();
+                    try {
+                        cal.setTime(format.parse(object.get("created_at").toString().replace("\"","")));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    Long interval = (cal.getTimeInMillis() + 180000 - Calendar.getInstance().getTimeInMillis());
+                    long h = interval / 3600000;
+                    interval %= 3600000;
+                    long m = interval / 60000 + 1;
+                    String dt = "";
+                    if(h != 0){
+                        dt += h + "시간 ";
+                    }
+                    dt += m + "분 후 종료";
+
+                    Notice notice = new Notice(object.get("keyword").toString().replace("\"",""), dt, "");
                     noticeList.add(notice);
                 }
                 mAdapter.notifyDataSetChanged();
