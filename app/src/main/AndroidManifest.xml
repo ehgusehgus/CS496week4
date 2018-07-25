@@ -74,7 +74,8 @@
         <activity
             android:name=".DetailSearchActivity.EmptySearchActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".NoticeBoardActivity.CompareActivity"></activity>
+        <activity android:name=".NoticeBoardActivity.CompareActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
     </application>
 
 </manifest>
