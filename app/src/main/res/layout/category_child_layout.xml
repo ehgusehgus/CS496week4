@@ -31,33 +31,19 @@
         <TextView
             android:id="@+id/child_keyword"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_height="63dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:layout_alignStart="@+id/child_creater"
-            android:textStyle="bold"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toEndOf="@+id/child_image"
             card_view:layout_constraintTop_toTopOf="@+id/child_image"
-            tools:text="Large Text"/>
+            tools:text="Large Text" />
 
-        <TextView
-            android:id="@+id/child_creater"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_below="@+id/child_keyword"
-            android:layout_toRightOf="@+id/child_image"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintStart_toEndOf="@+id/child_image"
-            card_view:layout_constraintTop_toBottomOf="@+id/child_keyword"
-            tools:text="Small Text"/>
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>
