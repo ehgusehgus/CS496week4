@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ public class EmptySearchActivity extends AppCompatActivity {
     TextView mKeyword;
     Retrofit retrofit;
     HttpInterface httpInterface;
+    ArrayList<String> mKeywords = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,7 @@ public class EmptySearchActivity extends AppCompatActivity {
         final String keyword = extras.getString("keyword");
         mKeyword.setText(keyword);
 
-        Button edit_but = (Button) findViewById(R.id.edit_but3);
+        ImageButton edit_but = (ImageButton) findViewById(R.id.edit_but3);
 
         edit_but.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,57 +71,36 @@ public class EmptySearchActivity extends AppCompatActivity {
             }
         });
 
-        final Button search_but = (Button) findViewById(R.id.search_but3);
+        final ImageButton search_but = (ImageButton) findViewById(R.id.search_but3);
 
         search_but.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Call<JsonObject> getPageCall = httpInterface.getPage(URLEncoder.encode(mSearch.getText().toString()));
-
+                Log.d("?????", "");
+                Call<JsonObject> getPageCall = httpInterface.getSearchTag(URLEncoder.encode(mSearch.getText().toString()));
                 getPageCall.enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         Log.d("??????", response.body().toString());
                         try {
-                            JsonObject object = response.body().get("content").getAsJsonObject();
-                            JsonArray recipes = response.body().get("recipes").getAsJsonArray();
-                            JsonArray tags = response.body().get("tags").getAsJsonArray();
-                            if (object != null) {
-
-                                String keyword = object.get("keyword").getAsString();
-                                String ingredient = object.get("ingredient").getAsString();
-                                String category = object.get("category_con").getAsString();
-                                String category2 = object.get("category_cooking").getAsString();
-                                String creater = object.get("creater").getAsString();
-                                String updated_at = object.get("updated_at").getAsString();
-                                ArrayList<String> got_recipe = new ArrayList<String>();
-                                for(int j=0;j<recipes.size();j++){
-                                    got_recipe.add(recipes.get(j).getAsJsonObject().get("descript").getAsString());
-                                }
-                                ArrayList<String> tags_got = new ArrayList<String>();
-                                for(int j=0;j<tags.size();j++){
-                                    tags_got.add(tags.get(j).getAsJsonObject().get("tag").getAsString());
-                                }
-                                Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-                                i.putExtra("keyword", keyword);
-                                i.putExtra("ingredient", ingredient);
-                                i.putExtra("category", category);
-                                i.putExtra("category2", category2);
-                                i.putExtra("tags", tags_got);
-                                i.putExtra("creater", creater);
-                                i.putExtra("updated_at", updated_at);
-                                i.putExtra("recipes", got_recipe);
+                            JsonObject object = response.body().get("result").getAsJsonObject();
+                            JsonArray tags = object.get("result").getAsJsonArray();
+                            if(tags.size() ==0){
+                                Intent i = new Intent(getApplicationContext(), EmptySearchActivity.class);
+                                i.putExtra("keyword", mSearch.getText().toString());
                                 startActivity(i);
                                 finish();
-
                             }
-                        }catch(Exception e){
-                            Intent i = new Intent(getApplicationContext(), EmptySearchActivity.class);
-                            i.putExtra("keyword", mSearch.getText().toString());
-                            startActivity(i);
-                            finish();
-
+                            else {
+                                for (int j = 0; j < tags.size(); j++) {
+                                    mKeywords.add(tags.get(j).getAsJsonObject().get("keyword").getAsString());
+                                }
+                                Intent i = new Intent(getApplicationContext(), SearchTagActivity.class);
+                                i.putExtra("keyword", mKeywords);
+                                startActivity(i);
+                                finish();
+                            }
+                        } catch (Exception e) {
                         }
                     }
 
