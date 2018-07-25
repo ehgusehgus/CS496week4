@@ -93,6 +93,11 @@ public class FirstPage extends AppCompatActivity {
                         allSampleData.add(random);
                         allSampleData.add(latest);
                         allSampleData.add(mostInterest);
+                        RecyclerView my_recycler_view = findViewById(R.id.my_recycler_view);
+                        my_recycler_view.setHasFixedSize(true);
+                        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(mContext, allSampleData);
+                        my_recycler_view.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+                        my_recycler_view.setAdapter(adapter);
                     }
                 }
 
@@ -102,20 +107,6 @@ public class FirstPage extends AppCompatActivity {
                 }
             });
             return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    RecyclerView my_recycler_view = findViewById(R.id.my_recycler_view);
-                    my_recycler_view.setHasFixedSize(true);
-                    RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(mContext, allSampleData);
-                    my_recycler_view.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-                    my_recycler_view.setAdapter(adapter);
-                }
-            });
         }
     }
 
