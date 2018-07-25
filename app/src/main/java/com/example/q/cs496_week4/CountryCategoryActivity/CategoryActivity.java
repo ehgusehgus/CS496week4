@@ -1,5 +1,6 @@
-package com.example.q.cs496_week4.CategoryActivity;
+package com.example.q.cs496_week4.CountryCategoryActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -9,13 +10,11 @@ import android.widget.Toast;
 import com.example.q.cs496_week4.HttpInterface;
 import com.example.q.cs496_week4.R;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mindorks.placeholderview.ExpandablePlaceHolderView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +27,7 @@ public class CategoryActivity extends AppCompatActivity {
     private Map<String,List<CategoryItem>> categoryMap;
 
     private List<CategoryItem> categoryItems;
-
+    private Context mContext;
     private ExpandablePlaceHolderView expandablePlaceHolderView;
 
     @Override
@@ -36,6 +35,7 @@ public class CategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
+        mContext =this;
         categoryItems = new ArrayList<>();
         categoryMap = new HashMap<>();
         expandablePlaceHolderView = (ExpandablePlaceHolderView) findViewById(R.id.expandablePlaceHolder);
@@ -67,7 +67,7 @@ public class CategoryActivity extends AppCompatActivity {
                     JsonArray object = response.body().get("result").getAsJsonArray();
                     Log.d("ppp",object.toString());
 
-                    expandablePlaceHolderView.addView(new HeaderView(this , countryfullname[finalJ].toString() ));
+                    expandablePlaceHolderView.addView(new HeaderView(mContext , countryfullname[finalJ].toString() ));
 
                     //CategoryItem[] categoryItem = new CategoryItem[object.size()];
                     ArrayList<CategoryItem> categoryMap = new ArrayList<>();
@@ -97,7 +97,7 @@ public class CategoryActivity extends AppCompatActivity {
                     }
 
                     for(CategoryItem categoryItem : categoryMap) {
-                        expandablePlaceHolderView.addView(new ChildView(this, categoryItem));
+                        expandablePlaceHolderView.addView(new ChildView(mContext, categoryItem));
                     }
 
 

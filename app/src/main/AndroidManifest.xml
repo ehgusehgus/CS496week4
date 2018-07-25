@@ -46,12 +46,19 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".CountryCategoryActivity.CategoryTabs"
+            />
         <activity
             android:name=".NoticeBoardActivity.NoticeBoardActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".CategoryActivity.CategoryActivity"
+            android:name=".CountryCategoryActivity.CategoryActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".CookingCategoryActivity.CategoryActivity1"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+
         <activity
             android:name=".MyPageActivity.MyPageActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />

@@ -1,9 +1,6 @@
 package com.example.q.cs496_week4;
 
-import com.example.q.cs496_week4.CategoryActivity.CategoryItem;
 import com.google.gson.JsonObject;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -31,6 +28,9 @@ public interface HttpInterface {
     @GET("/category/country")
     Call<JsonObject> getCategory(@Header("category") String category);
     //Call<List<CategoryItem>> getCategory();
+
+    @GET("/category/cooking")
+    Call<JsonObject> getCategory1(@Header("category") String category);
 
     @FormUrlEncoded
     @POST("/contents/edit")
