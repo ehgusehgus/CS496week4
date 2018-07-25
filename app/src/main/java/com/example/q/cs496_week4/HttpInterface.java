@@ -57,4 +57,10 @@ public interface HttpInterface {
     @GET("/notices/detail")
     Call<JsonObject> getNoticeDetail(@Header("keyword") String keyword);
 
+    @FormUrlEncoded
+    @POST("/notices/vote")
+    Call<JsonObject> Vote(@Field("keyword") String keyword, @Field("facebook_id") String facebook_id, @Field("agree") String agree);
+
+    @GET("/notices/check")
+    Call<JsonObject> getVoted(@Header("keyword") String keyword, @Header("facebook_id") String facebook_id);
 }
