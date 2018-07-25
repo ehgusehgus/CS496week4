@@ -1,10 +1,13 @@
-package com.example.q.cs496_week4.CategoryActivity;
+package com.example.q.cs496_week4.CountryCategoryActivity;
 
 import android.content.Context;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.example.q.cs496_week4.CookingCategoryActivity.CategoryItem1;
+import com.example.q.cs496_week4.HttpInterface;
 import com.example.q.cs496_week4.R;
 import com.google.gson.JsonObject;
 import com.mindorks.placeholderview.annotations.Layout;
@@ -29,7 +32,8 @@ public class ChildView {
     private Context mContext;
     private CategoryItem item;
 
-    public ChildView(Callback<JsonObject> mContext, CategoryItem item) {
+    public ChildView(Context mContext, CategoryItem item) {
+        this.mContext = mContext;
         this.item = item;
     }
 
@@ -37,6 +41,13 @@ public class ChildView {
     private void onResolve(){
         Log.d(TAG,"onResolve");
         textViewKeyword.setText(item.getKeyword());
+
+        Glide.with(mContext).load(HttpInterface.BaseURL+"images/"+item.getKeyword() +".jpg")
+                .asBitmap()
+                .placeholder(R.drawable.empty)
+                .error(R.drawable.empty)
+                .into(childImage);
+
         //TODO: 사진 추가
     }
 }

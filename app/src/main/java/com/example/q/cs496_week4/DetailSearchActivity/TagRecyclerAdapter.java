@@ -33,7 +33,6 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
     private Context mContext;
 
     public TagRecyclerAdapter(ArrayList<String> arrayListOfRecipe, Context context){
-        this.arrayListOfRecipe = new ArrayList<>();
         this.arrayListOfRecipe = arrayListOfRecipe;
         this.mContext = context;
     }

@@ -54,7 +54,10 @@ public class SearchTagActivity extends AppCompatActivity {
 //
         mSearch = (TextView) findViewById(R.id.textView_tag);
 
-        ArrayList<String> keywords = getIntent().getExtras().getStringArrayList("keyword");
+        Bundle bundle = getIntent().getExtras();
+
+        ArrayList<String> keywords = bundle.getStringArrayList("keyword");
+        bundle.remove("keyword");
 
 //
 //        Call<JsonObject> getSearchTag = httpInterface.getSearchTag(URLEncoder.encode(keyword));

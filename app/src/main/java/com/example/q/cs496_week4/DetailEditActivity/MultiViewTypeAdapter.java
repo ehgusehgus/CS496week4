@@ -109,6 +109,7 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
             this.txtType2 = (EditText) itemView.findViewById(R.id.textView12);
             this.add_btn = (Button) itemView.findViewById(R.id.button6);
             this.finish_btn = (Button) itemView.findViewById(R.id.button7);
+            this.finish_btn.setVisibility(View.GONE);
             this.txtType3 = (TextView) itemView.findViewById(R.id.textView14);
         }
     }
@@ -397,116 +398,7 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
                     ((ListviewTypeViewHolder) holder).finish_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String Keyword = mKeyWord.txtType2.getText().toString();
-                        if(Keyword.equals("")){
-
-                            Toast.makeText(mContext.getApplicationContext(), "Write KeyWord!!", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        Log.d("???", Keyword);
-
-                        String Ingredient = mIngredient.txtType2.getText().toString();
-                        if(Ingredient.equals("")){
-                            Toast.makeText(mContext.getApplicationContext(), "Write Ingredient!!", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        String category = mCategory.btn.getText().toString();
-                        if(category.equals("Select")){
-                            Toast.makeText(mContext.getApplicationContext(), "Choose Category_Country!!", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        String category2 = mCategory2.btn.getText().toString();
-                        if(category2.equals("Select")){
-                            Toast.makeText(mContext.getApplicationContext(), "Choose Category_Cooking!!", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        String tag= mTag.txtType2.getText().toString();
-                        if(tag.equals("")){
-                            Toast.makeText(mContext.getApplicationContext(), "Write tag!!", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        else if(tag.charAt(0) != '$')
-                        {
-                            Toast.makeText(mContext.getApplicationContext(), "Write tag!!", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-
-                        if(recipes.size() == 0){
-                            Toast.makeText(mContext.getApplicationContext(), "Write Recipe!!", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-//
-//                        Bitmap basic = BitmapFactory.decodeResource(mContext.getResources(),R.drawable.empty);;
-
-                        String b;
-                        if(mRepImage.image == null)
-                            b="";
-                        else{
-                            Bitmap bm =((BitmapDrawable)mRepImage.image.getDrawable()).getBitmap();
-                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
-                            byte [] b2=baos.toByteArray();
-                            b = Base64.encodeToString(b2, Base64.DEFAULT);
-                            Log.d("???", b);
-                        }
-                        JsonArray jsonarray = new JsonArray();
-
-                        for(int i=0; i<recipes.size(); i++){
-                            JsonObject inter = new JsonObject();
-                            try{
-                                String b4;
-                                if(recipe_image.get(i)== null)
-                                    b4="";
-                                else{
-                                    ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
-                                    recipe_image.get(i).compress(Bitmap.CompressFormat.JPEG, 100, baos2); //bm is the bitmap object
-                                    byte [] b3=baos2.toByteArray();
-                                    b4 = Base64.encodeToString(b3, Base64.DEFAULT);
-                                }
-                                inter.addProperty("index", (i+1)+"");
-                                inter.addProperty("descript", recipes.get(i));
-                                inter.addProperty("image",b4);
-                                jsonarray.add(inter);
-                            }catch(JsonIOException e){
-                                e.printStackTrace();
-                            }
-                        }
-
-                        Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
-                                .baseUrl(HttpInterface.BaseURL)
-                                .build();
-                        HttpInterface httpInterface = retrofit.create(HttpInterface.class);
-
-                        AccessToken a = AccessToken.getCurrentAccessToken();
-                        Log.d(">>>", is_first.toString());
-                        if(is_first) {
-                            Call<JsonObject> addPage = httpInterface.addPage(Keyword, Ingredient, a.getUserId(), category, category2, tag, jsonarray.toString(), b);
-                            addPage.enqueue(new Callback<JsonObject>() {
-                                @Override
-                                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                                    ((Activity) mContext).finish();
-                                }
-
-                                @Override
-                                public void onFailure(Call<JsonObject> call, Throwable t) {
-                                    Toast.makeText(mContext.getApplicationContext(), "FAILURE", Toast.LENGTH_LONG).show();
-                                }
-                            });
-                        }
-                        else{
-                            Call<JsonObject> editPage = httpInterface.editPage(Keyword, Ingredient, a.getUserId(), category, category2, tag, jsonarray.toString(), b);
-                            editPage.enqueue(new Callback<JsonObject>() {
-                                @Override
-                                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                                    ((Activity) mContext).finish();
-                                }
-
-                                @Override
-                                public void onFailure(Call<JsonObject> call, Throwable t) {
-                                    Toast.makeText(mContext.getApplicationContext(), "FAILURE", Toast.LENGTH_LONG).show();
-                                }
-                            });
-                        }
+                        finishClick();
                     }
                 });
 
@@ -740,6 +632,117 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
             }
             dataSet = list2;
             notifyDataSetChanged();
+        }
+    }
+
+    public void finishClick() {
+        String Keyword = mKeyWord.txtType2.getText().toString();
+        if(Keyword.equals("")){
+            Toast.makeText(mContext.getApplicationContext(), "Write KeyWord!!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        String Ingredient = mIngredient.txtType2.getText().toString();
+        if(Ingredient.equals("")){
+            Toast.makeText(mContext.getApplicationContext(), "Write Ingredient!!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        String category = mCategory.btn.getText().toString();
+        if(category.equals("Select")){
+            Toast.makeText(mContext.getApplicationContext(), "Choose Category_Country!!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        String category2 = mCategory2.btn.getText().toString();
+        if(category2.equals("Select")){
+            Toast.makeText(mContext.getApplicationContext(), "Choose Category_Cooking!!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        String tag= mTag.txtType2.getText().toString();
+        if(tag.equals("")){
+            Toast.makeText(mContext.getApplicationContext(), "Write tag!!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        else if(tag.charAt(0) != '$')
+        {
+            Toast.makeText(mContext.getApplicationContext(), "Write tag!!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if(recipes.size() == 0){
+            Toast.makeText(mContext.getApplicationContext(), "Write Recipe!!", Toast.LENGTH_LONG).show();
+            return;
+        }
+//
+//                        Bitmap basic = BitmapFactory.decodeResource(mContext.getResources(),R.drawable.empty);;
+
+        String b;
+        if(mRepImage.image == null)
+            b="";
+        else{
+            Bitmap bm =((BitmapDrawable)mRepImage.image.getDrawable()).getBitmap();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+            byte [] b2=baos.toByteArray();
+            b = Base64.encodeToString(b2, Base64.DEFAULT);
+            Log.d("???", b);
+        }
+        JsonArray jsonarray = new JsonArray();
+
+        for(int i=0; i<recipes.size(); i++){
+            JsonObject inter = new JsonObject();
+            try{
+                String b4;
+                if(recipe_image.get(i)== null)
+                    b4="";
+                else{
+                    ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
+                    recipe_image.get(i).compress(Bitmap.CompressFormat.JPEG, 100, baos2); //bm is the bitmap object
+                    byte [] b3=baos2.toByteArray();
+                    b4 = Base64.encodeToString(b3, Base64.DEFAULT);
+                }
+                inter.addProperty("index", (i+1)+"");
+                inter.addProperty("descript", recipes.get(i));
+                inter.addProperty("image",b4);
+                jsonarray.add(inter);
+            }catch(JsonIOException e){
+                e.printStackTrace();
+            }
+        }
+
+        Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(HttpInterface.BaseURL)
+                .build();
+        HttpInterface httpInterface = retrofit.create(HttpInterface.class);
+
+        AccessToken a = AccessToken.getCurrentAccessToken();
+        Log.d(">>>", is_first.toString());
+        if(is_first) {
+            Call<JsonObject> addPage = httpInterface.addPage(Keyword, Ingredient, a.getUserId(), category, category2, tag, jsonarray.toString(), b);
+            addPage.enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    ((Activity) mContext).finish();
+                }
+
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Toast.makeText(mContext.getApplicationContext(), "FAILURE", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+        else{
+            Call<JsonObject> editPage = httpInterface.editPage(Keyword, Ingredient, a.getUserId(), category, category2, tag, jsonarray.toString(), b);
+            editPage.enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    ((Activity) mContext).finish();
+                }
+
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Toast.makeText(mContext.getApplicationContext(), "FAILURE", Toast.LENGTH_LONG).show();
+                }
+            });
         }
     }
 }

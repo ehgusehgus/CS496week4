@@ -49,6 +49,7 @@ public class FirstPage extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... voids) {
+
             Call<JsonObject> getMainContentsCall = httpInterface.getRandomAndLatestContent();
 
             getMainContentsCall.enqueue(new Callback<JsonObject>() {
@@ -59,13 +60,14 @@ public class FirstPage extends AppCompatActivity {
                     JsonArray mostInterestArray = response.body().getAsJsonObject().get("mostInterest").getAsJsonArray();
                     if(randomArray != null && latestArray != null) {
 
+                        allSampleData = new ArrayList<>();
                         SectionDataModel random = new SectionDataModel();
                         SectionDataModel latest = new SectionDataModel();
                         SectionDataModel mostInterest = new SectionDataModel();
 
-                        random.setHeaderTitle("랜덤이란다..");
-                        latest.setHeaderTitle("최근 수정 문서");
-                        mostInterest.setHeaderTitle("가장 많은 관심을 가지는 문서");
+                        random.setHeaderTitle("오늘의 메뉴");
+                        latest.setHeaderTitle("최근 수정 레시피");
+                        mostInterest.setHeaderTitle("인기 레시피");
 
                         ArrayList<CardItemModel> randomItem = new ArrayList<>();
                         ArrayList<CardItemModel> latestItem = new ArrayList<>();
@@ -115,6 +117,12 @@ public class FirstPage extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        new GetAsyncTast().execute();
     }
 
 

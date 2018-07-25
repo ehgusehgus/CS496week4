@@ -1,4 +1,4 @@
-package com.example.q.cs496_week4.CategoryActivity;
+package com.example.q.cs496_week4.CountryCategoryActivity;
 
 import android.content.Context;
 import android.util.Log;
@@ -28,8 +28,8 @@ public class HeaderView {
     private Context mContext;
     private String mHeaderText;
 
-    public HeaderView(Callback<JsonObject> context, String headerText) {
-        //this.mContext = context;
+    public HeaderView(Context context, String headerText) {
+        this.mContext = context;
         this.mHeaderText = headerText;
     }
 

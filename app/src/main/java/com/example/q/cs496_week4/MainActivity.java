@@ -7,13 +7,16 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.q.cs496_week4.CategoryActivity.CategoryActivity;
+import com.example.q.cs496_week4.CookingCategoryActivity.CategoryActivity1;
+import com.example.q.cs496_week4.CountryCategoryActivity.CategoryActivity;
+import com.example.q.cs496_week4.CountryCategoryActivity.CategoryTabs;
 import com.example.q.cs496_week4.DetailSearchActivity.EmptySearchActivity;
 import com.example.q.cs496_week4.DetailSearchActivity.SearchTagActivity;
 import com.example.q.cs496_week4.FirstPageActivity.FirstPage;
@@ -49,7 +52,7 @@ public class MainActivity extends TabActivity {
     TextView mSearch;
     Retrofit retrofit;
     HttpInterface httpInterface;
-    ArrayList<String> mKeywords = new ArrayList<>();
+    ArrayList<String> mKeywords;
     public AccessToken getAccessToken() {
         return accessToken;
     }
@@ -129,6 +132,7 @@ public class MainActivity extends TabActivity {
         search_but.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            mKeywords = new ArrayList<>();
 
             Call<JsonObject> getSearchTag = httpInterface.getSearchTag(URLEncoder.encode(mSearch.getText().toString()));
             getSearchTag.enqueue(new Callback<JsonObject>() {
@@ -159,6 +163,7 @@ public class MainActivity extends TabActivity {
                 @Override
                 public void onFailure(Call<JsonObject> call, Throwable t) {
                     Toast.makeText(getApplication(), "FAILURE", Toast.LENGTH_LONG).show();
+
                 }
             });
 
@@ -261,7 +266,7 @@ public class MainActivity extends TabActivity {
         intent = new Intent(this, NoticeBoardActivity.class);
         spec = mTab.newTabSpec("b").setIndicator("", getResources().getDrawable(R.drawable.debate)).setContent(intent);
         mTab.addTab(spec);
-        intent = new Intent(this, CategoryActivity.class);
+        intent = new Intent(this, CategoryTabs.class);
         spec = mTab.newTabSpec("c").setIndicator("", getResources().getDrawable(R.drawable.category)).setContent(intent);
         mTab.addTab(spec);
         intent = new Intent(this, MyPageActivity.class);

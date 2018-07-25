@@ -1,4 +1,4 @@
-package com.example.q.cs496_week4.CategoryActivity;
+package com.example.q.cs496_week4.CountryCategoryActivity;
 
 import com.example.q.cs496_week4.HttpInterface;
 

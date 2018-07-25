@@ -48,14 +48,6 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
         itemRowHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
         itemRowHolder.recycler_view_list.setAdapter(itemListDataAdapter);
 
-        itemRowHolder.btnMore.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(view.getContext(), "click event on more, "+sectionName , Toast.LENGTH_SHORT).show();
-            }
-        });
-
     }
 
     @Override
@@ -67,14 +59,12 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
         protected TextView itemTitle;
         protected RecyclerView recycler_view_list;
-        protected Button btnMore;
 
         public ItemRowHolder(@NonNull View itemView) {
             super(itemView);
 
             this.itemTitle = itemView.findViewById(R.id.itemTitle);
             this.recycler_view_list = itemView.findViewById(R.id.recycler_view_list);
-            this.btnMore = itemView.findViewById(R.id.btnMore);
         }
     }
 }
