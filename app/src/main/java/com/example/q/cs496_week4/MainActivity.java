@@ -142,26 +142,29 @@ public class MainActivity extends TabActivity {
                     try {
                         JsonObject object = response.body().get("content").getAsJsonObject();
                         JsonArray recipes = response.body().get("recipes").getAsJsonArray();
+                        JsonArray tags = response.body().get("tags").getAsJsonArray();
                         if (object != null) {
-
+                            Log.d("<<<<", tags.toString());
                             String keyword = object.get("keyword").getAsString();
                             String ingredient = object.get("ingredient").getAsString();
                             String category = object.get("category_con").getAsString();
                             String category2 = object.get("category_cooking").getAsString();
-                            String tag = object.get("tag").getAsString();
                             String creater = object.get("creater").getAsString();
                             String updated_at = object.get("updated_at").getAsString();
                             ArrayList<String> got_recipe = new ArrayList<String>();
                             for(int j=0;j<recipes.size();j++){
                                 got_recipe.add(recipes.get(j).getAsJsonObject().get("descript").getAsString());
                             }
-
+                            ArrayList<String> tags_got = new ArrayList<String>();
+                            for(int j=0;j<tags.size();j++){
+                                tags_got.add(tags.get(j).getAsJsonObject().get("tag").getAsString());
+                            }
                             Intent i = new Intent(getApplicationContext(), SearchActivity.class);
                             i.putExtra("keyword", keyword);
                             i.putExtra("ingredient", ingredient);
                             i.putExtra("category", category);
                             i.putExtra("category2", category2);
-                            i.putExtra("tag", tag);
+                            i.putExtra("tags", tags_got);
                             i.putExtra("creater", creater);
                             i.putExtra("updated_at", updated_at);
                             i.putExtra("recipes", got_recipe);

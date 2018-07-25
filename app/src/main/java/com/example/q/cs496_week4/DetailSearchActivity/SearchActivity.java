@@ -70,10 +70,10 @@ public class SearchActivity extends AppCompatActivity {
         final String ingredient = extras.getString("ingredient");
         final String category = extras.getString("category");
         final String category_got2 = extras.getString("category2");
-        final String tag = extras.getString("tag");
         final String creater = extras.getString("creater");
         final String updated = extras.getString("updated_at");
         final ArrayList<String> recipes = extras.getStringArrayList("recipes");
+        final ArrayList<String> tag = extras.getStringArrayList("tags");
 //        final ArrayList<String> recipes_image_prev = extras.getStringArrayList("recipes_image");
 //        final ArrayList<Bitmap> recipes_image_post = new ArrayList<Bitmap>();
 
@@ -83,14 +83,19 @@ public class SearchActivity extends AppCompatActivity {
 //            byte[] decodedString2 = Base64.decode(recipes_image_prev.get(j),Base64.DEFAULT);
 //            recipes_image_post.add(BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length));
 //        }
-
+        String tags="";
+        for(int k=0; k<tag.size()-1;k++){
+            tags= tags + tag.get(k).toString()+",";
+        }
+        if(tag.size()>1)
+            tags = tags +tag.get(tag.size()-1);
 
         ArrayList<Model2> list= new ArrayList();
         list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"KEYWORD",keyword,recipes,null));
         list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"CATEGORY_COUNTRY",category,recipes,null));
         list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"CATEGORY_COOKING",category_got2,recipes,null));
         list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"INGREDIENT",ingredient,recipes,null));
-        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"TAG",tag,recipes,null));
+        list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"TAG",tags,recipes,null));
         list.add(new Model2(Model2.SEARCH_IMAGE_TYPE,"REPRESENTATIVE IMAGE",keyword,recipes, null));
         list.add(new Model2(Model2.SEARCH_KEYWORD_TYPE,"RECIPE","",recipes,null));
         for(int j=0;j<recipes.size();j++){
@@ -136,6 +141,17 @@ public class SearchActivity extends AppCompatActivity {
         mSearch = (TextView) findViewById(R.id.textVie);
         Button edit_but = (Button) findViewById(R.id.edit_but2);
 
+        String[] words = tags.split(",");
+        String tags_input= "";
+        for(int k=0; k<words.length-1;k++){
+            tags_input =tags_input+"$"+words[k]+" ";
+        }
+        if(words.length>1)
+            tags_input = tags_input+"$"+words[words.length-1];
+
+        Log.d("words", words.toString());
+        final String tags_input2 = tags_input;
+
         edit_but.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,7 +160,7 @@ public class SearchActivity extends AppCompatActivity {
                 i.putExtra("ingredient",ingredient);
                 i.putExtra("category",category);
                 i.putExtra("category2", category_got2);
-                i.putExtra("tag",tag);
+                i.putExtra("tag",tags_input2);
                 i.putExtra("creater",creater);
                 i.putExtra("updated",updated);
                 i.putExtra("recipes",recipes);
@@ -166,6 +182,7 @@ public class SearchActivity extends AppCompatActivity {
                         try {
                             JsonObject object = response.body().get("content").getAsJsonObject();
                             JsonArray recipes = response.body().get("recipes").getAsJsonArray();
+                            JsonArray tags = response.body().get("tags").getAsJsonArray();
                             if (object != null) {
 
                                 String keyword = object.get("keyword").getAsString();
@@ -179,13 +196,16 @@ public class SearchActivity extends AppCompatActivity {
                                 for(int j=0;j<recipes.size();j++){
                                     got_recipe.add(recipes.get(j).getAsJsonObject().get("descript").getAsString());
                                 }
-
+                                ArrayList<String> tags_got = new ArrayList<String>();
+                                for(int j=0;j<tags.size();j++){
+                                    tags_got.add(tags.get(j).getAsJsonObject().get("tag").getAsString());
+                                }
                                 Intent i = new Intent(getApplicationContext(), SearchActivity.class);
                                 i.putExtra("keyword", keyword);
                                 i.putExtra("ingredient", ingredient);
                                 i.putExtra("category", category);
                                 i.putExtra("category2", category2);
-                                i.putExtra("tag", tag);
+                                i.putExtra("tags", tags_got);
                                 i.putExtra("creater", creater);
                                 i.putExtra("updated_at", updated_at);
                                 i.putExtra("recipes", got_recipe);

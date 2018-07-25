@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.q.cs496_week4.DetailSearchActivity.SearchActivity;
 import com.example.q.cs496_week4.HttpInterface;
 import com.example.q.cs496_week4.MyApplication;
 import com.example.q.cs496_week4.R;
@@ -50,7 +51,9 @@ public class NoticeBoardActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 Notice notice = noticeList.get(position);
+                Intent i = new Intent(getApplicationContext(), CompareActivity.class);
                 Toast.makeText(getApplicationContext(), notice.getKeyword() + " is selected!", Toast.LENGTH_SHORT).show();
+                startActivity(i);
             }
 
             @Override

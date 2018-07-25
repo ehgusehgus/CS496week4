@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class EditActivity extends AppCompatActivity {
 
     Context mContext;
-    Boolean is_first = true;
+    Boolean is_first = false;
     TextView mKeyWord;
     String mCategory = "";
     String mCategory2 = "";

@@ -151,6 +151,7 @@ public class MultiViewTypeAdapter2 extends RecyclerView.Adapter {
                     ((RecipeTypeViewHolder) holder).txtType2.setText(object.text2);
                     Glide.with(mContext)
                             .load(HttpInterface.BaseURL+"images/"+object.bitmap+"_"+(Integer.parseInt(object.text)) +".jpg")
+                            .asBitmap()
                             .placeholder(R.drawable.empty)
                             .error(R.drawable.empty)        //Error상황에서 보여진다.
                             .into(((RecipeTypeViewHolder) holder).image);
@@ -160,6 +161,7 @@ public class MultiViewTypeAdapter2 extends RecyclerView.Adapter {
                     ((ImageTypeViewHolder) holder).txtType.setText(object.text);
                     Glide.with(this.mContext)
                             .load(HttpInterface.BaseURL+"images/"+object.text2.toString() +".jpg")
+                            .asBitmap()
                             .placeholder(R.drawable.empty)
                             .error(R.drawable.empty)        //Error상황에서 보여진다.
                             .into(((ImageTypeViewHolder) holder).image);

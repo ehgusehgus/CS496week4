@@ -345,6 +345,8 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
                 case Model.EDIT_LISTVIEW_TYPE:
                     ((ListviewTypeViewHolder) holder).txtType.setText(object.text);
                     recipes = object.strings;
+                    for(int k=0;k<recipes.size();k++)
+                        recipe_image.add(null);
 //                    mListView = ((ListviewTypeViewHolder) holder).listView;
 //                    setRecipeAdpater();
                     ((ListviewTypeViewHolder) holder).txtType2.setText(object.text2);
@@ -391,9 +393,15 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
                         }
                         String tag= mTag.txtType2.getText().toString();
                         if(tag.equals("")){
-                            Toast.makeText(mContext.getApplicationContext(), "Choose Category_Cooking!!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(mContext.getApplicationContext(), "Write tag!!", Toast.LENGTH_LONG).show();
                             return;
                         }
+                        else if(tag.charAt(0) != '$')
+                        {
+                            Toast.makeText(mContext.getApplicationContext(), "Write tag!!", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
                         if(recipes.size() == 0){
                             Toast.makeText(mContext.getApplicationContext(), "Write Recipe!!", Toast.LENGTH_LONG).show();
                             return;
@@ -423,13 +431,14 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
                                 e.printStackTrace();
                             }
                         }
-                        Log.d("??????", jsonarray.toString());
+
                         Retrofit retrofit = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
                                 .baseUrl(HttpInterface.BaseURL)
                                 .build();
                         HttpInterface httpInterface = retrofit.create(HttpInterface.class);
 
                         AccessToken a = AccessToken.getCurrentAccessToken();
+                        Log.d(">>>", is_first.toString());
                         if(is_first) {
                             Call<JsonObject> addPage = httpInterface.addPage(Keyword, Ingredient, a.getUserId(), category, category2, tag, jsonarray.toString(), b);
                             addPage.enqueue(new Callback<JsonObject>() {
@@ -475,10 +484,16 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
                     else{
                         Glide.with(mContext)
                                 .load(HttpInterface.BaseURL+"images/"+mKeyWord.txtType2.getText().toString()+(position) +".jpg")
+                                .asBitmap()
                                 .placeholder(R.drawable.empty)
                                 .error(R.drawable.empty)        //Error상황에서 보여진다.
                                 .into(((RecipeTypeViewHolder) holder).image);
+
+                        Bitmap bm =((BitmapDrawable)((RecipeTypeViewHolder) holder).image.getDrawable()).getBitmap();
+                        recipe_image.set(position, bm);
                     }
+
+
                     ((RecipeTypeViewHolder) holder).image.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -577,6 +592,7 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
                     else{
                         Glide.with(mContext)
                                 .load(HttpInterface.BaseURL+"images/"+mKeyWord.txtType2.getText().toString()+".jpg")
+                                .asBitmap()
                                 .placeholder(R.drawable.empty)
                                 .error(R.drawable.empty)        //Error상황에서 보여진다.
                                 .into(((ImageTypeViewHolder) holder).image);
