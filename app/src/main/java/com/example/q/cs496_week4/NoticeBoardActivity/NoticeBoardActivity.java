@@ -53,6 +53,7 @@ public class NoticeBoardActivity extends AppCompatActivity {
                 Notice notice = noticeList.get(position);
                 Intent i = new Intent(getApplicationContext(), CompareActivity.class);
                 Toast.makeText(getApplicationContext(), notice.getKeyword() + " is selected!", Toast.LENGTH_SHORT).show();
+                i.putExtra("keyword", notice.getKeyword());
                 startActivity(i);
             }
 
