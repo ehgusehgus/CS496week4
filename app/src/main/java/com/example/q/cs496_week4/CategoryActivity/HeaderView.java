@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.q.cs496_week4.R;
+import com.google.gson.JsonObject;
 import com.mindorks.placeholderview.annotations.Layout;
 import com.mindorks.placeholderview.annotations.Resolve;
 import com.mindorks.placeholderview.annotations.View;
@@ -12,6 +13,8 @@ import com.mindorks.placeholderview.annotations.expand.Collapse;
 import com.mindorks.placeholderview.annotations.expand.Expand;
 import com.mindorks.placeholderview.annotations.expand.Parent;
 import com.mindorks.placeholderview.annotations.expand.SingleTop;
+
+import retrofit2.Callback;
 
 @Parent
 @SingleTop
@@ -25,8 +28,8 @@ public class HeaderView {
     private Context mContext;
     private String mHeaderText;
 
-    public HeaderView(Context context,String headerText) {
-        this.mContext = context;
+    public HeaderView(Callback<JsonObject> context, String headerText) {
+        //this.mContext = context;
         this.mHeaderText = headerText;
     }
 

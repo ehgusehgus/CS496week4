@@ -8,6 +8,9 @@ import android.widget.Toast;
 
 import com.example.q.cs496_week4.HttpInterface;
 import com.example.q.cs496_week4.R;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mindorks.placeholderview.ExpandablePlaceHolderView;
 
 import java.util.ArrayList;
@@ -50,47 +53,54 @@ public class CategoryActivity extends AppCompatActivity {
 
     private void loadData(){
 
+        final Object country[] =new Object[]{"KOR","WEST","CHN","JPN","ETC"};
+        final Object countryfullname[] = new Object[]{"한식","양식","중식","일식","기타"};
         HttpInterface httpInterface = CategoryApi.getRetrofit().create(HttpInterface.class);
-        httpInterface.getCategory().enqueue(new Callback<List<CategoryItem>>() {
-            @Override
-            public void onResponse(Call<List<CategoryItem>> call, Response<List<CategoryItem>> response) {
-                categoryItems = response.body();
-                getHeaderAndChild(categoryItems);
-            }
 
-            @Override
-            public void onFailure(Call<List<CategoryItem>> call, Throwable t) {
+        for(int j=0;j<country.length;j++) {
 
-            }
-        });
+            final int finalJ = j;
+            httpInterface.getCategory(country[j].toString()).enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
-    }
+                    JsonArray object = response.body().get("result").getAsJsonArray();
+                    Log.d("ppp",object.toString());
 
-    private void getHeaderAndChild(List<CategoryItem> categoryItems){
+                    expandablePlaceHolderView.addView(new HeaderView(this , countryfullname[finalJ].toString() ));
+                    //CategoryItem[] categoryItem = new CategoryItem[object.size()];
+                    ArrayList<CategoryItem> categoryMap = new ArrayList<>();
 
-        for (CategoryItem categoryItem : categoryItems ){
-            List<CategoryItem> categoryItems1 = categoryMap.get(categoryItem.getCategory());
-            if(categoryItems1 == null){
-                categoryItems1 = new ArrayList<>();
-            }
-            categoryItems1.add(categoryItem);
-            categoryMap.put(categoryItem.getCategory(),categoryItems1);
+                    for (int i = 0; i < object.size(); i++) {
+                        //JsonObject item;
+                        JsonObject item = (JsonObject) object.get(i);
+
+                        CategoryItem categoryItem1 = new CategoryItem(null,null);
+                        categoryItem1.setKeyword(item.get("keyword").getAsString());
+                        categoryItem1.setCategory(countryfullname[finalJ].toString());
+
+                        categoryMap.add(categoryItem1);
+                        //CategoryItem categoryItem1 = new CategoryItem(item.get("keyword").getAsString(), countryfullname[finalJ].toString());
+                        Log.d("adf", categoryMap.get(i).toString());
+                        //categoryMap.add(categoryItem1);
+                        //new CategoryItem(item.get("keyword").getAsString(), countryfullname[finalJ].toString())
+                    }
+
+                    Log.d("qqq", categoryMap.toString());
+                    for(CategoryItem categoryItem : categoryMap) {
+                        expandablePlaceHolderView.addView(new ChildView(this, categoryItem));
+                    }
+
+
+                }
+
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                }
+            });
         }
 
-        Log.d("Map",categoryMap.toString());
-        Iterator it = categoryMap.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
-            Log.d("Key", pair.getKey().toString());
-            expandablePlaceHolderView.addView(new HeaderView(this, pair.getKey().toString()));
-            List<CategoryItem> categoryItems1 = (List<CategoryItem>) pair.getValue();
-            for (CategoryItem categoryItem : categoryItems1){
-                expandablePlaceHolderView.addView(new ChildView(this, categoryItem));
-            }
-            it.remove();
-        }
+
     }
-
-
 
 }

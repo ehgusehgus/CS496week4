@@ -28,9 +28,9 @@ public interface HttpInterface {
     @GET("/notices")
     Call<JsonObject> getEditPage(@Header("keyword") String keyword);
 
-    @GET("/contents/category")
-        //Call<JsonObject> getCategory(@Header("category") String category);
-    Call<List<CategoryItem>> getCategory();
+    @GET("/category/country")
+    Call<JsonObject> getCategory(@Header("category") String category);
+    //Call<List<CategoryItem>> getCategory();
 
     @FormUrlEncoded
     @POST("/contents/edit")

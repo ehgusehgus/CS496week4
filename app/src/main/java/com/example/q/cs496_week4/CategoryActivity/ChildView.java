@@ -6,9 +6,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.q.cs496_week4.R;
+import com.google.gson.JsonObject;
 import com.mindorks.placeholderview.annotations.Layout;
 import com.mindorks.placeholderview.annotations.Resolve;
 import com.mindorks.placeholderview.annotations.View;
+
+import retrofit2.Callback;
 
 @Layout(R.layout.category_child_layout)
 public class ChildView {
@@ -26,8 +29,7 @@ public class ChildView {
     private Context mContext;
     private CategoryItem item;
 
-    public ChildView(Context mContext, CategoryItem item) {
-        this.mContext = mContext;
+    public ChildView(Callback<JsonObject> mContext, CategoryItem item) {
         this.item = item;
     }
 
@@ -35,7 +37,6 @@ public class ChildView {
     private void onResolve(){
         Log.d(TAG,"onResolve");
         textViewKeyword.setText(CategoryItem.getKeyword());
-        textViewCreater.setText(CategoryItem.getCreater());
         //TODO: 사진 추가
     }
 }
