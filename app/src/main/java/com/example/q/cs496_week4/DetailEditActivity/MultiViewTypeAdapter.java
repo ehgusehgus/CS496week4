@@ -579,13 +579,13 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
 //            dataSet.remove(dataSet.size()-1);
         ArrayList<Model> list= new ArrayList();
 
-        list.add(new Model(Model.EDIT_KEYWORD_TYPE,"KEYWORD",mKeyWord.txtType2.getText().toString(),insert, null));
-        list.add(new Model(Model.EDIT_CATEGORY_TYPE,"CATEGORY_COUNTRY",mCategory.btn.getText().toString(),insert, null));
-        list.add(new Model(Model.EDIT_CATEGORY2_TYPE,"CATEGORY_COOKING",mCategory2.btn.getText().toString(),insert, null));
-        list.add(new Model(Model.EDIT_INGREDIENT_TYPE,"INGREDIENT",mIngredient.txtType2.getText().toString(),insert, null));
-        list.add(new Model(Model.EDIT_TAG_TYPE,"TAG",mTag.txtType2.getText().toString(),insert, null));
-        list.add(new Model(Model.EDIT_IMAGE_TYPE, "REPRESENTATIVE IMAGE", "", insert, ((BitmapDrawable)mRepImage.image.getDrawable()).getBitmap()));
-        list.add(new Model(Model.EDIT_LISTVIEW_TYPE,"RECIPE","",insert, null));
+        list.add(new Model(Model.EDIT_KEYWORD_TYPE,"요리이름",mKeyWord.txtType2.getText().toString(),insert, null));
+        list.add(new Model(Model.EDIT_CATEGORY_TYPE,"나라별요리",mCategory.btn.getText().toString(),insert, null));
+        list.add(new Model(Model.EDIT_CATEGORY2_TYPE,"조리방법",mCategory2.btn.getText().toString(),insert, null));
+        list.add(new Model(Model.EDIT_INGREDIENT_TYPE,"재료",mIngredient.txtType2.getText().toString(),insert, null));
+        list.add(new Model(Model.EDIT_TAG_TYPE,"달러태그",mTag.txtType2.getText().toString(),insert, null));
+        list.add(new Model(Model.EDIT_IMAGE_TYPE, "대표사진", "", insert, ((BitmapDrawable)mRepImage.image.getDrawable()).getBitmap()));
+        list.add(new Model(Model.EDIT_LISTVIEW_TYPE,"레시피","",insert, null));
         for(int i=0;i<insert.size();i++)
             list.add(new Model(Model.EDIT_RECIPE_TYPE,(i+1)+"",recipes.get(i),insert, recipe_image.get(i)));
         dataSet = list;
@@ -600,13 +600,13 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
                 ArrayList<Model> list= new ArrayList();
                 Log.d("????????????",bitmap.toString());
 
-                list.add(new Model(Model.EDIT_KEYWORD_TYPE,"KEYWORD",mKeyWord.txtType2.getText().toString(),recipes, null));
-                list.add(new Model(Model.EDIT_CATEGORY_TYPE,"CATEGORY_COUNTRY",mCategory.btn.getText().toString(),recipes, null));
-                list.add(new Model(Model.EDIT_CATEGORY2_TYPE,"CATEGORY_COOKING",mCategory2.btn.getText().toString(),recipes, null));
-                list.add(new Model(Model.EDIT_INGREDIENT_TYPE,"INGREDIENT",mIngredient.txtType2.getText().toString(),recipes, null));
-                list.add(new Model(Model.EDIT_TAG_TYPE,"TAG",mTag.txtType2.getText().toString(),recipes, null));
-                list.add(new Model(Model.EDIT_IMAGE_TYPE, "REPRESENTATIVE IMAGE", "", recipes, bitmap));
-                list.add(new Model(Model.EDIT_LISTVIEW_TYPE,"RECIPE","",recipes, null));
+                list.add(new Model(Model.EDIT_KEYWORD_TYPE,"요리이름",mKeyWord.txtType2.getText().toString(),recipes, null));
+                list.add(new Model(Model.EDIT_CATEGORY_TYPE,"나라별요리",mCategory.btn.getText().toString(),recipes, null));
+                list.add(new Model(Model.EDIT_CATEGORY2_TYPE,"조리방법",mCategory2.btn.getText().toString(),recipes, null));
+                list.add(new Model(Model.EDIT_INGREDIENT_TYPE,"재료",mIngredient.txtType2.getText().toString(),recipes, null));
+                list.add(new Model(Model.EDIT_TAG_TYPE,"달러태그",mTag.txtType2.getText().toString(),recipes, null));
+                list.add(new Model(Model.EDIT_IMAGE_TYPE, "대표사진", "", recipes, bitmap));
+                list.add(new Model(Model.EDIT_LISTVIEW_TYPE,"레시피","",recipes, null));
                 for(int i=0;i<recipes.size();i++)
                     list.add(new Model(Model.EDIT_RECIPE_TYPE,(i+1)+"",recipes.get(i),recipes, null));
                 dataSet = list;
@@ -621,13 +621,13 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
             Bitmap bitmap2 = ImagePicker.getImageFromResult(mContext, resultCode, data);
             ArrayList<Model> list2= new ArrayList();
             recipe_image.set(position, bitmap2);
-            list2.add(new Model(Model.EDIT_KEYWORD_TYPE,"KEYWORD",mKeyWord.txtType2.getText().toString(),recipes, null));
-            list2.add(new Model(Model.EDIT_CATEGORY_TYPE,"CATEGORY_COUNTRY",mCategory.btn.getText().toString(),recipes, null));
-            list2.add(new Model(Model.EDIT_CATEGORY2_TYPE,"CATEGORY_COOKING",mCategory2.btn.getText().toString(),recipes, null));
-            list2.add(new Model(Model.EDIT_INGREDIENT_TYPE,"INGREDIENT",mIngredient.txtType2.getText().toString(),recipes, null));
-            list2.add(new Model(Model.EDIT_TAG_TYPE,"TAG",mTag.txtType2.getText().toString(),recipes, null));
-            list2.add(new Model(Model.EDIT_IMAGE_TYPE, "REPRESENTATIVE IMAGE", "", recipes, ((BitmapDrawable)mRepImage.image.getDrawable()).getBitmap()));
-            list2.add(new Model(Model.EDIT_LISTVIEW_TYPE,"RECIPE","",recipes, null));
+            list2.add(new Model(Model.EDIT_KEYWORD_TYPE,"요리이름",mKeyWord.txtType2.getText().toString(),recipes, null));
+            list2.add(new Model(Model.EDIT_CATEGORY_TYPE,"나라별요리",mCategory.btn.getText().toString(),recipes, null));
+            list2.add(new Model(Model.EDIT_CATEGORY2_TYPE,"조리방법",mCategory2.btn.getText().toString(),recipes, null));
+            list2.add(new Model(Model.EDIT_INGREDIENT_TYPE,"재료",mIngredient.txtType2.getText().toString(),recipes, null));
+            list2.add(new Model(Model.EDIT_TAG_TYPE,"달러태그",mTag.txtType2.getText().toString(),recipes, null));
+            list2.add(new Model(Model.EDIT_IMAGE_TYPE, "대표사진", "", recipes, ((BitmapDrawable)mRepImage.image.getDrawable()).getBitmap()));
+            list2.add(new Model(Model.EDIT_LISTVIEW_TYPE,"레시피","",recipes, null));
             for(int i=0;i<recipes.size();i++) {
                 list2.add(new Model(Model.EDIT_RECIPE_TYPE, (i + 1) + "", recipes.get(i), recipes, recipe_image.get(i)));
             }
