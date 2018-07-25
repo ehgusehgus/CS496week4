@@ -19,24 +19,28 @@
 
         <EditText
             android:id="@+id/textView_tag"
-            android:layout_width="226dp"
+            android:layout_width="264dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@null"
             android:hint="Search"
             android:textSize="20sp" />
 
-        <Button
+        <ImageButton
             android:id="@+id/search_buttag"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/edit_buttag"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/search" />
+
+        <ImageButton
+            android:id="@+id/edit_buttag"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/add"
             android:text="edit" />
 
     </LinearLayout>

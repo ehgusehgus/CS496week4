@@ -17,34 +17,38 @@
         android:layout_marginBottom="10dp"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/textVie"
-            android:layout_width="226dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@null"
-            android:hint="Search"
-            android:textSize="20sp" />
+            <EditText
+                android:id="@+id/textVie"
+                android:layout_width="211dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="Search"
+                android:textSize="20sp" />
 
-        <Button
-            android:id="@+id/search_but2"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+            <ImageButton
+                android:id="@+id/search_but2"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:src="@drawable/search" />
 
-        <Button
-            android:id="@+id/edit_but2"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="EDIT" />
+            <ImageButton
+                android:id="@+id/edit_but2"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:src="@drawable/edit"
+                android:text="EDIT" />
 
-        <Button
-            android:id="@+id/interest"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="☆" />
+            <Button
+                android:id="@+id/interest"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="☆" />
 
     </LinearLayout>
 

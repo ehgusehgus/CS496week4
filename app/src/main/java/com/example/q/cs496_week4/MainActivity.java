@@ -7,14 +7,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.q.cs496_week4.CategoryActivity.CategoryActivity;
+import com.example.q.cs496_week4.DetailSearchActivity.EmptySearchActivity;
 import com.example.q.cs496_week4.DetailSearchActivity.SearchTagActivity;
 import com.example.q.cs496_week4.FirstPageActivity.FirstPage;
 import com.example.q.cs496_week4.MyPageActivity.MyPageActivity;
@@ -124,7 +124,7 @@ public class MainActivity extends TabActivity {
 //        }
 //    });
 
-    final Button search_but = (Button) findViewById(R.id.search_but);
+    final ImageButton search_but = (ImageButton) findViewById(R.id.search_but);
 
         search_but.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -135,26 +135,30 @@ public class MainActivity extends TabActivity {
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                     try {
-                        Log.d("???????", response.body().toString());
                         JsonObject object = response.body().get("result").getAsJsonObject();
                         JsonArray tags = object.get("result").getAsJsonArray();
-                        for(int j=0;j<tags.size();j++){
-                            Log.d("bubu","bubu2");
-                            mKeywords.add(tags.get(j).getAsJsonObject().get("keyword").getAsString());
-                        }
+                        if(tags.size() ==0){
+                            Intent i = new Intent(getApplicationContext(), EmptySearchActivity.class);
+                            i.putExtra("keyword", mSearch.getText().toString());
+                            startActivity(i);
 
-                        Intent i = new Intent(getApplicationContext(), SearchTagActivity.class);
-                        i.putExtra("keyword", mKeywords);
-                        startActivity(i);
+                        }
+                        else {
+                            for (int j = 0; j < tags.size(); j++) {
+                                mKeywords.add(tags.get(j).getAsJsonObject().get("keyword").getAsString());
+                            }
+                            Intent i = new Intent(getApplicationContext(), SearchTagActivity.class);
+                            i.putExtra("keyword", mKeywords);
+                            startActivity(i);
+
+                        }
                     } catch (Exception e) {
-                        Log.d("bubu","bubu");
                     }
                 }
 
                 @Override
                 public void onFailure(Call<JsonObject> call, Throwable t) {
                     Toast.makeText(getApplication(), "FAILURE", Toast.LENGTH_LONG).show();
-
                 }
             });
 

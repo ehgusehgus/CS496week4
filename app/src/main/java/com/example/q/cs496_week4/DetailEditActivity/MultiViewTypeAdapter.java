@@ -54,7 +54,8 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
     private TextView mTextView;
     ArrayList<Bitmap> recipe_image = new ArrayList<Bitmap>();
     Boolean is_first;
-    TextTypeViewHolder mKeyWord;
+    TextTypeViewHolder mKeyWord ;
+    TextTypeViewHolder2 mKeyWord2;
 
     ButtonTypeViewHolder mCategory;
     ButtonTypeViewHolder mCategory2;
@@ -75,6 +76,20 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
             super(itemView);
             this.txtType = (TextView) itemView.findViewById(R.id.type);
             this.txtType2 = (EditText) itemView.findViewById(R.id.type2);
+            this.cardView = (CardView) itemView.findViewById(R.id.card_view);
+        }
+    }
+
+    public static class TextTypeViewHolder2 extends RecyclerView.ViewHolder {
+
+        TextView txtType;
+        TextView txtType2;
+        CardView cardView;
+
+        public TextTypeViewHolder2(View itemView) {
+            super(itemView);
+            this.txtType = (TextView) itemView.findViewById(R.id.type);
+            this.txtType2 = (TextView) itemView.findViewById(R.id.type2);
             this.cardView = (CardView) itemView.findViewById(R.id.card_view);
         }
     }
@@ -180,6 +195,12 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.image_type, parent, false);
                 mRepImage = new ImageTypeViewHolder(view);
                 return mRepImage;
+            case Model.EDIT_KEYWORD_TYPE2:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_text, parent, false);
+                mKeyWord2 = new TextTypeViewHolder2(view);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.text_type, parent, false);
+                mKeyWord = new TextTypeViewHolder(view);
+                return mKeyWord2;
         }
         return null;
     }
@@ -204,6 +225,8 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
                 return Model.EDIT_RECIPE_TYPE;
             case 7:
                 return Model.EDIT_IMAGE_TYPE;
+            case 8:
+                return Model.EDIT_KEYWORD_TYPE2;
             default:
                 return -1;
         }
@@ -376,9 +399,11 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
                     public void onClick(View v) {
                         String Keyword = mKeyWord.txtType2.getText().toString();
                         if(Keyword.equals("")){
+
                             Toast.makeText(mContext.getApplicationContext(), "Write KeyWord!!", Toast.LENGTH_LONG).show();
                             return;
                         }
+                        Log.d("???", Keyword);
 
                         String Ingredient = mIngredient.txtType2.getText().toString();
                         if(Ingredient.equals("")){
@@ -642,6 +667,11 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter {
                             ((Activity) mContext).startActivityForResult(chooseImageIntent, 234);
                         }
                     });
+                    break;
+                case Model.EDIT_KEYWORD_TYPE2:
+                    mKeyWord.txtType2.setText(object.text2);
+                    ((TextTypeViewHolder2) holder).txtType.setText(object.text);
+                    ((TextTypeViewHolder2) holder).txtType2.setText(object.text2);
                     break;
             }
         }

@@ -13,6 +13,7 @@ public class Model {
     public static final int EDIT_LISTVIEW_TYPE=5;
     public static final int EDIT_RECIPE_TYPE = 6;
     public static final int EDIT_IMAGE_TYPE = 7;
+    public static final int EDIT_KEYWORD_TYPE2 = 8;
 
     public int type;
     public String text;

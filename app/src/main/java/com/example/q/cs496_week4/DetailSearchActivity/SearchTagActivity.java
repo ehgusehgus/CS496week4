@@ -5,12 +5,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.q.cs496_week4.DetailEditActivity.EditActivity;
 import com.example.q.cs496_week4.HttpInterface;
 import com.example.q.cs496_week4.R;
 import com.google.gson.JsonArray;
@@ -35,7 +36,7 @@ public class SearchTagActivity extends AppCompatActivity {
     TextView mUpdated;
     Retrofit retrofit;
     HttpInterface httpInterface;
-    ArrayList<String> mKeywords;
+    ArrayList<String> mKeywords = new ArrayList<>();
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -87,67 +88,71 @@ public class SearchTagActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
         //setRecipeAdpater(this, this);
 
-        final Button search_but = (Button) findViewById(R.id.search_buttag);
+        final ImageButton search_but = (ImageButton) findViewById(R.id.search_buttag);
 
         search_but.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Call<JsonObject> getPageCall = httpInterface.getPage(URLEncoder.encode(mSearch.getText().toString()));
-
-                getPageCall.enqueue(new Callback<JsonObject>() {
+                search_but.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                        try {
-                            JsonObject object = response.body().get("content").getAsJsonObject();
-                            JsonArray recipes = response.body().get("recipes").getAsJsonArray();
-                            JsonArray tags = response.body().get("tags").getAsJsonArray();
-                            if (object != null) {
-                                Log.d("<<<<", tags.toString());
-                                String keyword = object.get("keyword").getAsString();
-                                String ingredient = object.get("ingredient").getAsString();
-                                String category = object.get("category_con").getAsString();
-                                String category2 = object.get("category_cooking").getAsString();
-                                String creater = object.get("creater").getAsString();
-                                String updated_at = object.get("updated_at").getAsString();
-                                ArrayList<String> got_recipe = new ArrayList<String>();
-                                for(int j=0;j<recipes.size();j++){
-                                    got_recipe.add(recipes.get(j).getAsJsonObject().get("descript").getAsString());
-                                }
-                                ArrayList<String> tags_got = new ArrayList<String>();
-                                for(int j=0;j<tags.size();j++){
-                                    tags_got.add(tags.get(j).getAsJsonObject().get("tag").getAsString());
-                                }
-                                Intent i = new Intent(getApplicationContext(), SearchActivity.class);
-                                i.putExtra("keyword", keyword);
-                                i.putExtra("ingredient", ingredient);
-                                i.putExtra("category", category);
-                                i.putExtra("category2", category2);
-                                i.putExtra("tags", tags_got);
-                                i.putExtra("creater", creater);
-                                i.putExtra("updated_at", updated_at);
-                                i.putExtra("recipes", got_recipe);
-                                startActivity(i);
+                    public void onClick(View view) {
 
+                        Call<JsonObject> getSearchTag = httpInterface.getSearchTag(URLEncoder.encode(mSearch.getText().toString()));
+                        getSearchTag.enqueue(new Callback<JsonObject>() {
+                            @Override
+                            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                                try {
+                                    JsonObject object = response.body().get("result").getAsJsonObject();
+                                    JsonArray tags = object.get("result").getAsJsonArray();
+                                    if(tags.size() ==0){
+                                        Intent i = new Intent(getApplicationContext(), EmptySearchActivity.class);
+                                        i.putExtra("keyword", mSearch.getText().toString());
+                                        startActivity(i);
+                                        finish();
+                                    }
+                                    else {
+                                        for (int j = 0; j < tags.size(); j++) {
+                                            mKeywords.add(tags.get(j).getAsJsonObject().get("keyword").getAsString());
+                                        }
+                                        Intent i = new Intent(getApplicationContext(), SearchTagActivity.class);
+                                        i.putExtra("keyword", mKeywords);
+                                        startActivity(i);
+                                        finish();
+                                    }
+                                } catch (Exception e) {
+                                }
                             }
-                        }catch(Exception e){
-                            Intent i = new Intent(getApplicationContext(), EmptySearchActivity.class);
-                            i.putExtra("keyword", mSearch.getText().toString());
-                            startActivity(i);
-                            finish();
-
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<JsonObject> call, Throwable t) {
-                        Toast.makeText(getApplication(), "FAILURE", Toast.LENGTH_LONG).show();
-
+                            @Override
+                            public void onFailure(Call<JsonObject> call, Throwable t) {
+                                Toast.makeText(getApplication(), "FAILURE", Toast.LENGTH_LONG).show();
+                            }
+                        });
                     }
                 });
             }
         });
 
+        final ImageButton edit_but = (ImageButton) findViewById(R.id.edit_buttag);
+
+        edit_but.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), EditActivity.class);
+                i.putExtra("keyword","");
+                i.putExtra("ingredient","");
+                i.putExtra("category","");
+                i.putExtra("category2","");
+                i.putExtra("tag","");
+                i.putExtra("creater","");
+                i.putExtra("updated","");
+                i.putExtra("recipes",new ArrayList<String>());
+                startActivity(i);
+                finish();
+            }
+        });
+
     }
+
 
 }
