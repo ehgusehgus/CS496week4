@@ -36,7 +36,7 @@ public class ChildView {
     @Resolve
     private void onResolve(){
         Log.d(TAG,"onResolve");
-        textViewKeyword.setText(CategoryItem.getKeyword());
+        textViewKeyword.setText(item.getKeyword());
         //TODO: 사진 추가
     }
 }
